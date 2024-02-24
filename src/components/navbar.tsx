@@ -73,9 +73,9 @@ const NavbarSmall = () => {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               {navbarItems.map((navbarItem) => (
-                <DropdownMenuItem>
+                <DropdownMenuItem key={navbarItem.id}>
                   {navbarItem.isbutton ? (
-                    <Link href={navbarItem.href} key={navbarItem.id}>
+                    <Link href={navbarItem.href}>
                       <Button
                         variant="link"
                         size="lg"
