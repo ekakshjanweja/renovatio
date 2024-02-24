@@ -14,6 +14,7 @@ import {
 import { Menu, X } from "lucide-react";
 
 interface NavbarItem {
+  id: number;
   label: string;
   href: string;
   isbutton: boolean;
@@ -21,21 +22,25 @@ interface NavbarItem {
 
 const navbarItems: NavbarItem[] = [
   {
+    id: 1,
     label: "portfolio",
     href: "/portfolio",
     isbutton: false,
   },
   {
+    id: 2,
     label: "services",
     href: "/services",
     isbutton: false,
   },
   {
+    id: 3,
     label: "about us",
     href: "/about-us",
     isbutton: false,
   },
   {
+    id: 4,
     label: "get quote",
     href: "/about-us",
     isbutton: true,
@@ -70,7 +75,7 @@ const NavbarSmall = () => {
               {navbarItems.map((navbarItem) => (
                 <DropdownMenuItem>
                   {navbarItem.isbutton ? (
-                    <Link href={navbarItem.href} key={navbarItem.label}>
+                    <Link href={navbarItem.href} key={navbarItem.id}>
                       <Button
                         variant="link"
                         size="lg"
@@ -107,7 +112,7 @@ const NavbarLarge = () => {
             {navbarItems.map((navbarItem) => (
               <>
                 {navbarItem.isbutton ? (
-                  <Link href={navbarItem.href} key={navbarItem.label}>
+                  <Link href={navbarItem.href} key={navbarItem.id}>
                     <Button
                       variant="link"
                       size="sm"
