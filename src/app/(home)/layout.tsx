@@ -10,6 +10,7 @@ const HomePageLayout = ({ children }: HomePageLayoutProps) => {
       <div className="p-2">
         <Navbar />
         {children}
+        <Navbar />
       </div>
     </>
   );
