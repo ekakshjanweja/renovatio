@@ -14,11 +14,9 @@ export const Logo = () => {
   return (
     <>
       <Link href={"/"}>
-        <Image alt="" src={isDark ? LogoWhite : LogoBlack} className="w-52" />
+        {/* <Image alt="" src={isDark ? LogoWhite : LogoBlack} className="w-52" /> */}
 
-        {/* <h1 className="uppercase tracking-widest text-xl font-semibold">
-          renovatio
-        </h1> */}
+        <h1 className="text-2xl hover:text-foreground">renovatio</h1>
       </Link>
     </>
   );
