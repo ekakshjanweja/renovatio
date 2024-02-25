@@ -1,6 +1,5 @@
 import { AutoScrollCarousel } from "@/components/auto-scroll-carousel";
 import { ImagesGridHomePage } from "@/components/images-grid-home-page";
-import { BlogRow } from "./_components/blog-row";
 
 const HomePage = () => {
   return (
@@ -34,8 +33,6 @@ const HomePage = () => {
 
         <ImagesGridHomePage />
       </div>
-
-      <BlogRow />
     </>
   );
 };
