@@ -41,8 +41,8 @@ const navbarItems: NavbarItem[] = [
   },
   {
     id: 4,
-    label: "login",
-    href: "/login",
+    label: "signin",
+    href: "/sign-in",
     isButton: true,
   },
   {
