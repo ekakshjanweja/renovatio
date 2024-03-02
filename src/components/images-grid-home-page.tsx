@@ -1,10 +1,6 @@
-"use client";
-
 import React from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { BentoGrid, BentoGridItem } from "./aceternity/bento-grid";
-import Link from "next/link";
 import { projects } from "@/lib/data";
 
 export function ImagesGridHomePage() {
@@ -15,8 +11,8 @@ export function ImagesGridHomePage() {
           key={i}
           href={`/projects/${item.id}`}
           title={item.title}
-          description={item.subtitle}
-          header={<Skeleton image={item.images[1]} />}
+          description={item.subtitle.substring(0, 70) + "..."}
+          header={<Skeleton image={item.images[0]} />}
           className={i === 3 || i === 6 ? "md:col-span-2" : ""}
         />
       ))}

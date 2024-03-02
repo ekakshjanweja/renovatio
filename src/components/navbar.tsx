@@ -17,7 +17,7 @@ interface NavbarItem {
   id: number;
   label: string;
   href: string;
-  isbutton: boolean;
+  isButton: boolean;
 }
 
 const navbarItems: NavbarItem[] = [
@@ -25,25 +25,31 @@ const navbarItems: NavbarItem[] = [
     id: 1,
     label: "portfolio",
     href: "/portfolio",
-    isbutton: false,
+    isButton: false,
   },
   {
     id: 2,
-    label: "services",
-    href: "/services",
-    isbutton: false,
+    label: "instagram",
+    href: "https://www.instagram.com/naresh_vijh?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
+    isButton: false,
   },
   {
     id: 3,
     label: "about us",
     href: "/about-us",
-    isbutton: false,
+    isButton: false,
+  },
+  {
+    id: 4,
+    label: "login",
+    href: "/login",
+    isButton: true,
   },
   {
     id: 4,
     label: "get quote",
-    href: "/about-us",
-    isbutton: true,
+    href: "/get-quote",
+    isButton: true,
   },
 ];
 
@@ -74,11 +80,11 @@ const NavbarSmall = () => {
             <DropdownMenuContent align="end">
               {navbarItems.map((navbarItem) => (
                 <DropdownMenuItem key={navbarItem.id}>
-                  {navbarItem.isbutton ? (
+                  {navbarItem.isButton ? (
                     <Link href={navbarItem.href}>
                       <Button
                         variant="link"
-                        size="lg"
+                        size="sm"
                         className="border-2 uppercase"
                       >
                         {navbarItem.label}
@@ -111,8 +117,8 @@ const NavbarLarge = () => {
           <div className="flex items-center justify-start gap-x-4">
             {navbarItems.map((navbarItem) => (
               <>
-                {navbarItem.isbutton ? (
-                  <Link href={navbarItem.href} key={navbarItem.id}>
+                {navbarItem.isButton ? (
+                  <Link href={navbarItem.href}>
                     <Button
                       variant="link"
                       size="sm"
