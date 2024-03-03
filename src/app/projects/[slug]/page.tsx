@@ -26,8 +26,8 @@ const ProjectPage = ({ params }: { params: { slug: string } }) => {
           <p className="text-sm sm:text-lg text-center text-muted-foreground ">
             {project?.subtitle}
           </p>
-          <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 w-1/2 gap-4">
-            <div className="flex flex-col items-center justify-center">
+          <div className="mt-4 grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 md:w-1/2 gap-4 ">
+            <div className="flex flex-col items-center justify-center text-center">
               <p className="text-md">{project.timeline}</p>
               <p className="text-xs text-muted-foreground ">Timeline</p>
             </div>
@@ -35,7 +35,7 @@ const ProjectPage = ({ params }: { params: { slug: string } }) => {
               <p className="text-md">{project?.location}</p>
               <p className="text-xs text-muted-foreground ">Location</p>
             </div>
-            <div className="flex flex-col items-center justify-center">
+            <div className="flex flex-col items-center text-center justify-center">
               <p className="text-md">{project?.area} sqm</p>
               <p className="text-xs text-muted-foreground ">Area</p>
             </div>
