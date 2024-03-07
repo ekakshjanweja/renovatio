@@ -56,6 +56,8 @@ export function AutoScrollCarousel({
                   height="0"
                   sizes="100vw"
                   className="w-full h-auto rounded-xl object-cover"
+                  quality={50}
+                  loading="lazy"
                 />
               </CardContent>
             </Card>

@@ -29,6 +29,8 @@ const Skeleton = ({ image }: { image: string }) => (
       height="0"
       sizes="100vw"
       className="rounded-xl object-cover w-full"
+      quality={50}
+      loading="lazy"
     />
   </div>
 );
