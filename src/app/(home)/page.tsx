@@ -3,7 +3,7 @@
 import { AutoScrollCarousel } from "@/components/auto-scroll-carousel";
 import { ImagesGridHomePage } from "@/components/images-grid-home-page";
 import { Loading } from "@/components/loading";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const HomePage = () => {
   const images: string[] = [
@@ -14,9 +14,12 @@ const HomePage = () => {
 
   const [loading, setLoading] = useState(true);
 
-  setTimeout(() => {
-    setLoading(false);
-  }, 2000);
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  }, []);
+
   return (
     <>
       {loading ? (
