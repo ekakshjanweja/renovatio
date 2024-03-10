@@ -59,6 +59,7 @@ export function AutoScrollCarousel({
                   quality={50}
                   loading="lazy"
                   placeholder="blur"
+                  blurDataURL={image}
                 />
               </CardContent>
             </Card>

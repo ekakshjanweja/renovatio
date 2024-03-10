@@ -31,6 +31,7 @@ const Skeleton = ({ image }: { image: string }) => (
       className="rounded-xl object-cover w-full"
       quality={50}
       placeholder="blur"
+      blurDataURL={image}
     />
   </div>
 );
