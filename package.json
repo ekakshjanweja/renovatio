@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "db:studio":"npx drizzle-kit studio",
+    "db:push":"npx drizzle-kit push:pg"
   },
   "dependencies": {
     "@neondatabase/serverless": "^0.9.0",
@@ -20,6 +22,7 @@
     "@tabler/icons-react": "^2.47.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
+    "dotenv": "^16.4.5",
     "drizzle-orm": "^0.30.4",
     "embla-carousel-autoplay": "^8.0.0",
     "embla-carousel-react": "^8.0.0",
