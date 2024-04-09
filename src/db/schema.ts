@@ -8,6 +8,11 @@ import {
   timestamp,
 } from "drizzle-orm/pg-core";
 
+export const testing = pgTable("testing", {
+  id: text("id").notNull().primaryKey().unique(),
+  name: text("name").notNull(),
+});
+
 export const users = pgTable("users", {
   id: serial("id").primaryKey().unique(),
   name: text("name").notNull(),
