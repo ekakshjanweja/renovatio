@@ -8,9 +8,9 @@ const AuthLayout = ({ children }: HomePageLayoutProps) => {
   return (
     <>
       <div className="p-2">
-        <Navbar />
+        {/* <Navbar /> */}
         {children}
-        <Navbar />
+        {/* <Navbar /> */}
       </div>
     </>
   );
