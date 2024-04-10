@@ -15,9 +15,12 @@ import { Separator } from "@radix-ui/react-dropdown-menu";
 import Link from "next/link";
 import { PasswordInput } from "./password-input";
 import { useState } from "react";
+import { signIn } from "next-auth/react";
+import GoogleLogo from "../../../../public/logos/google-logo";
 
 const SignInCard = () => {
   const [currentPassword, setCurrentPassword] = useState("");
+
   return (
     <>
       <Card className="w-[350px] md:w-[450px]">
@@ -60,7 +63,10 @@ const SignInCard = () => {
           </div>
 
           <div className="flex items-center justify-center mt-4">
-            <Button variant="outline">Login With Google</Button>
+            <Button variant="outline" onClick={() => signIn("google")}>
+              <GoogleLogo />
+              Login With Google
+            </Button>
           </div>
         </CardContent>
       </Card>

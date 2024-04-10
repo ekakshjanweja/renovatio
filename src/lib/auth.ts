@@ -11,6 +11,7 @@ const config = {
       return session;
     },
   },
+  pages: { signIn: "/sign-in" },
 } satisfies NextAuthConfig;
 
 export const {

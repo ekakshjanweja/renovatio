@@ -11,7 +11,7 @@ const SignInButton = () => {
       <>
         <div className="flex flex-col items-center justify-center gap-y-4">
           <p>Not signed in</p>
-          <Button size="sm" onClick={() => signIn()}>
+          <Button size="sm" onClick={() => signIn("google")}>
             Sign In
           </Button>
         </div>
