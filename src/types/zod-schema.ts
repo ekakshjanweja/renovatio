@@ -15,4 +15,8 @@ export const SignUpSchema = z.object({
   name: z.string().min(1, {
     message: "Name is required",
   }),
+  phone: z
+    .string()
+    .min(10, { message: "Minimum 10 characters required" })
+    .max(10, { message: "Maximum 10 characters required" }),
 });
