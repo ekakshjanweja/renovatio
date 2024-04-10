@@ -14,64 +14,116 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@radix-ui/react-dropdown-menu";
 import Link from "next/link";
 import { PasswordInput } from "./password-input";
-import { useState } from "react";
+
 import { signIn } from "next-auth/react";
 import GoogleLogo from "../../../../public/logos/google-logo";
+import { InputField } from "./input-field";
+import * as z from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-const SignInCard = () => {
-  const [currentPassword, setCurrentPassword] = useState("");
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { useTransition, useState } from "react";
+import { LogInSchema } from "@/types/zod-schema";
+import { FormError } from "@/components/form/form-error";
+import { FormSuccess } from "@/components/form/form-success";
+import { login } from "@/actions/login";
+import { CardWrapper } from "@/components/card-wrapper/card-wrapper";
+
+const SignInForm = () => {
+  const [isPending, startTransition] = useTransition();
+
+  const [error, setError] = useState<string | undefined>("");
+  const [success, setSuccess] = useState<string | undefined>("");
+
+  const form = useForm<z.infer<typeof LogInSchema>>({
+    resolver: zodResolver(LogInSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
+  const onSubmit = (values: z.infer<typeof LogInSchema>) => {
+    setError("");
+    setSuccess("");
+
+    startTransition(() => {
+      login(values).then((data) => {
+        setError(data.error);
+        setSuccess(data.success);
+      });
+    });
+  };
 
   return (
     <>
-      <Card className="w-[350px] md:w-[450px]">
-        <CardHeader>
-          <CardTitle>Signin</CardTitle>
-          <CardDescription>
-            Welcome Back! Please login to your account.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form>
-            <div className="grid w-full items-center gap-4">
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="email">Email</Label>
-                <Input id="email" placeholder="johndoe@example.com" />
-              </div>
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="password">Password</Label>
-                <PasswordInput
-                  id="password"
-                  value={currentPassword}
-                  onChange={(e) => setCurrentPassword(e.target.value)}
-                  autoComplete="current-password"
-                />
-              </div>
+      <CardWrapper
+        title="Sign In"
+        description="Welcome back! Please login to your account."
+      >
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <div>
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        placeholder="john.doe@example.com"
+                        type="email"
+                        disabled={isPending}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem className="mt-2">
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        placeholder="johndoe'ssecret"
+                        type="password"
+                        disabled={isPending}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
-          </form>
-        </CardContent>
-        <CardFooter className="flex justify-between">
-          <Link href={"/"}>
-            <Button variant="outline">Cancel</Button>
-          </Link>
-          <Button>Submit</Button>
-        </CardFooter>
-        <CardContent>
-          <Separator />
-
-          <div className="text-xs text-muted-foreground flex items-center justify-center mt-2">
-            OR
-          </div>
-
-          <div className="flex items-center justify-center mt-4">
-            <Button variant="outline" onClick={() => signIn("google")}>
-              <GoogleLogo />
-              Login With Google
+            <FormError message={error} />
+            <FormSuccess message={success} />
+            <Button
+              type="submit"
+              className="w-full"
+              variant="secondary"
+              disabled={isPending}
+            >
+              Login
             </Button>
-          </div>
-        </CardContent>
-      </Card>
+          </form>
+        </Form>
+      </CardWrapper>
     </>
   );
 };
 
-export default SignInCard;
+export default SignInForm;
