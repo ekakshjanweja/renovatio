@@ -13,6 +13,7 @@ import Link from "next/link";
 import { signIn } from "next-auth/react";
 import GoogleLogo from "../../../public/logos/google-logo";
 import { usePathname } from "next/navigation";
+import { LogoutButton } from "../auth/logout-button";
 
 interface CardWrapperProps {
   title: string;
@@ -28,6 +29,8 @@ export const CardWrapper = ({
   const pathname = usePathname();
 
   const isSignIn = pathname === "/sign-in";
+
+  const isProfile = pathname === "/settings";
 
   return (
     <>
@@ -61,14 +64,18 @@ export const CardWrapper = ({
           </div>
 
           <div className="flex items-center justify-center mt-4">
-            <Button
-              variant="outline"
-              onClick={() => signIn("google")}
-              className="gap-x-4"
-            >
-              <GoogleLogo />
-              Login Using Google
-            </Button>
+            {isProfile ? (
+              <LogoutButton />
+            ) : (
+              <Button
+                variant="outline"
+                onClick={() => signIn("google")}
+                className="gap-x-4"
+              >
+                <GoogleLogo />
+                Login Using Google
+              </Button>
+            )}
           </div>
         </CardContent>
       </Card>

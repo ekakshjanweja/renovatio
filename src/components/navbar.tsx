@@ -12,6 +12,8 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { Menu, X } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 interface NavbarItem {
   id: number;
@@ -109,13 +111,50 @@ const NavbarSmall = () => {
 };
 
 const NavbarLarge = () => {
+  const session = useSession();
+
   return (
     <>
       <nav className="h-10 flex items-center justify-between text-muted-foreground">
         <Logo />
         <div className="flex items-center justify-end gap-x-8">
           <div className="flex items-center justify-start gap-x-4">
-            {navbarItems.map((navbarItem) => (
+            <Link
+              target="_blank"
+              href={
+                "https://www.instagram.com/naresh_vijh?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+              }
+            >
+              <p className="hover:underline underline-offset-2">instagram</p>
+            </Link>
+
+            <Link target="_blank" href={"/about-us"}>
+              <p className="hover:underline underline-offset-2">about us</p>
+            </Link>
+
+            <Link href={"/get-quote"}>
+              <Button variant="link" size="sm" className="border-2 uppercase">
+                Get Quote
+              </Button>
+            </Link>
+
+            <Link
+              href={
+                session.status === "unauthenticated" ? "/sign-in" : "/settings"
+              }
+            >
+              {session.status === "unauthenticated" ? (
+                <Button variant="link" size="sm" className="border-2 uppercase">
+                  Sign In
+                </Button>
+              ) : (
+                <Button variant="link" size="sm" className="border-2 uppercase">
+                  Profile
+                </Button>
+              )}
+            </Link>
+
+            {/* {navbarItems.map((navbarItem) => (
               <>
                 {navbarItem.isButton ? (
                   <Link href={navbarItem.href}>
@@ -135,7 +174,7 @@ const NavbarLarge = () => {
                   </Link>
                 )}
               </>
-            ))}
+            ))} */}
           </div>
           <ModeToggle />
         </div>

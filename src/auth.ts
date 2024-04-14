@@ -8,6 +8,9 @@ const config = {
   providers: [Google],
   callbacks: {
     async session({ session, user, token }) {
+      session.userId = user.id;
+      session.user.image = user.image;
+
       return session;
     },
   },
