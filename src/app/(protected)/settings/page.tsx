@@ -12,9 +12,20 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { getCurrentUser } from "@/services/user-service";
+import { useSession } from "next-auth/react";
 
 const SettingsPage = async () => {
   const user = await getCurrentUser();
+
+  // if (session.status === "unauthenticated") {
+  //   return (
+  //     <>
+  //       <div className="flex flex-col items-center justify-center h-screen">
+  //         <p>Please login to access this page</p>
+  //       </div>
+  //     </>
+  //   );
+  // }
 
   // const session = await auth();
 

@@ -69,7 +69,7 @@ export const CardWrapper = ({
             ) : (
               <Button
                 variant="outline"
-                onClick={() => signIn("google")}
+                onClick={() => signIn("google", { callbackUrl: "/settings" })}
                 className="gap-x-4"
               >
                 <GoogleLogo />

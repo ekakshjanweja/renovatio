@@ -11,7 +11,7 @@ export const LogoutButton = async ({
   return (
     <>
       <Button
-        onClick={() => signOut()}
+        onClick={() => signOut({ callbackUrl: "/" })}
         className={className}
         variant="secondary"
       >
