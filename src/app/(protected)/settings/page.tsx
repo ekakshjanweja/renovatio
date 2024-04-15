@@ -9,27 +9,20 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { getCurrentUser } from "@/services/user-service";
+
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { getCurrentUser } from "@/services/user-service";
-import { useSession } from "next-auth/react";
+import { notFound, redirect } from "next/navigation";
 
 const SettingsPage = async () => {
   const user = await getCurrentUser();
 
-  // if (session.status === "unauthenticated") {
-  //   return (
-  //     <>
-  //       <div className="flex flex-col items-center justify-center h-screen">
-  //         <p>Please login to access this page</p>
-  //       </div>
-  //     </>
-  //   );
-  // }
+  const session = await auth();
 
-  // const session = await auth();
-
-  // const { id, name, email, image }: any = session?.user;
+  if (!session) {
+    notFound();
+  }
 
   return (
     <>
