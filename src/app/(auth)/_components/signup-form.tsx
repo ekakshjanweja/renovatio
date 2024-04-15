@@ -18,7 +18,7 @@ import { LogInSchema, SignUpSchema } from "@/types/zod-schema";
 import { FormError } from "@/components/form/form-error";
 import { FormSuccess } from "@/components/form/form-success";
 import { login } from "@/actions/login";
-import { CardWrapper } from "@/components/card-wrapper/card-wrapper";
+import { AuthCardWrapper } from "@/components/auth/auth-card-wrapper";
 import { Input } from "@/components/ui/input";
 
 const SignUpForm = () => {
@@ -51,7 +51,7 @@ const SignUpForm = () => {
 
   return (
     <>
-      <CardWrapper title="Sign Up" description="Create an account.">
+      <AuthCardWrapper title="Sign Up" description="Create an account.">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <div>
@@ -142,7 +142,7 @@ const SignUpForm = () => {
             </Button>
           </form>
         </Form>
-      </CardWrapper>
+      </AuthCardWrapper>
     </>
   );
 };

@@ -1,19 +1,18 @@
 import { Navbar } from "@/components/navbar";
 
-interface HomePageLayoutProps {
+interface DashboardLayoutProps {
   children: React.ReactNode;
 }
 
-const HomePageLayout = ({ children }: HomePageLayoutProps) => {
+const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   return (
     <>
       <div className="p-0">
         <Navbar />
         {children}
-        <Navbar />
       </div>
     </>
   );
 };
 
-export default HomePageLayout;
+export default DashboardLayout;

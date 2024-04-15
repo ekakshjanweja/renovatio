@@ -18,8 +18,8 @@ import { LogInSchema } from "@/types/zod-schema";
 import { FormError } from "@/components/form/form-error";
 import { FormSuccess } from "@/components/form/form-success";
 import { login } from "@/actions/login";
-import { CardWrapper } from "@/components/card-wrapper/card-wrapper";
 import { Input } from "@/components/ui/input";
+import { AuthCardWrapper } from "@/components/auth/auth-card-wrapper";
 
 const SignInForm = () => {
   const [isPending, startTransition] = useTransition();
@@ -49,7 +49,7 @@ const SignInForm = () => {
 
   return (
     <>
-      <CardWrapper
+      <AuthCardWrapper
         title="Sign In"
         description="Welcome back! Please login to your account."
       >
@@ -105,7 +105,7 @@ const SignInForm = () => {
             </Button>
           </form>
         </Form>
-      </CardWrapper>
+      </AuthCardWrapper>
     </>
   );
 };

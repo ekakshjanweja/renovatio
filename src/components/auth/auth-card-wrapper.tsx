@@ -13,19 +13,19 @@ import Link from "next/link";
 import { signIn } from "next-auth/react";
 import GoogleLogo from "../../../public/logos/google-logo";
 import { usePathname } from "next/navigation";
-import { LogoutButton } from "../auth/logout-button";
+import { LogoutButton } from "./logout-button";
 
-interface CardWrapperProps {
+interface AuthCardWrapperProps {
   title: string;
   description: string;
   children: React.ReactNode;
 }
 
-export const CardWrapper = ({
+export const AuthCardWrapper = ({
   title,
   description,
   children,
-}: CardWrapperProps) => {
+}: AuthCardWrapperProps) => {
   const pathname = usePathname();
 
   const isSignIn = pathname === "/sign-in";

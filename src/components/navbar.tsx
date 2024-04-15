@@ -4,7 +4,6 @@ import Link from "next/link";
 import { ModeToggle } from "./mode-toggle";
 import { Logo } from "./logo";
 import { Button } from "./ui/button";
-import { useWindowSize } from "@/lib/windows-size";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,7 +12,7 @@ import {
 } from "./ui/dropdown-menu";
 import { Menu, X } from "lucide-react";
 import { useSession } from "next-auth/react";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { useWindowSize } from "@/lib/windows-size";
 
 interface NavbarItem {
   id: number;

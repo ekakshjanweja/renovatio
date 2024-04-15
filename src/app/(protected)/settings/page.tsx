@@ -11,8 +11,6 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { getCurrentUser } from "@/services/user-service";
 
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 
 const SettingsPage = async () => {
