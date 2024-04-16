@@ -114,7 +114,7 @@ const NavbarLarge = () => {
 
   return (
     <>
-      <nav className="h-10 flex items-center justify-between text-muted-foreground">
+      <nav className="px-4 pt-4 pb-0 flex items-center justify-between text-muted-foreground">
         <Logo />
         <div className="flex items-center justify-end gap-x-8">
           <div className="flex items-center justify-start gap-x-4">
