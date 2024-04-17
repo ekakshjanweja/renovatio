@@ -12,6 +12,8 @@ import { Separator } from "@/components/ui/separator";
 import { getCurrentUser } from "@/services/user-service";
 
 import { notFound, redirect } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const SettingsPage = async () => {
   const user = await getCurrentUser();
@@ -35,7 +37,14 @@ const SettingsPage = async () => {
             </CardTitle>
             <CardDescription className="text-center"></CardDescription>
           </CardHeader>
-          <CardContent>{user.id}</CardContent>
+          <CardContent>
+            <div className="flex flex-col gap-y-4">
+              <p>{user.id}</p>
+              <Link href={"/dashboard"}>
+                <Button variant="outline">Go to Dashboard</Button>
+              </Link>
+            </div>
+          </CardContent>
 
           <CardContent>
             <div className="flex items-center justify-center"></div>
