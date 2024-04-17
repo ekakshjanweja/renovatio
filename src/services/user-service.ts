@@ -12,3 +12,9 @@ export const getCurrentUser = async () => {
 
   return user[0];
 };
+
+export const getUserByEmail = async (email: string) => {
+  const user = await db.select().from(users).where(eq(users.email, email));
+
+  return user[0];
+};

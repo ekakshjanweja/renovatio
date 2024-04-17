@@ -21,12 +21,12 @@ export const SignUpSchema = z.object({
     .max(10, { message: "Maximum 10 characters required" }),
 });
 
-//TODO: Add Username to get the user by their name
-//TODO: Change Name to Project Name
-
 export const CreateProjectSchema = z.object({
-  name: z.string().min(1, {
-    message: "Name is required",
+  projectName: z.string().min(1, {
+    message: "Project Name is required",
+  }),
+  clientEmail: z.string().email({
+    message: "Client Email is required",
   }),
   location: z.string().min(1, {
     message: "Location is required",

@@ -29,7 +29,7 @@ export const CreateProjectForm = () => {
   const form = useForm<z.infer<typeof CreateProjectSchema>>({
     resolver: zodResolver(CreateProjectSchema),
     defaultValues: {
-      name: "",
+      projectName: "",
       description: "",
       location: "",
       area: "",
@@ -61,14 +61,14 @@ export const CreateProjectForm = () => {
               <div className="flex gap-x-4">
                 <FormField
                   control={form.control}
-                  name="name"
+                  name="projectName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Name</FormLabel>
+                      <FormLabel>Project Name</FormLabel>
                       <FormControl>
                         <Input
                           {...field}
-                          placeholder="Name"
+                          placeholder="Project Name"
                           type="text"
                           disabled={isPending}
                         />
@@ -77,6 +77,27 @@ export const CreateProjectForm = () => {
                     </FormItem>
                   )}
                 />
+                <FormField
+                  control={form.control}
+                  name="clientEmail"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Client Email</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          placeholder="Client Email"
+                          type="email"
+                          disabled={isPending}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="flex gap-x-4 mt-2 mb-2">
+                {" "}
                 <FormField
                   control={form.control}
                   name="location"
@@ -95,8 +116,6 @@ export const CreateProjectForm = () => {
                     </FormItem>
                   )}
                 />
-              </div>
-              <div className="flex gap-x-4 mt-2 mb-2">
                 <FormField
                   control={form.control}
                   name="area"

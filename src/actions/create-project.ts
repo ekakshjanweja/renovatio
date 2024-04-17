@@ -2,7 +2,7 @@
 
 import db from "@/db";
 import { projects } from "@/db/schema/projects";
-import { getCurrentUser } from "@/services/user-service";
+import { getCurrentUser, getUserByEmail } from "@/services/user-service";
 import { CreateProjectSchema } from "@/types/zod-schema";
 import * as z from "zod";
 
@@ -28,7 +28,8 @@ export const createProject = async (
     return { error: "Invalid Fields!" };
   }
 
-  const user = await getCurrentUser();
+  const user = await getUserByEmail(values.clientEmail);
+  const designer = await getCurrentUser();
 
   const insertProject = async (project: ProjectModel) => {
     await db.insert(projects).values({
@@ -46,15 +47,15 @@ export const createProject = async (
   };
 
   insertProject({
-    id: "1",
-    name: values.name,
+    id: `${values.projectName}-${user.name}-${designer.name}`,
+    name: values.projectName,
     thumbnailUrl: "",
     location: values.location,
     area: parseInt(values.area),
     description: values.description,
     category: values.category,
     imageModel: [],
-    designerId: user.id,
+    designerId: designer.id,
     userId: user.id,
   });
 
