@@ -1,11 +1,12 @@
 import { AutoScrollCarousel } from "@/components/auto-scroll-carousel";
 import { ImagesGridHomePage } from "@/components/images-grid-home-page";
+import { projects } from "@/lib/data";
 
 const HomePage = async () => {
   const images: string[] = [
-    "https://images.unsplash.com/photo-1682687982185-531d09ec56fc?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    "https://images.unsplash.com/photo-1682687220336-bbd659a734e7?q=80&w=1075&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    "https://images.unsplash.com/photo-1708169652663-0e71cf739405?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    projects[0].images[0],
+    projects[1].images[0],
+    projects[2].images[0],
   ];
 
   return (
