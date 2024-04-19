@@ -6,9 +6,7 @@ export async function middleware(request: NextRequest) {
   console.log("ROUTE: ", request.nextUrl.pathname);
 }
 
-// export default auth((req) => {
-//   // req.auth
-// });
+// export default auth((req) => {});
 
 export const config = {
   matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/(api|trpc)(.*)"],
