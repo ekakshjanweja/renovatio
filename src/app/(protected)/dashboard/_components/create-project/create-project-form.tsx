@@ -19,6 +19,7 @@ import { FormError } from "@/components/form/form-error";
 import { FormSuccess } from "@/components/form/form-success";
 import { Button } from "@/components/ui/button";
 import { createProject } from "@/actions/create-project";
+import { UploadDropzone } from "@/lib/uploadthing";
 
 export const CreateProjectForm = () => {
   const [isPending, startTransition] = useTransition();
@@ -97,7 +98,6 @@ export const CreateProjectForm = () => {
                 />
               </div>
               <div className="flex gap-x-4 mt-2 mb-2">
-                {" "}
                 <FormField
                   control={form.control}
                   name="location"
@@ -153,6 +153,7 @@ export const CreateProjectForm = () => {
                   )}
                 />
               </div>
+
               <FormField
                 control={form.control}
                 name="description"
@@ -171,6 +172,26 @@ export const CreateProjectForm = () => {
                   </FormItem>
                 )}
               />
+
+              {/* <div className="rounded-xl outline-dashed outline-muted h-1/2">
+                <UploadDropzone
+                  endpoint="projectThumbnailUploader"
+                  appearance={{
+                    container: { height: 200 },
+                    uploadIcon: { scale: 0.8 },
+                    button: {
+                      padding: "20px 20px",
+                      background: "#571c9e",
+                      margin: "20px 20px",
+                    },
+                  }}
+                  onClientUploadComplete={(res) => {
+                    // setThumbnailUrl(res?.[0]?.url);
+                    // router.refresh();
+                    // closeRef?.current?.click();
+                  }}
+                />
+              </div> */}
             </div>
             <FormError message={error} />
             <FormSuccess message={success} />
