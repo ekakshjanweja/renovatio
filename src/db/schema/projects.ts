@@ -1,8 +1,9 @@
 import { integer, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 import { users } from "./users";
+import { serial } from "drizzle-orm/pg-core";
 
 export const projects = pgTable("projects", {
-  id: text("id").notNull().primaryKey(),
+  id: text("id").primaryKey(),
   name: text("name").notNull(),
   thumbnailUrl: text("thumbnail_url"),
   location: text("location").notNull(),

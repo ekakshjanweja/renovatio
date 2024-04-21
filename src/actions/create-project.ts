@@ -4,10 +4,10 @@ import db from "@/db";
 import { projects } from "@/db/schema/projects";
 import { getCurrentUser, getUserByEmail } from "@/services/user-service";
 import { CreateProjectSchema } from "@/types/zod-schema";
+import { eq } from "drizzle-orm";
 import * as z from "zod";
 
 interface ProjectModel {
-  id: string;
   name: string;
   thumbnailUrl?: string;
   location: string;
@@ -28,12 +28,22 @@ export const createProject = async (
     return { error: "Invalid Fields!" };
   }
 
+  const projectId = `${values.projectName.split(" ").join("-").toLowerCase()}`;
+
+  const existingProject = (
+    await db.select().from(projects).where(eq(projects.id, projectId))
+  )[0];
+
+  if (existingProject) {
+    return { error: "A project with this name already exists! Try with another name." };
+  }
+
   const user = await getUserByEmail(values.clientEmail);
   const designer = await getCurrentUser();
 
   const insertProject = async (project: ProjectModel) => {
     await db.insert(projects).values({
-      id: project.id,
+      id: projectId,
       name: project.name,
       thumbnailUrl: project.thumbnailUrl,
       location: project.location,
@@ -47,7 +57,6 @@ export const createProject = async (
   };
 
   insertProject({
-    id: `${values.projectName}-${user.name}-${designer.name}`,
     name: values.projectName,
     thumbnailUrl: "",
     location: values.location,
