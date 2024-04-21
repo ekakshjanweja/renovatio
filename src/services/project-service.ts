@@ -6,10 +6,22 @@ import { getCurrentUser } from "./user-service";
 export const getAllProjectsForCurrentUser = async () => {
   const user = await getCurrentUser();
 
-  const allProjects = await db
+  const projectsWithUserAsClient = await db
     .select()
     .from(projects)
-    .where(eq(projects.userId, user.id) || eq(projects.designerId, user.id));
+    .where(eq(projects.userId, user.id));
+
+  const projectsWithUserAsDesigner = await db
+    .select()
+    .from(projects)
+    .where(eq(projects.designerId, user.id));
+
+  const allProjects = [
+    ...projectsWithUserAsClient,
+    ...projectsWithUserAsDesigner,
+  ];
+
+  return allProjects;
 };
 
 export const getProjectById = async (projectId: string) => {
