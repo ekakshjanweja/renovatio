@@ -1,5 +1,6 @@
 import { UploadProjectThumbnailComponent } from "./_components/upload-component";
 import { getProjectById } from "@/services/project-service";
+import Image from "next/image";
 
 interface UserProjectPageProps {
   params: {
@@ -18,7 +19,18 @@ const UserProjectPage = async ({ params }: UserProjectPageProps) => {
         <div>{project.id}</div>
         <div>{project.name}</div>
         <div>{project.category}</div>
-        <div>{project.thumbnailUrl}</div>
+        <Image
+          src={project.thumbnailUrl!}
+          alt={project.name}
+          width="0"
+          height="0"
+          sizes="100vw"
+          className="w-full h-auto rounded-xl object-cover"
+          quality={50}
+          loading="lazy"
+          placeholder="blur"
+          blurDataURL={project.thumbnailUrl!}
+        />
         <UploadProjectThumbnailComponent projectId={projectId} />
       </div>
     </>
