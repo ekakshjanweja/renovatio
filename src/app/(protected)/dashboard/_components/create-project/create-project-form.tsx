@@ -173,7 +173,7 @@ export const CreateProjectForm = () => {
                 )}
               />
 
-              {/* <div className="rounded-xl outline-dashed outline-muted h-1/2">
+              <div className="rounded-xl outline-dashed outline-muted h-1/2">
                 <UploadDropzone
                   endpoint="projectThumbnailUploader"
                   appearance={{
@@ -185,13 +185,17 @@ export const CreateProjectForm = () => {
                       margin: "20px 20px",
                     },
                   }}
+                  onBeforeUploadBegin={(file) => {
+                    // currentProjectId = "test-project";
+                    return file;
+                  }}
                   onClientUploadComplete={(res) => {
                     // setThumbnailUrl(res?.[0]?.url);
                     // router.refresh();
                     // closeRef?.current?.click();
                   }}
                 />
-              </div> */}
+              </div>
             </div>
             <FormError message={error} />
             <FormSuccess message={success} />

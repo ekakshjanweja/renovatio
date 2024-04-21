@@ -14,22 +14,13 @@ export const ourFileRouter = {
     },
   })
     .middleware(async ({ req }) => {
-      const projectId = req.nextUrl.searchParams.get("projectId");
       const user = await getCurrentUser();
 
       return {
         user: user,
-        projectId: projectId,
       };
     })
     .onUploadComplete(async ({ metadata, file }) => {
-      await db
-        .update(projects)
-        .set({
-          thumbnailUrl: file.url,
-        })
-        .where(eq(projects.designerId, metadata.user.id));
-
       return { fileUrl: file.url };
     }),
 

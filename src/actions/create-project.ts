@@ -35,7 +35,9 @@ export const createProject = async (
   )[0];
 
   if (existingProject) {
-    return { error: "A project with this name already exists! Try with another name." };
+    return {
+      error: "A project with this name already exists! Try with another name.",
+    };
   }
 
   const user = await getUserByEmail(values.clientEmail);
