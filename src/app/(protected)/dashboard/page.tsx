@@ -1,24 +1,33 @@
 import { auth } from "@/auth";
+import { Button } from "@/components/ui/button";
+import { getAllProjectsForCurrentUser } from "@/services/project-service";
+import Link from "next/link";
 import { notFound } from "next/navigation";
-import { CreateProjectForm } from "./_components/create-project/create-project-form";
-import { getCurrentUser } from "@/services/user-service";
 
-const DashboardPage = async () => {
+const Dashboard = async () => {
   const session = await auth();
 
   if (!session) {
     notFound();
   }
 
-  const user = await getCurrentUser();
+  const projects = await getAllProjectsForCurrentUser();
 
   return (
     <>
-      <div className="flex flex-col items-center justify-center gap-y-6">
-        {user.isDesigner && <CreateProjectForm />}
+      <div className="flex gap-6">
+        {projects.map((project) => (
+          <>
+            <div>
+              <Link href={`/user/${project.id}`}>
+                <Button variant={"link"}>{project.name}</Button>
+              </Link>
+            </div>
+          </>
+        ))}
       </div>
     </>
   );
 };
 
-export default DashboardPage;
+export default Dashboard;
