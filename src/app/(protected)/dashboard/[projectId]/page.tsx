@@ -19,18 +19,20 @@ const UserProjectPage = async ({ params }: UserProjectPageProps) => {
         <div>{project.id}</div>
         <div>{project.name}</div>
         <div>{project.category}</div>
-        <Image
-          src={project.thumbnailUrl!}
-          alt={project.name}
-          width="0"
-          height="0"
-          sizes="100vw"
-          className="w-full h-auto rounded-xl object-cover"
-          quality={50}
-          loading="lazy"
-          placeholder="blur"
-          blurDataURL={project.thumbnailUrl!}
-        />
+        {project.thumbnailUrl != null && (
+          <Image
+            src={project.thumbnailUrl}
+            alt={project.name}
+            width="0"
+            height="0"
+            sizes="100vw"
+            className="w-full h-auto rounded-xl object-cover"
+            quality={50}
+            loading="lazy"
+            // placeholder="blur"
+            // blurDataURL={project.thumbnailUrl!}
+          />
+        )}
         <UploadProjectThumbnailComponent projectId={projectId} />
       </div>
     </>

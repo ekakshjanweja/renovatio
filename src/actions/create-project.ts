@@ -41,7 +41,12 @@ export const createProject = async (
   }
 
   const user = await getUserByEmail(values.clientEmail);
+
+  console.log({ user });
+
   const designer = await getCurrentUser();
+
+  console.log({ designer });
 
   const insertProject = async (project: ProjectModel) => {
     await db.insert(projects).values({
