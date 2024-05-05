@@ -1,8 +1,16 @@
+import { auth } from "@/auth";
 import { AutoScrollCarousel } from "@/components/auto-scroll-carousel";
 import { ImagesGridHomePage } from "@/components/images-grid-home-page";
 import { projects } from "@/lib/data";
+import { redirect } from "next/navigation";
 
 const HomePage = async () => {
+  const session = await auth();
+
+  if (session) {
+    redirect("/dashboard");
+  }
+
   const images: string[] = [
     projects[0].images[0],
     projects[1].images[0],
