@@ -14,7 +14,6 @@ import { getCurrentUser } from "@/services/user-service";
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { Switch } from "@/components/ui/switch";
 
 const SettingsPage = async () => {
   const user = await getCurrentUser();

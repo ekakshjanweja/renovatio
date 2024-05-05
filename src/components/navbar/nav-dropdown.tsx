@@ -1,9 +1,6 @@
-"use client";
-
 import { Menu } from "lucide-react";
 import { Button } from "../ui/button";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
 import {
   Sheet,
   SheetContent,
@@ -12,9 +9,25 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "../ui/sheet";
+import { ProfileSection } from "./profile-section";
+import { auth } from "@/auth";
 
-export const NavbarDropdownMenu = () => {
-  const session = useSession();
+interface NavbarDropdownMenuProps {
+  user: {
+    id: string;
+    name: string | null;
+    email: string;
+    emailVerified: Date | null;
+    image: string;
+    phone: string | null;
+    isDesigner: boolean | null;
+    createdAt: Date | null;
+    updatedAt: Date | null;
+  };
+}
+
+export const NavbarDropdownMenu = async ({ user }: NavbarDropdownMenuProps) => {
+  const session = await auth();
 
   return (
     <>
@@ -32,32 +45,31 @@ export const NavbarDropdownMenu = () => {
             <SheetDescription className="text-start">
               We make the process of renovation super simple.
             </SheetDescription>
-            <div className="text-start">
+            <div className="flex flex-col text-xl text-start pt-4 gap-4">
               <Link
                 href={
                   "https://www.instagram.com/naresh_vijh?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
                 }
               >
-                <Button variant="link">instagram</Button>
+                instagram
               </Link>
 
-              <Link href={"/about-us"}>
-                <Button variant="link">about us</Button>
-              </Link>
+              <Link href={"/about-us"}>about us</Link>
 
-              {session.status === "unauthenticated" ? (
+              {session === null ? (
                 <>
-                  <Link href={"/sign-in"}>
-                    <Button variant="link">sign in</Button>
-                  </Link>
+                  <Link href={"/sign-in"}>sign in</Link>
                 </>
               ) : (
                 <>
-                  <Link href={"/dashboard"}>
-                    <Button variant="link">dashboard</Button>
-                  </Link>
+                  <Link href={"/dashboard"}>dashboard</Link>
                 </>
               )}
+              <div className="absolute bottom-10 right-10">
+                {session === null ? null : (
+                  <ProfileSection image={user.image} username={user.name} />
+                )}
+              </div>
             </div>
           </SheetHeader>
         </SheetContent>

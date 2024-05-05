@@ -1,13 +1,16 @@
-"use client";
-
 import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { NavbarDropdownMenu } from "./nav-dropdown";
-import { useSession } from "next-auth/react";
+import { auth } from "@/auth";
+import { getCurrentUser } from "@/services/user-service";
+import { ProfileSection } from "./profile-section";
+import { Plus } from "lucide-react";
 
-export const Navbar = () => {
-  const session = useSession();
+export const Navbar = async () => {
+  const session = await auth();
+
+  const user = await getCurrentUser();
 
   return (
     <>
@@ -17,14 +20,22 @@ export const Navbar = () => {
           <div className="hidden md:flex">instagram</div>
           <div className="hidden md:flex">about us</div>
 
-          <Link href={"/get-quote"} className="">
-            <Button variant="link" size="sm" className="border-2 uppercase">
-              Get Quote
-            </Button>
-          </Link>
+          {user.isDesigner ? (
+            <Link href={"/create-project"} className="">
+              <Button variant="link" size="sm" className="border-2 uppercase">
+                <Plus className="w-4 h-4 mr-2" /> Create Project
+              </Button>
+            </Link>
+          ) : (
+            <Link href={"/get-quote"} className="">
+              <Button variant="link" size="sm" className="border-2 uppercase">
+                Get Quote
+              </Button>
+            </Link>
+          )}
 
           <div className="hidden md:flex">
-            {session.status === "unauthenticated" ? (
+            {session === null ? (
               <>
                 <Button variant="link" size="sm" className="border-2 uppercase">
                   Sign In
@@ -38,8 +49,13 @@ export const Navbar = () => {
               </>
             )}
           </div>
+          <div className="hidden md:flex">
+            {session === null ? null : (
+              <ProfileSection image={user.image} username={user.name} />
+            )}
+          </div>
           <div className="flex md:hidden">
-            <NavbarDropdownMenu />
+            <NavbarDropdownMenu user={user} />
           </div>
           <ModeToggle />
         </div>
@@ -47,22 +63,3 @@ export const Navbar = () => {
     </>
   );
 };
-
-// <nav className="bg-black text-white py-4 px-8 flex justify-between items-center">
-//         <div className="flex items-center">
-//           <div className="text-lg font-bold mr-4">Renovatio</div>
-//         </div>
-//         <div className="flex items-center">
-//           <div className="hidden md:flex mr-4">Instagram</div>
-//           <div className="hidden md:flex mr-4">About Us</div>
-//           <button className="bg-gray-800 text-white px-4 py-2 rounded-md mr-4">
-//             Get Quote
-//           </button>
-//           <button className="bg-gray-800 text-white px-4 py-2 rounded-md mr-4">
-//             Login
-//           </button>
-//           <button className="bg-gray-800 text-white px-4 py-2 rounded-md mr-4">
-//             Signup
-//           </button>
-//         </div>
-//       </nav>
