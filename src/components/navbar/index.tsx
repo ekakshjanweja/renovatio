@@ -5,9 +5,14 @@ import { NavbarDropdownMenu } from "./nav-dropdown";
 import { auth } from "@/auth";
 import { getCurrentUser } from "@/services/user-service";
 import { ProfileSection } from "./profile-section";
+import { headers } from "next/headers";
 import { Plus } from "lucide-react";
 
 export const Navbar = async () => {
+  const headerList = headers();
+
+  const pathname = headerList.get("x-pathname");
+
   const session = await auth();
 
   const user = await getCurrentUser();
@@ -20,38 +25,64 @@ export const Navbar = async () => {
           <div className="hidden md:flex">instagram</div>
           <div className="hidden md:flex">about us</div>
 
-          {session === null ? (
-            <Link href={"/get-quote"} className="">
-              <Button variant="link" size="sm" className="border-2 uppercase">
-                Get Quote
-              </Button>
-            </Link>
-          ) : user.isDesigner ? (
-            <Link href={"/create-project"} className="">
-              <Button variant="link" size="sm" className="border-2 uppercase">
-                <Plus className="w-4 h-4 mr-2" /> Create Project
-              </Button>
-            </Link>
-          ) : (
-            <Link href={"/get-quote"} className="">
-              <Button variant="link" size="sm" className="border-2 uppercase">
-                Get Quote
-              </Button>
-            </Link>
-          )}
+          <div className="hidden md:flex">
+            {session === null ? (
+              <Link href={"/get-quote"} className="">
+                <Button variant="link" size="sm" className="border-2 uppercase">
+                  Get Quote
+                </Button>
+              </Link>
+            ) : user.isDesigner ? (
+              <Link href={"/create-project"} className="">
+                <Button variant="link" size="sm" className="border-2 uppercase">
+                  Create Project
+                </Button>
+              </Link>
+            ) : (
+              <Link href={"/get-quote"} className="">
+                <Button variant="link" size="sm" className="border-2 uppercase">
+                  Get Quote
+                </Button>
+              </Link>
+            )}
+          </div>
 
           <div className="hidden md:flex">
             {session === null ? (
               <>
-                <Button variant="link" size="sm" className="border-2 uppercase">
-                  Sign In
-                </Button>
+                <Link href={"/sign-in"}>
+                  <Button
+                    variant="link"
+                    size="sm"
+                    className="border-2 uppercase"
+                  >
+                    Sign In
+                  </Button>
+                </Link>
+              </>
+            ) : pathname !== "/dashboard" ? (
+              <>
+                <Link href={"dashboard"}>
+                  <Button
+                    variant="link"
+                    size="sm"
+                    className="border-2 uppercase"
+                  >
+                    Dashboard
+                  </Button>
+                </Link>
               </>
             ) : (
               <>
-                <Button variant="link" size="sm" className="border-2 uppercase">
-                  Dashboard
-                </Button>
+                <Link href={"/home"}>
+                  <Button
+                    variant="link"
+                    size="sm"
+                    className="border-2 uppercase"
+                  >
+                    Home
+                  </Button>
+                </Link>
               </>
             )}
           </div>

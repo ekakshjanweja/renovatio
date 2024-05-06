@@ -11,7 +11,7 @@ export const ProfileSection = ({ image, username }: ProfileSectionProps) => {
   return (
     <>
       <Link href={"/settings"}>
-        <Avatar>
+        <Avatar className="h-10 w-10 md:h-7 md:w-7">
           <AvatarImage src={image!} />
           <AvatarFallback>
             {username !== null ? username[0] : "A"}

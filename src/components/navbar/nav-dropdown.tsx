@@ -1,5 +1,4 @@
 import { Menu } from "lucide-react";
-import { Button } from "../ui/button";
 import Link from "next/link";
 import {
   Sheet,
@@ -11,6 +10,8 @@ import {
 } from "../ui/sheet";
 import { ProfileSection } from "./profile-section";
 import { auth } from "@/auth";
+import { headers } from "next/headers";
+import { Button } from "../ui/button";
 
 interface NavbarDropdownMenuProps {
   user: {
@@ -27,6 +28,10 @@ interface NavbarDropdownMenuProps {
 }
 
 export const NavbarDropdownMenu = async ({ user }: NavbarDropdownMenuProps) => {
+  const headerList = headers();
+
+  const pathname = headerList.get("x-pathname");
+
   const session = await auth();
 
   return (
@@ -36,14 +41,20 @@ export const NavbarDropdownMenu = async ({ user }: NavbarDropdownMenuProps) => {
           <Menu className="h-5 w-5" />
         </SheetTrigger>
         <SheetContent className="flex flex-col items-start">
-          <SheetHeader>
+          <SheetHeader className="flex ">
+            {session === null ? null : (
+              <ProfileSection image={user.image} username={user.name} />
+            )}
             <SheetTitle className="text-start">
-              Welcome to renovatio.
+              {session === null
+                ? "Welcome to renovatio."
+                : `Welcome to renovatio, ${user.name}`}
             </SheetTitle>
             <SheetDescription className="text-start">
               We make the process of renovation super simple.
             </SheetDescription>
           </SheetHeader>
+
           <div className="flex flex-col text-xl text-start pt-4 gap-4">
             <Link
               href={
@@ -56,19 +67,63 @@ export const NavbarDropdownMenu = async ({ user }: NavbarDropdownMenuProps) => {
             <Link href={"/about-us"}>about us</Link>
 
             {session === null ? (
+              <Link href={"/get-quote"} className="">
+                <Button variant="link" size="sm" className="border-2 uppercase">
+                  Get Quote
+                </Button>
+              </Link>
+            ) : user.isDesigner ? (
+              <Link href={"/create-project"} className="">
+                <Button variant="link" size="lg" className="border-2 uppercase">
+                  {/* <Plus className="w-4 h-4 mr-2" />  */}
+                  Create Project
+                </Button>
+              </Link>
+            ) : (
+              <Link href={"/get-quote"} className="">
+                <Button variant="link" size="lg" className="border-2 uppercase">
+                  Get Quote
+                </Button>
+              </Link>
+            )}
+
+            {session === null ? (
               <>
-                <Link href={"/sign-in"}>sign in</Link>
+                <Link href={"/sign-in"}>
+                  <Button
+                    variant="link"
+                    size="lg"
+                    className="border-2 uppercase"
+                  >
+                    Sign In
+                  </Button>
+                </Link>
+              </>
+            ) : pathname !== "/dashboard" ? (
+              <>
+                <Link href={"dashboard"}>
+                  <Button
+                    variant="link"
+                    size="lg"
+                    className="border-2 uppercase"
+                  >
+                    Dashboard
+                  </Button>
+                </Link>
               </>
             ) : (
               <>
-                <Link href={"/dashboard"}>dashboard</Link>
+                <Link href={"/home"}>
+                  <Button
+                    variant="link"
+                    size="lg"
+                    className="border-2 uppercase"
+                  >
+                    Home
+                  </Button>
+                </Link>
               </>
             )}
-            <div className="absolute bottom-10 right-10">
-              {session === null ? null : (
-                <ProfileSection image={user.image} username={user.name} />
-              )}
-            </div>
           </div>
         </SheetContent>
       </Sheet>

@@ -69,7 +69,7 @@ export const AuthCardWrapper = ({
             ) : (
               <Button
                 variant="outline"
-                onClick={() => signIn("google", { callbackUrl: "/settings" })}
+                onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
                 className="gap-x-4"
               >
                 <GoogleLogo />
