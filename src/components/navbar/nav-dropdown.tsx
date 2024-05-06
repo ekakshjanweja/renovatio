@@ -32,10 +32,8 @@ export const NavbarDropdownMenu = async ({ user }: NavbarDropdownMenuProps) => {
   return (
     <>
       <Sheet>
-        <SheetTrigger>
-          <Button variant="outline" size="icon">
-            <Menu className="h-5 w-5" />
-          </Button>
+        <SheetTrigger className="border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground h-9 w-9 rounded-md flex justify-center items-center">
+          <Menu className="h-5 w-5" />
         </SheetTrigger>
         <SheetContent className="flex flex-col items-start">
           <SheetHeader>
@@ -45,33 +43,33 @@ export const NavbarDropdownMenu = async ({ user }: NavbarDropdownMenuProps) => {
             <SheetDescription className="text-start">
               We make the process of renovation super simple.
             </SheetDescription>
-            <div className="flex flex-col text-xl text-start pt-4 gap-4">
-              <Link
-                href={
-                  "https://www.instagram.com/naresh_vijh?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
-                }
-              >
-                instagram
-              </Link>
-
-              <Link href={"/about-us"}>about us</Link>
-
-              {session === null ? (
-                <>
-                  <Link href={"/sign-in"}>sign in</Link>
-                </>
-              ) : (
-                <>
-                  <Link href={"/dashboard"}>dashboard</Link>
-                </>
-              )}
-              <div className="absolute bottom-10 right-10">
-                {session === null ? null : (
-                  <ProfileSection image={user.image} username={user.name} />
-                )}
-              </div>
-            </div>
           </SheetHeader>
+          <div className="flex flex-col text-xl text-start pt-4 gap-4">
+            <Link
+              href={
+                "https://www.instagram.com/naresh_vijh?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+              }
+            >
+              instagram
+            </Link>
+
+            <Link href={"/about-us"}>about us</Link>
+
+            {session === null ? (
+              <>
+                <Link href={"/sign-in"}>sign in</Link>
+              </>
+            ) : (
+              <>
+                <Link href={"/dashboard"}>dashboard</Link>
+              </>
+            )}
+            <div className="absolute bottom-10 right-10">
+              {session === null ? null : (
+                <ProfileSection image={user.image} username={user.name} />
+              )}
+            </div>
+          </div>
         </SheetContent>
       </Sheet>
     </>

@@ -20,7 +20,13 @@ export const Navbar = async () => {
           <div className="hidden md:flex">instagram</div>
           <div className="hidden md:flex">about us</div>
 
-          {user.isDesigner ? (
+          {session === null ? (
+            <Link href={"/get-quote"} className="">
+              <Button variant="link" size="sm" className="border-2 uppercase">
+                Get Quote
+              </Button>
+            </Link>
+          ) : user.isDesigner ? (
             <Link href={"/create-project"} className="">
               <Button variant="link" size="sm" className="border-2 uppercase">
                 <Plus className="w-4 h-4 mr-2" /> Create Project

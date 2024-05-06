@@ -23,7 +23,7 @@ const Dashboard = async () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 justify-items-center">
           {projects.map((project) => (
             <>
-              <div className="">
+              <div key={project.id}>
                 <Link href={`/dashboard/${project.id}`}>
                   <div className="m-4 bg-neutral-950 hover:bg-stone-900 w-[200px] h-[300px] rounded-md ">
                     <Image

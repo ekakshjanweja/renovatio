@@ -31,6 +31,7 @@ export const CreateProjectForm = () => {
     resolver: zodResolver(CreateProjectSchema),
     defaultValues: {
       projectName: "",
+      clientEmail: "",
       description: "",
       location: "",
       area: "",
