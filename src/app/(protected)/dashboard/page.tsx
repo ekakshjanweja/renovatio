@@ -18,7 +18,6 @@ const Dashboard = async () => {
   return (
     <>
       <div className="p-6">
-        <CreateProjectForm />
         <h1 className="text-xl">Your Projects</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 justify-items-center">
           {projects.map((project) => (

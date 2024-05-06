@@ -1,6 +1,7 @@
 import { UploadProjectThumbnailComponent } from "./_components/upload-component";
 import { getProjectById } from "@/services/project-service";
 import Image from "next/image";
+import { DeleteComponent } from "./_components/delete-component";
 
 interface UserProjectPageProps {
   params: {
@@ -16,6 +17,7 @@ const UserProjectPage = async ({ params }: UserProjectPageProps) => {
   return (
     <>
       <div className="p-6">
+        <DeleteComponent projectId={project.id} />
         <div>{project.id}</div>
         <div>{project.name}</div>
         <div>{project.category}</div>

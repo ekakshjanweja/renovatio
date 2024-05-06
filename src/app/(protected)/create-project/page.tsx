@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import { getCurrentUser } from "@/services/user-service";
 import { notFound } from "next/navigation";
+import { CreateProjectForm } from "../dashboard/_components/create-project/create-project-form";
 
 const CreateProject = async () => {
   const session = await auth();
@@ -13,7 +14,9 @@ const CreateProject = async () => {
 
   return (
     <>
-      <div>Create Project</div>
+      <div className="flex items-center justify-center pt-16">
+        <CreateProjectForm />
+      </div>
     </>
   );
 };

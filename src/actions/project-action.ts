@@ -5,6 +5,8 @@ import { projects } from "@/db/schema/projects";
 import { getCurrentUser, getUserByEmail } from "@/services/user-service";
 import { CreateProjectSchema } from "@/types/zod-schema";
 import { eq } from "drizzle-orm";
+import { NextResponse } from "next/server";
+import { UTApi } from "uploadthing/server";
 import * as z from "zod";
 
 interface ProjectModel {
@@ -76,4 +78,28 @@ export const createProject = async (
   });
 
   return { success: "Project added!" };
+};
+
+export const deleteProject = async (projectId: string) => {
+  const project = (
+    await db.select().from(projects).where(eq(projects.id, projectId))
+  )[0];
+
+  const utapi = new UTApi();
+
+  if (project === null) {
+    return { error: "Project not found!" };
+  }
+
+  if (project.thumbnailUrl !== null) {
+    const newUrl = project.thumbnailUrl.substring(
+      project.thumbnailUrl.lastIndexOf("/") + 1
+    );
+
+    await utapi.deleteFiles(newUrl);
+  }
+
+  await db.delete(projects).where(eq(projects.id, projectId));
+
+  return { success: "Project deleted!" };
 };

@@ -18,8 +18,9 @@ import { Input } from "@/components/ui/input";
 import { FormError } from "@/components/form/form-error";
 import { FormSuccess } from "@/components/form/form-success";
 import { Button } from "@/components/ui/button";
-import { createProject } from "@/actions/create-project";
+
 import { UploadDropzone } from "@/lib/uploadthing";
+import { createProject } from "@/actions/project-action";
 
 export const CreateProjectForm = () => {
   const [isPending, startTransition] = useTransition();
