@@ -21,6 +21,36 @@ interface ProjectModel {
   userId: string;
 }
 
+export const getAllProjectsForCurrentUser = async () => {
+  const user = await getCurrentUser();
+
+  const projectsWithUserAsClient = await db
+    .select()
+    .from(projects)
+    .where(eq(projects.userId, user.id));
+
+  const projectsWithUserAsDesigner = await db
+    .select()
+    .from(projects)
+    .where(eq(projects.designerId, user.id));
+
+  const allProjects = [
+    ...projectsWithUserAsClient,
+    ...projectsWithUserAsDesigner,
+  ];
+
+  return allProjects;
+};
+
+export const getProjectById = async (projectId: string) => {
+  const project = await db
+    .select()
+    .from(projects)
+    .where(eq(projects.id, projectId));
+
+  return project[0];
+};
+
 export const createProject = async (
   values: z.infer<typeof CreateProjectSchema>
 ) => {
