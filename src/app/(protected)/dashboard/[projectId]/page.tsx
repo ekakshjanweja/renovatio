@@ -35,6 +35,7 @@ const UserProjectPage = async ({ params }: UserProjectPageProps) => {
             // blurDataURL={project.thumbnailUrl!}
           />
         )}
+        <div>Update Thumbnail</div>
         <UploadProjectThumbnailComponent projectId={projectId} />
       </div>
     </>

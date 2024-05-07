@@ -175,7 +175,7 @@ export const CreateProjectForm = () => {
                 )}
               />
 
-              <div className="rounded-xl outline-dashed outline-muted h-1/2">
+              {/* <div className="rounded-xl outline-dashed outline-muted h-1/2">
                 <UploadDropzone
                   endpoint="projectThumbnailUploader"
                   appearance={{
@@ -197,7 +197,7 @@ export const CreateProjectForm = () => {
                     // closeRef?.current?.click();
                   }}
                 />
-              </div>
+              </div> */}
             </div>
             <FormError message={error} />
             <FormSuccess message={success} />
