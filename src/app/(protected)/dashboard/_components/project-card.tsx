@@ -55,8 +55,8 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
             {project.description.substring(0, 40) + "....."}
           </div>
           <Button variant={"outline"} size={"sm"} className="mt-4 border-2">
-            Status -
-            <p className="text-lime-700 dark:text-lime-400"> Planning</p>
+            Status - 
+            <p className="text-lime-400 dark:text-lime-400"> Planning</p>
           </Button>
         </div>
       </Link>
