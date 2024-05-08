@@ -1,6 +1,7 @@
 import { integer, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 import { users } from "./users";
-import { serial } from "drizzle-orm/pg-core";
+
+//TODO: Add Status Property to Project Model
 
 export const projects = pgTable("projects", {
   id: text("id").primaryKey(),

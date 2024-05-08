@@ -1,10 +1,7 @@
 import { auth } from "@/auth";
-import { Button } from "@/components/ui/button";
 import { getAllProjectsForCurrentUser } from "@/services/project-service";
-import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import { CreateProjectForm } from "./_components/create-project/create-project-form";
+import { ProjectCard } from "./_components/project-card";
 
 const Dashboard = async () => {
   const session = await auth();
@@ -18,24 +15,12 @@ const Dashboard = async () => {
   return (
     <>
       <div className="p-6">
-        <h1 className="text-xl">Your Projects</h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 justify-items-center">
+        <h1 className="text-3xl pb-4">Your Projects</h1>
+        {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 justify-items-center"> */}
+        <div className="grid md:auto-rows-[18rem] grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 max-w-full mx-auto ">
           {projects.map((project) => (
             <>
-              <div key={project.id}>
-                <Link href={`/dashboard/${project.id}`}>
-                  <div className="m-4 bg-neutral-950 hover:bg-stone-900 w-[200px] h-[300px] rounded-md ">
-                    <Image
-                      className="rounded-t-md"
-                      src={project.thumbnailUrl!}
-                      alt="Thumbnail"
-                      width={200}
-                      height={200}
-                    />
-                    <Button variant={"link"}>{project.name}</Button>
-                  </div>
-                </Link>
-              </div>
+              <ProjectCard project={project} key={project.id} />
             </>
           ))}
         </div>
