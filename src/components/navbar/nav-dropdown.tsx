@@ -60,11 +60,17 @@ export const NavbarDropdownMenu = async ({ user }: NavbarDropdownMenuProps) => {
               href={
                 "https://www.instagram.com/naresh_vijh?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
               }
+              className="hover:underline hover:underline-offset-1"
             >
               instagram
             </Link>
 
-            <Link href={"/about-us"}>about us</Link>
+            <Link
+              href={"/about-us"}
+              className="hover:underline hover:underline-offset-1"
+            >
+              about us
+            </Link>
 
             {session === null ? (
               <Link href={"/get-quote"} className="">

@@ -22,8 +22,24 @@ export const Navbar = async () => {
       <nav className="p-2 rounded-md flex justify-between items-center">
         <h1 className="text-lg font-semibold mr-4">renovatio</h1>
         <div className="flex items-center gap-x-4">
-          <div className="hidden md:flex">instagram</div>
-          <div className="hidden md:flex">about us</div>
+          <div className="hidden md:flex">
+            <Link
+              href={
+                "https://www.instagram.com/naresh_vijh?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+              }
+              className="hover:underline hover:underline-offset-1"
+            >
+              instagram
+            </Link>
+          </div>
+          <div className="hidden md:flex">
+            <Link
+              href={"/about-us"}
+              className="hover:underline hover:underline-offset-1"
+            >
+              about us
+            </Link>
+          </div>
 
           <div className="hidden md:flex">
             {session === null ? (
