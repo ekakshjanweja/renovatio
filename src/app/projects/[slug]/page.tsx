@@ -1,10 +1,10 @@
 "use client";
 
-import { AutoScrollCarousel } from "@/components/auto-scroll-carousel";
 import { Loading } from "@/components/loading";
 import { projects } from "@/lib/data";
 import { notFound } from "next/navigation";
 import { useState } from "react";
+import { AutoScrollCarousel } from "../_components/auto-scroll-carousel";
 
 const ProjectPage = ({ params }: { params: { slug: string } }) => {
   const slug = params.slug;
