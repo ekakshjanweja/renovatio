@@ -56,7 +56,7 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
           </div>
           <Button variant={"outline"} size={"sm"} className="mt-4 border-2">
             Status - 
-            <p className="text-lime-400 dark:text-lime-400"> Planning</p>
+            <p className="text-lime-400 dark:text-lime-400 ml-1"> Planning</p>
           </Button>
         </div>
       </Link>

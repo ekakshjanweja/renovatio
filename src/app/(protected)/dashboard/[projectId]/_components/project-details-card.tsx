@@ -16,10 +16,10 @@ export const ProjectDetailsCardWrapper = ({
       <div
         className={cn(
           "rounded-xl border border-muted-foreground",
-          className,
           isSmall
             ? "h-[350px] lg:h-[130px] xl:h-[150px]"
-            : "h-[350px] lg:h-[450px] xl:h-[500px]"
+            : "h-[350px] lg:h-[450px] xl:h-[500px]",
+          className
         )}
       >
         {children}

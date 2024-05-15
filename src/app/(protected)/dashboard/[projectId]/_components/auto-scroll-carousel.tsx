@@ -34,7 +34,9 @@ export function AutoScrollCarousel({ images }: AutoScrollCarouselProps) {
           <CarouselItem key={index}>
             <Card>
               <CardContent
-                className={cn("flex aspect-auto p-0 h-[350px] lg:h-[450px] xl:h-[500px]")}
+                className={cn(
+                  "flex aspect-auto p-0 h-[300px] lg:h-[350px] xl:h-[400px]"
+                )}
               >
                 <Image
                   src={image}
