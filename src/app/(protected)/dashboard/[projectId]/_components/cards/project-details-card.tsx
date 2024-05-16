@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -6,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Landmark } from "lucide-react";
+import { BarChart2, Landmark } from "lucide-react";
 
 interface Props {
   project: {
@@ -58,7 +59,15 @@ export const ProjectDetailsCard = ({ project }: Props) => {
             </div>
           </div>
         </CardContent>
-        <CardFooter className="text-sm">status - pending</CardFooter>
+        <CardFooter className="text-sm">
+          <Button
+            variant={"outline"}
+            className="flex text-muted-foreground items-center justify-center border border-muted-foreground p-2 rounded-full text-sm overflow-hidden"
+          >
+            <BarChart2 className="h-4 w-4 mr-2" />
+            <p className="text-lime-500">Planing</p>
+          </Button>
+        </CardFooter>
       </Card>
     </>
   );
