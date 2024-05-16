@@ -5,7 +5,6 @@ import { projects } from "@/db/schema/projects";
 import { getCurrentUser, getUserByEmail } from "@/services/user-service";
 import { CreateProjectSchema } from "@/types/zod-schema";
 import { eq } from "drizzle-orm";
-import { NextResponse } from "next/server";
 import { UTApi } from "uploadthing/server";
 import * as z from "zod";
 

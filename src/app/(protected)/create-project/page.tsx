@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import { getCurrentUser } from "@/services/user-service";
 import { notFound } from "next/navigation";
-import { CreateProjectForm } from "../dashboard/_components/create-project/create-project-form";
+import { CreateProjectForm } from "./_components/create-project/create-project-form";
 
 const CreateProject = async () => {
   const session = await auth();

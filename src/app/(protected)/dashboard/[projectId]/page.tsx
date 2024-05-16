@@ -1,5 +1,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { DetailsTab } from "./_components/tabs/summary-tab";
+import { DetailsTab } from "./_components/tabs/details-tab";
+import { BillsTab } from "./_components/tabs/bills-tab";
+import { SettingsTab } from "./_components/tabs/settings-tab";
 
 interface UserProjectPageProps {
   params: {
@@ -22,8 +24,12 @@ const UserProjectPage = async ({ params }: UserProjectPageProps) => {
           <TabsContent value="details">
             <DetailsTab projectId={projectId} />
           </TabsContent>
-          <TabsContent value="bills">Bills</TabsContent>
-          <TabsContent value="settings">Settings</TabsContent>
+          <TabsContent value="bills">
+            <BillsTab />
+          </TabsContent>
+          <TabsContent value="settings">
+            <SettingsTab projectId={projectId} />
+          </TabsContent>
         </Tabs>
       </div>
     </>
