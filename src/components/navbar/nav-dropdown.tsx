@@ -12,6 +12,7 @@ import { ProfileSection } from "./profile-section";
 import { auth } from "@/auth";
 import { headers } from "next/headers";
 import { Button } from "../ui/button";
+import { revalidatePath } from "next/cache";
 
 interface NavbarDropdownMenuProps {
   user: {
@@ -57,6 +58,7 @@ export const NavbarDropdownMenu = async ({ user }: NavbarDropdownMenuProps) => {
 
           <div className="flex flex-col text-xl text-start pt-4 gap-4">
             <Link
+              target="_blank"
               href={
                 "https://www.instagram.com/naresh_vijh?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
               }
@@ -105,29 +107,28 @@ export const NavbarDropdownMenu = async ({ user }: NavbarDropdownMenuProps) => {
                   </Button>
                 </Link>
               </>
-            ) : pathname !== "/dashboard" ? (
-              <>
-                <Link href={"dashboard"}>
-                  <Button
-                    variant="link"
-                    size="lg"
-                    className="border-2 uppercase"
-                  >
-                    Dashboard
-                  </Button>
-                </Link>
-              </>
             ) : (
               <>
-                <Link href={"/home"}>
-                  <Button
-                    variant="link"
-                    size="lg"
-                    className="border-2 uppercase"
-                  >
-                    Home
-                  </Button>
-                </Link>
+                <div className="flex flex-col gap-4">
+                  <Link href={"/dashboard"}>
+                    <Button
+                      variant="link"
+                      size="lg"
+                      className="border-2 uppercase"
+                    >
+                      Dashboard
+                    </Button>
+                  </Link>
+                  <Link href={"/home"}>
+                    <Button
+                      variant="link"
+                      size="lg"
+                      className="border-2 uppercase"
+                    >
+                      Home
+                    </Button>
+                  </Link>
+                </div>
               </>
             )}
           </div>

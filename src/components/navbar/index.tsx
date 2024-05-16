@@ -24,6 +24,7 @@ export const Navbar = async () => {
         <div className="flex items-center gap-x-4">
           <div className="hidden md:flex">
             <Link
+              target="_blank"
               href={
                 "https://www.instagram.com/naresh_vijh?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
               }
@@ -76,29 +77,28 @@ export const Navbar = async () => {
                   </Button>
                 </Link>
               </>
-            ) : pathname !== "/dashboard" ? (
-              <>
-                <Link href={"dashboard"}>
-                  <Button
-                    variant="link"
-                    size="sm"
-                    className="border-2 uppercase"
-                  >
-                    Dashboard
-                  </Button>
-                </Link>
-              </>
             ) : (
               <>
-                <Link href={"/home"}>
-                  <Button
-                    variant="link"
-                    size="sm"
-                    className="border-2 uppercase"
-                  >
-                    Home
-                  </Button>
-                </Link>
+                <div className="flex gap-x-4">
+                  <Link href={"/dashboard"}>
+                    <Button
+                      variant="link"
+                      size="sm"
+                      className="border-2 uppercase"
+                    >
+                      Dashboard
+                    </Button>
+                  </Link>
+                  <Link href={"/home"}>
+                    <Button
+                      variant="link"
+                      size="sm"
+                      className="border-2 uppercase"
+                    >
+                      Home
+                    </Button>
+                  </Link>
+                </div>
               </>
             )}
           </div>
