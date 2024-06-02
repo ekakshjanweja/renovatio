@@ -1,3 +1,5 @@
+"use server";
+
 import db from "@/db";
 import { rooms } from "@/db/schema/rooms";
 import { Room } from "@/types/interfaces";
