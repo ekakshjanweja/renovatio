@@ -15,14 +15,12 @@ interface ProjectCardProps {
     area: number;
     description: string;
     category: string;
-    imageModel: string[];
     designerId: string | null;
   };
 }
 
 export const ProjectCard = ({ project }: ProjectCardProps) => {
-
-    //TODO: Add Status Property to Project Model
+  //TODO: Add Status Property to Project Model
 
   return (
     <>
@@ -55,7 +53,7 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
             {project.description.substring(0, 40) + "....."}
           </div>
           <Button variant={"outline"} size={"sm"} className="mt-4 border-2">
-            Status - 
+            Status -
             <p className="text-lime-400 dark:text-lime-400 ml-1"> Planning</p>
           </Button>
         </div>
