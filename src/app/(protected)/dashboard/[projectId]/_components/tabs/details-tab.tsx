@@ -22,7 +22,7 @@ export const DetailsTab = async ({ projectId }: DetailsTabProps) => {
       <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 max-w-full gap-y-8 gap-x-4 md:gap-x-16 mx-auto justify-center">
         <AutoScrollCarousel images={projectImages} />
         <ProjectDetailsCard project={project} />
-        <ThreeDDetailsCard />
+        <ThreeDDetailsCard projectId={projectId} />
         <PlanDetailsCard />
         <DesignerDetailsCard designerId={project.designerId} />
       </div>
