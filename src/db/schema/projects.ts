@@ -11,7 +11,6 @@ export const projects = pgTable("projects", {
   area: integer("area").notNull(),
   description: text("description").notNull(),
   category: text("category").notNull(),
-  imageModel: text("image_model").array().notNull(),
 
   designerId: text("designer_id").references(() => users.id, {
     onDelete: "cascade",

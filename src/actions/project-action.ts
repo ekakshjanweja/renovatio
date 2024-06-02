@@ -88,7 +88,6 @@ export const createProject = async (
       area: project.area,
       description: project.description,
       category: project.category,
-      imageModel: project.imageModel,
       designerId: project.designerId,
       userId: project.userId,
     });
