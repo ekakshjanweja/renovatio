@@ -22,7 +22,6 @@ interface Props {
     area: number;
     description: string;
     category: string;
-    imageModel: string[];
   };
 }
 

@@ -16,7 +16,7 @@ export const ThreeDDetailsCard = () => {
           <CardDescription>View 3d Renders for the project</CardDescription>
         </CardHeader>
         <CardContent></CardContent>
-        <CardFooter>Explore</CardFooter>
+        <CardFooter>Create Room</CardFooter>
       </Card>
     </>
   );
