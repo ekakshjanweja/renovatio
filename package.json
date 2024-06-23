@@ -13,6 +13,7 @@
   "dependencies": {
     "@auth/drizzle-adapter": "^0.9.0",
     "@hookform/resolvers": "^3.3.4",
+    "@neondatabase/serverless": "^0.9.3",
     "@radix-ui/react-avatar": "^1.0.4",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-dropdown-menu": "^2.0.6",
@@ -29,7 +30,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "dotenv": "^16.4.5",
-    "drizzle-orm": "^0.30.7",
+    "drizzle-orm": "^0.30.10",
     "embla-carousel-autoplay": "^8.0.0",
     "embla-carousel-react": "^8.0.0",
     "framer-motion": "^11.0.6",
