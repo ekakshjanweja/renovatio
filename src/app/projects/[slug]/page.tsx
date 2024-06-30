@@ -8,7 +8,6 @@ import { AutoScrollCarousel } from "../_components/auto-scroll-carousel";
 
 const ProjectPage = ({ params }: { params: { slug: string } }) => {
   const slug = params.slug;
-  console.log(slug);
 
   const project = projects.find((project) => project.id === slug);
 

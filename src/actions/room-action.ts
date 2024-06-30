@@ -29,7 +29,8 @@ export const getRoomById = async (roomId: string) => {
   const fetchedRooms = await db
     .select()
     .from(rooms)
-    .where(eq(rooms.projectId, roomId));
+    .where(eq(rooms.id, roomId));
+
   return fetchedRooms[0];
 };
 
