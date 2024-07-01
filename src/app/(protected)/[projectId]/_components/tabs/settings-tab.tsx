@@ -1,4 +1,4 @@
-import { CreateProjectForm } from "../update-project/update-project-form";
+import { DeleteProjectButton } from "../delete-project-button";
 import { UploadProjectThumbnailComponent } from "../upload-component";
 
 interface SettingsTabProps {
@@ -8,8 +8,8 @@ interface SettingsTabProps {
 export const SettingsTab = ({ projectId }: SettingsTabProps) => {
   return (
     <>
-      {/* <CreateProjectForm /> */}
       <UploadProjectThumbnailComponent projectId={projectId} />
+      <DeleteProjectButton projectId={projectId} />
     </>
   );
 };

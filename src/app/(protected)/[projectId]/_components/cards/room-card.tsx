@@ -8,13 +8,13 @@ import {
 import { Room } from "@/types/interfaces";
 import { MousePointerClick, Trash2 } from "lucide-react";
 import Link from "next/link";
+import { DeleteRoomButton } from "../delete-room-button";
 
 interface RoomCardProps {
   room: Room;
-  projectId: string;
 }
 
-export const RoomCard = ({ room, projectId }: RoomCardProps) => {
+export const RoomCard = ({ room }: RoomCardProps) => {
   return (
     <>
       <Card>
@@ -23,17 +23,12 @@ export const RoomCard = ({ room, projectId }: RoomCardProps) => {
             <div className="flex justify-between items-center">
               {room.name}
               <div className="space-x-2 md:space-x-4">
-                <Link href={`/${projectId}/${room.id}`}>
+                <Link href={`/${room.projectId}/${room.id}`}>
                   <Button variant={"outline"}>
                     <MousePointerClick />
                   </Button>
                 </Link>
-
-                <Link href={""}>
-                  <Button variant={"outline"}>
-                    <Trash2 />
-                  </Button>
-                </Link>
+                <DeleteRoomButton roomId={room.id} projectId={room.projectId} />
               </div>
             </div>
           </CardTitle>

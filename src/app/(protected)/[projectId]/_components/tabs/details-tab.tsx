@@ -3,7 +3,7 @@ import { AutoScrollCarousel } from "../auto-scroll-carousel";
 import { ProjectDetailsCard } from "../cards/project-details-card";
 import { DesignerDetailsCard } from "../cards/designer-details-card";
 import { PlanDetailsCard } from "../cards/plan-details-card";
-import { ExploreProjectCard } from "../cards/3d-details-card";
+import { ExploreProjectCard } from "../cards/explore-project-card";
 import { getAllRoomsForProject } from "@/actions/room-action";
 import { Room } from "@/types/interfaces";
 import { RoomCard } from "../cards/room-card";
@@ -36,7 +36,7 @@ export const DetailsTab = async ({ projectId }: DetailsTabProps) => {
         <DesignerDetailsCard designerId={project.designerId} />
         {rooms.map((room) => (
           <>
-            <RoomCard room={room} projectId={projectId} />
+            <RoomCard room={room} />
           </>
         ))}
       </div>

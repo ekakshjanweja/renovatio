@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Room } from "@/types/interfaces";
 import { useState } from "react";
 import { nanoid } from "nanoid";
+import { useRouter } from "next/navigation";
 
 interface CreateRoomPageProps {
   params: {
@@ -18,6 +19,8 @@ const CreateRoom = ({ params }: CreateRoomPageProps) => {
 
   const [roomName, setroomName] = useState("");
 
+  const router = useRouter();
+
   return (
     <>
       <div className="flex w-full max-w-2xl items-center space-x-2">
@@ -29,7 +32,7 @@ const CreateRoom = ({ params }: CreateRoomPageProps) => {
         />
         <Button
           variant={"secondary"}
-          onClick={() => {
+          onClick={async () => {
             const roomId = nanoid();
             const room: Room = {
               id: roomId,
@@ -38,7 +41,9 @@ const CreateRoom = ({ params }: CreateRoomPageProps) => {
               images: [],
             };
 
-            createRoom(room);
+            createRoom(room).then(() => {
+              router.push(`/${projectId}/${roomId}`);
+            });
           }}
         >
           Create Room

@@ -17,10 +17,13 @@ import { cn } from "@/lib/utils";
 
 interface AutoScrollCarouselProps {
   images: string[];
-  isProjectPage?: boolean;
+  isFull?: boolean;
 }
 
-export function AutoScrollCarousel({ images }: AutoScrollCarouselProps) {
+export function AutoScrollCarousel({
+  images,
+  isFull,
+}: AutoScrollCarouselProps) {
   const plugin = useRef(Autoplay({ delay: 2000, stopOnInteraction: true }));
 
   return (
@@ -35,7 +38,10 @@ export function AutoScrollCarousel({ images }: AutoScrollCarouselProps) {
             <Card>
               <CardContent
                 className={cn(
-                  "flex aspect-auto p-0 h-[300px] lg:h-[350px] xl:h-[400px]"
+                  "flex aspect-auto p-0",
+                  isFull
+                    ? "h-[calc(100vh-150px)]"
+                    : " h-[300px] lg:h-[350px] xl:h-[400px]"
                 )}
               >
                 <Image
@@ -47,8 +53,8 @@ export function AutoScrollCarousel({ images }: AutoScrollCarouselProps) {
                   className="w-full h-auto rounded-xl object-cover"
                   quality={50}
                   loading="lazy"
-                  placeholder="blur"
-                  blurDataURL={image}
+                  // placeholder="blur"
+                  // blurDataURL={image}
                 />
               </CardContent>
             </Card>

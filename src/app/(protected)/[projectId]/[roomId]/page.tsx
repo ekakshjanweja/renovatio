@@ -1,7 +1,9 @@
-import { getRoomById } from "@/actions/room-action";
+import { getRoomById, updateRoom } from "@/actions/room-action";
 import { Room } from "@/types/interfaces";
 import { notFound } from "next/navigation";
 import { AutoScrollCarousel } from "../_components/auto-scroll-carousel";
+import { UploadDropzone } from "@/lib/uploadthing";
+import { UploadRoomImagesComponent } from "./_components/upload-room-images-component";
 
 interface RoomPageProps {
   params: {
@@ -21,7 +23,8 @@ const RoomPage = async ({ params }: RoomPageProps) => {
   return (
     <>
       <div className="p-6">
-        {/* <AutoScrollCarousel images={room.images} /> */}
+        <AutoScrollCarousel images={room.images} isFull />
+        <UploadRoomImagesComponent roomId={roomId} />
         {room.name}
       </div>
     </>

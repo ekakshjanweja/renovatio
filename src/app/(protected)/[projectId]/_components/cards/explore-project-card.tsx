@@ -39,14 +39,12 @@ export const ExploreProjectCard = async ({
             <div className="flex justify-between items-center space-y-2">
               <p className="text-lg">Virtual Renders</p>
               <Link href={`/${projectId}/create-room`}>
-                <Button variant={"outline"}>View Renders</Button>
+                <Button variant={"outline"}>Create Room</Button>
               </Link>
             </div>
             <div className="flex justify-between items-center space-y-4">
               <p className="text-lg">Project Plans</p>
-              <Link href={`/dashboard/${projectId}/create-room`}>
-                <Button variant={"outline"}>View Plans</Button>
-              </Link>
+              <Button variant={"outline"}>Upload Plan</Button>
             </div>
             <CardHeader className="px-0">
               <div className="flex items-center justify-between">
