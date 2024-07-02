@@ -41,3 +41,14 @@ export const CreateProjectSchema = z.object({
     message: "Description is required",
   }),
 });
+
+export const BillSchema = z.object({
+  item: z.string().min(1, {
+    message: "Bill Item Name is required"
+  }).max(500, {message: "Bill Item Name cant exceed 500 characters"}),
+  category: z.enum(["Tiles", "Cement", "Furniture", "Kitchenware"]),
+  // {0: unpaid, 1: pending, 2: paid}
+  status: z.number().lt(3, {message: "Too big value for status, use these number: {0: unpaid, 1: pending, 2: paid}"}).gte(0, {message: "Too small value for status, use these numbers: {0: unpaid, 1: pending, 2: paid}"}),
+  amount: z.number().positive({message: "Non Negative amount is not allowed"}),
+  clientEmail: z.string().email(),
+})
