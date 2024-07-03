@@ -1,6 +1,6 @@
-import { AutoScrollCarousel } from "@/app/(protected)/dashboard/[projectId]/_components/auto-scroll-carousel";
 import { ImagesGridHomePage } from "@/components/images-grid-home-page";
 import { projects } from "@/lib/data";
+import { AutoScrollCarousel } from "../projects/_components/auto-scroll-carousel";
 
 const HomePage = () => {
   const images: string[] = [

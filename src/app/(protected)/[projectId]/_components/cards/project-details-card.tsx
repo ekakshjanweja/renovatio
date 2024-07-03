@@ -43,7 +43,7 @@ export const ProjectDetailsCard = ({ project }: Props) => {
             <div className="flex gap-x-4 text-sm">
               <p className="text-muted-foreground ">Location</p>
               <div className="flex items-center justify-center text-lime-500">
-                <p>DPS Dwarka</p>
+                <p>{project.location}</p>
                 <Landmark className="h-4 w-4 ml-1" />
               </div>
             </div>

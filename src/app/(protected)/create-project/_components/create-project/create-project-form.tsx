@@ -21,12 +21,15 @@ import { Button } from "@/components/ui/button";
 
 import { UploadDropzone } from "@/lib/uploadthing";
 import { createProject } from "@/actions/project-action";
+import { useRouter } from "next/navigation";
 
 export const CreateProjectForm = () => {
   const [isPending, startTransition] = useTransition();
 
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
+
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof CreateProjectSchema>>({
     resolver: zodResolver(CreateProjectSchema),
@@ -48,6 +51,7 @@ export const CreateProjectForm = () => {
       createProject(values).then((data) => {
         setError(data.error);
         setSuccess(data.success);
+        router.push("/dashboard");
       });
     });
   };
