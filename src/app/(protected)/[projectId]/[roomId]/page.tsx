@@ -1,11 +1,10 @@
 import { getRoomById, updateRoom } from "@/actions/room-action";
 import { Room } from "@/types/interfaces";
-import { notFound } from "next/navigation";
 import { AutoScrollCarousel } from "../_components/auto-scroll-carousel";
-import { UploadDropzone } from "@/lib/uploadthing";
 import { UploadRoomImagesComponent } from "./_components/upload-room-images-component";
 import { Button } from "@/components/ui/button";
-import { Pencil } from "lucide-react";
+import { Pencil, Trash2 } from "lucide-react";
+import { RoomImagesGrid } from "./_components/room-images-grid";
 
 interface RoomPageProps {
   params: {
@@ -24,7 +23,7 @@ const RoomPage = async ({ params }: RoomPageProps) => {
 
   return (
     <>
-      <div className="p-6">
+      <div className="p-6 mb-16">
         <AutoScrollCarousel images={room.images} isFull />
 
         <div className="flex flex-col my-4 p-4 border border-muted-foreground border-dotted rounded-lg space-y-4">
@@ -57,6 +56,8 @@ const RoomPage = async ({ params }: RoomPageProps) => {
         </div>
 
         <UploadRoomImagesComponent roomId={roomId} />
+
+        <RoomImagesGrid images={room.images} />
       </div>
     </>
   );
