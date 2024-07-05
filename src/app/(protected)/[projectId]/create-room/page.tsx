@@ -37,6 +37,7 @@ const CreateRoom = ({ params }: CreateRoomPageProps) => {
             const room: Room = {
               id: roomId,
               name: roomName,
+              description: "",
               projectId: projectId,
               images: [],
             };

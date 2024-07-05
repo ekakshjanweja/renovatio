@@ -5,6 +5,7 @@ import { rooms } from "@/db/schema/rooms";
 import { Room } from "@/types/interfaces";
 import { eq } from "drizzle-orm";
 import { deleteImageFromUploadThing } from "./upload-thing-api";
+import { revalidatePath } from "next/cache";
 
 export const createRoom = async (room: Room) => {
   const exstingRoom = (
@@ -52,6 +53,8 @@ export const updateRoom = async (
     .update(rooms)
     .set({ images: updatedImages, name: name === null ? room.name : name })
     .where(eq(rooms.id, roomId));
+
+  revalidatePath(`/api/${room.projectId}/${roomId}`);
 };
 
 export const deleteImageFromRoom = async (roomId: string, imageUrl: string) => {
@@ -69,6 +72,8 @@ export const deleteImageFromRoom = async (roomId: string, imageUrl: string) => {
     .update(rooms)
     .set({ images: updatedImages })
     .where(eq(rooms.id, roomId));
+
+  revalidatePath(`/api/${room.projectId}/${roomId}`);
 };
 
 export const deleteRoom = async (roomId: string) => {

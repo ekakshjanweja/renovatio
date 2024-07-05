@@ -35,22 +35,7 @@ const RoomPage = async ({ params }: RoomPageProps) => {
           </div>
           <div>
             <p className="text-xl font-medium">Room Description</p>
-            <p>
-              Lorem Ipsum Lorem Ipsume Lorem Ipsum Lorem Ipsume Lorem Ipsum
-              Lorem Ipsume Lorem Ipsum Lorem Ipsume Lorem Ipsum Lorem Ipsume
-              Lorem Ipsum Lorem Ipsume Lorem Ipsum Lorem Ipsume Lorem Ipsum
-              Lorem Ipsume Lorem Ipsum Lorem Ipsume Lorem Ipsum Lorem Ipsume
-              Lorem Ipsum Lorem Ipsume Lorem Ipsum Lorem Ipsume Lorem Ipsum
-              Lorem Ipsume Lorem Ipsum Lorem Ipsume Lorem Ipsum Lorem Ipsume
-              Lorem Ipsum Lorem Ipsume Lorem Ipsum Lorem Ipsume Lorem Ipsum
-              Lorem Ipsume Lorem Ipsum Lorem Ipsume Lorem Ipsum Lorem Ipsume
-              Lorem Ipsum Lorem Ipsume Lorem Ipsum Lorem Ipsume Lorem Ipsum
-              Lorem Ipsume Lorem Ipsum Lorem Ipsume Lorem Ipsum Lorem Ipsume
-              Lorem Ipsum Lorem Ipsume Lorem Ipsum Lorem Ipsume Lorem Ipsum
-              Lorem Ipsume Lorem Ipsum Lorem Ipsume Lorem Ipsum Lorem Ipsume
-              Lorem Ipsum Lorem Ipsume Lorem Ipsum Lorem Ipsume Lorem Ipsum
-              Lorem Ipsume
-            </p>
+            <p>{room.description}</p>
           </div>
           <div></div>
         </div>
