@@ -1,3 +1,6 @@
+"use client";
+
+import { deleteImageFromRoom } from "@/actions/room-action";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Trash2 } from "lucide-react";
@@ -5,9 +8,10 @@ import Image from "next/image";
 
 interface RoomImagesGridProps {
   images: string[];
+  roomId: string;
 }
 
-export const RoomImagesGrid = ({ images }: RoomImagesGridProps) => {
+export const RoomImagesGrid = ({ images, roomId }: RoomImagesGridProps) => {
   return (
     <>
       <div className="grid md:auto-rows-[18rem] grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 max-w-full mx-auto my-8">
@@ -28,6 +32,9 @@ export const RoomImagesGrid = ({ images }: RoomImagesGridProps) => {
                 <Button
                   variant={"outline"}
                   className="absolute top-2 right-2 p-0"
+                  onClick={() => {
+                    deleteImageFromRoom(roomId, image);
+                  }}
                 >
                   <Trash2 className="h-4 w-4 m-2" />
                 </Button>
