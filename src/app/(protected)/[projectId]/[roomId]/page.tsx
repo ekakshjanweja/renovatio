@@ -5,6 +5,7 @@ import { UploadRoomImagesComponent } from "./_components/upload-room-images-comp
 import { Button } from "@/components/ui/button";
 import { Pencil, Trash2 } from "lucide-react";
 import { RoomImagesGrid } from "./_components/room-images-grid";
+import { EditRoomButton } from "./_components/edit-room-button";
 
 interface RoomPageProps {
   params: {
@@ -29,12 +30,9 @@ const RoomPage = async ({ params }: RoomPageProps) => {
         <div className="flex flex-col my-4 p-4 border border-muted-foreground border-dotted rounded-lg space-y-4">
           <div className="flex justify-between items-center">
             <p className="text-3xl font-semibold">{room.name}</p>
-            <Button variant={"outline"}>
-              <Pencil />
-            </Button>
+            <EditRoomButton room={room} />
           </div>
           <div>
-            <p className="text-xl font-medium">Room Description</p>
             <p>{room.description}</p>
           </div>
           <div></div>
