@@ -57,7 +57,7 @@ const RoomPage = async ({ params }: RoomPageProps) => {
 
         <UploadRoomImagesComponent roomId={roomId} />
 
-        <RoomImagesGrid images={room.images} />
+        <RoomImagesGrid images={room.images} roomId={room.id} />
       </div>
     </>
   );
