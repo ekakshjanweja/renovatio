@@ -25,7 +25,7 @@ export const UploadRoomImagesComponent = ({
             },
           }}
           onClientUploadComplete={(res) => {
-            updateRoom(roomId, [res?.[0]?.url], null);
+            updateRoom(roomId, [res?.[0]?.url], null, null);
           }}
         />
       </div>
