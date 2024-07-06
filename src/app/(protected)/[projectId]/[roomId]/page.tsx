@@ -1,9 +1,7 @@
-import { getRoomById, updateRoom } from "@/actions/room-action";
+import { getRoomById } from "@/actions/room-action";
 import { Room } from "@/types/interfaces";
 import { AutoScrollCarousel } from "../_components/auto-scroll-carousel";
 import { UploadRoomImagesComponent } from "./_components/upload-room-images-component";
-import { Button } from "@/components/ui/button";
-import { Pencil, Trash2 } from "lucide-react";
 import { RoomImagesGrid } from "./_components/room-images-grid";
 import { EditRoomButton } from "./_components/edit-room-button";
 
@@ -35,10 +33,10 @@ const RoomPage = async ({ params }: RoomPageProps) => {
           <div>
             <p>{room.description}</p>
           </div>
-          <div></div>
+          <div>
+            <UploadRoomImagesComponent roomId={roomId} />
+          </div>
         </div>
-
-        <UploadRoomImagesComponent roomId={roomId} />
 
         <RoomImagesGrid images={room.images} roomId={room.id} />
       </div>

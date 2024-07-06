@@ -1,5 +1,6 @@
 "use client";
 
+import { updateRoom } from "@/actions/room-action";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -11,6 +12,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Room } from "@/types/interfaces";
 import { Pencil } from "lucide-react";
 import { useState } from "react";
@@ -40,23 +42,23 @@ export const EditRoomButton = ({ room }: EditRoomButtonProps) => {
           </DialogHeader>
 
           <div className="flex flex-col justify-between items-center w-full space-y-4">
-            <div className="w-full">
-              {/* <Label htmlFor="link" className="sr-only">
-                Link
-              </Label> */}
+            <div className="w-full space-y-1">
+              <Label htmlFor="roomName" className="sr-only">
+                Name
+              </Label>
               <Input
                 id="text"
                 onChange={(e) => setRoomName(e.target.value)}
                 placeholder={`${room.name}`}
               />
             </div>
-            <div className="w-full">
-              {/* <Label htmlFor="link" className="sr-only">
-                Link
-              </Label> */}
+            <div className="w-full space-y-1">
+              <Label htmlFor="roomDesc" className="sr-only">
+                Description
+              </Label>
               <Input
                 id="text"
-                onChange={(e) => setRoomName(e.target.value)}
+                onChange={(e) => setRoomDesc(e.target.value)}
                 placeholder={
                   room.description === ""
                     ? "Add Room Description"
@@ -69,6 +71,7 @@ export const EditRoomButton = ({ room }: EditRoomButtonProps) => {
             <Button
               onClick={() => {
                 if (roomName !== null && roomDesc !== null) {
+                  updateRoom(room.id, null, roomName, roomDesc).then(() => {});
                 }
               }}
             >
