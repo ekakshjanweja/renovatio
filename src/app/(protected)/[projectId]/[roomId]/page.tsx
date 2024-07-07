@@ -23,7 +23,15 @@ const RoomPage = async ({ params }: RoomPageProps) => {
   return (
     <>
       <div className="p-6 mb-16">
-        <AutoScrollCarousel images={room.images} isFull />
+        {room.images.length > 0 ? (
+          <AutoScrollCarousel images={room.images} isFull />
+        ) : (
+          <>
+            <div className="py-8">
+              <p>Start by adding few renders or sample images for this room</p>
+            </div>
+          </>
+        )}
 
         <div className="flex flex-col my-4 p-4 border border-muted-foreground border-dotted rounded-lg space-y-4">
           <div className="flex justify-between items-center">
@@ -34,7 +42,11 @@ const RoomPage = async ({ params }: RoomPageProps) => {
             <p>{room.description}</p>
           </div>
           <div>
-            <UploadRoomImagesComponent roomId={roomId} />
+            {room.images.length > 0 ? (
+              <UploadRoomImagesComponent roomId={roomId} />
+            ) : (
+              <></>
+            )}
           </div>
         </div>
 
