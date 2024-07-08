@@ -1,4 +1,6 @@
+import { auth } from "@/auth";
 import { CreateRoomForm } from "./_components/create-room-form";
+import { notFound } from "next/navigation";
 
 interface CreateRoomPageProps {
   params: {
@@ -6,8 +8,14 @@ interface CreateRoomPageProps {
   };
 }
 
-const CreateRoom = ({ params }: CreateRoomPageProps) => {
+const CreateRoom = async ({ params }: CreateRoomPageProps) => {
   const projectId = params.projectId;
+
+  const session = await auth();
+
+  if (!session) {
+    notFound();
+  }
 
   return (
     <>
