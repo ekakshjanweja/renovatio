@@ -4,6 +4,8 @@ import { AutoScrollCarousel } from "../_components/auto-scroll-carousel";
 import { UploadRoomImagesComponent } from "./_components/upload-room-images-component";
 import { RoomImagesGrid } from "./_components/room-images-grid";
 import { EditRoomButton } from "./_components/edit-room-button";
+import { auth } from "@/auth";
+import { notFound } from "next/navigation";
 
 interface RoomPageProps {
   params: {
@@ -12,6 +14,12 @@ interface RoomPageProps {
 }
 
 const RoomPage = async ({ params }: RoomPageProps) => {
+  const session = await auth();
+
+  if (!session) {
+    notFound();
+  }
+
   const roomId = params.roomId;
 
   const room: Room = await getRoomById(roomId);

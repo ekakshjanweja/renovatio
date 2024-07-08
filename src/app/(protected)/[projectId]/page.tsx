@@ -2,6 +2,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DetailsTab } from "./_components/tabs/details-tab";
 import { BillsTab } from "./_components/tabs/bills-tab";
 import { SettingsTab } from "./_components/tabs/settings-tab";
+import { auth } from "@/auth";
+import { notFound } from "next/navigation";
+import { getCurrentUser } from "@/services/user-service";
 
 interface UserProjectPageProps {
   params: {
@@ -10,6 +13,14 @@ interface UserProjectPageProps {
 }
 
 const UserProjectPage = async ({ params }: UserProjectPageProps) => {
+  const session = await auth();
+
+  const user = await getCurrentUser();
+
+  if (!session || !user.isDesigner) {
+    notFound();
+  }
+
   const projectId = params.projectId;
 
   return (
