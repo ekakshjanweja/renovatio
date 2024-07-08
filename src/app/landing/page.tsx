@@ -36,7 +36,7 @@ const LandingPage = () => {
               <>
                 <div className="flex items-start justify-start text-center">
                   <p className="text-xl transition-all duration-300">
-                    Thank you for submitting! We'll be in touch via email
+                    Thank you for submitting! We&#39ll be in touch via email
                     shortly.
                   </p>
                 </div>
