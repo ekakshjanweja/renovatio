@@ -12,8 +12,8 @@ const LandingLayout = ({ children }: { children: React.ReactNode }) => {
           initial={{ opacity: 0.1, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{
-            delay: 0.2,
-            duration: 3,
+            delay: 0,
+            duration: 1,
             ease: "easeInOut",
           }}
           className="flex flex-col text-foreground"

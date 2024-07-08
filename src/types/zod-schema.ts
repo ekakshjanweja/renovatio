@@ -47,6 +47,10 @@ export const CreateRoomSchema = z.object({
   description: z.string().min(10),
 });
 
+export const WaitListSchema = z.object({
+  email: z.string().email(),
+});
+
 export const BillSchema = z.object({
   item: z
     .string()
