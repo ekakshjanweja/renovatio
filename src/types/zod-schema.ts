@@ -41,3 +41,9 @@ export const CreateProjectSchema = z.object({
     message: "Description is required",
   }),
 });
+
+export const ReplicateFormSchema = z.object({
+  prompt: z.string().min(1, {
+    message: "no prompt was entered"
+  })
+})
