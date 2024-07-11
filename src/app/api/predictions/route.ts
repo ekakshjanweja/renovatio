@@ -5,8 +5,8 @@ const replicate = new Replicate({
 });
 
 export async function POST(req: Request) {
+  const { Prompt } = await req.json()
 
-  const data = await req.formData();
   if (!process.env.REPLICATE_API_TOKEN) {
     throw new Error(
       "The REPLICATE_API_TOKEN environment variable is not set."
@@ -14,12 +14,14 @@ export async function POST(req: Request) {
   }
 
   const prediction = await replicate.predictions.create({
-    // Pinned to a specific version of Stable Diffusion
-    // See https://replicate.com/stability-ai/sdxl
+    // stable diffusion model
+    // version: "8beff3369e81422112d93b89ca01426147de542cd4684c244b673b105188fe5f",
+    // adirik/interior-design model
     version: "76604baddc85b1b4616e1c6475eca080da339c8875bd4996705440484a6eac38",
-
-    // This is the text prompt that will be submitted by a form on the frontend
-    input: { prompt: data.get("prompt")?.toString() },
+    input: {
+      image: "https://replicate.delivery/pbxt/KhTNuTIKK1F1tvVl8e7mqOlhR3z3D0SAojAMN8BNftCvAubM/bedroom_3.jpg",
+      prompt: Prompt,
+    },
   });
 
   if (prediction?.error) {
