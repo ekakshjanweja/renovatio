@@ -24,3 +24,8 @@ export const getUserById = async (id: string) => {
 
   return user[0];
 };
+
+export const setUserDesigner = async (userId: string) => {
+
+    const user = await db.update(users).set({isDesigner: true}).where(eq(users.id, userId)).returning({curId: users.id, updatedDesigner: users.isDesigner});
+}

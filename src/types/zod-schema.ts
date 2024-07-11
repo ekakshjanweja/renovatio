@@ -51,6 +51,8 @@ export const WaitListSchema = z.object({
   email: z.string().email(),
 });
 
+export const CategoryList = ["Tiles", "Cement", "Furniture", "Kitchenware"];
+
 export const BillSchema = z.object({
   item: z
     .string()
@@ -58,7 +60,7 @@ export const BillSchema = z.object({
       message: "Bill Item Name is required",
     })
     .max(500, { message: "Bill Item Name cant exceed 500 characters" }),
-  category: z.enum(["Tiles", "Cement", "Furniture", "Kitchenware"]),
+  category: z.enum(CategoryList),
   // {0: unpaid, 1: pending, 2: paid}
   status: z
     .number()

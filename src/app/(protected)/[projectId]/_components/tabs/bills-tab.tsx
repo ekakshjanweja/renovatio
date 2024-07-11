@@ -8,8 +8,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { CreateBillDialog } from "@/components/create-bill-dialog";
+import { getCurrentUser } from "@/services/user-service";
+import { notFound } from "next/navigation";
+import { auth } from "@/auth";
 
-const invoices = [
+const invoices_bak = [
   {
     invoice: "INV001",
     paymentStatus: "Paid",
@@ -54,10 +59,25 @@ const invoices = [
   },
 ];
 
-export function BillsTab() {
+const invoices = []
+
+interface BillsTabProps {
+  projectId: string;
+}
+
+export async function BillsTab({ projectId }: BillsTabProps) {
+  // we got project id, now lets fetch bills
+  // 
+  // const project = await getProjectById(projectId);
+  const session = await auth();
+  const user = await getCurrentUser();
+  if (!session) {
+    notFound();
+  }
   return (
+    <div>
     <Table>
-      <TableCaption>A list of your recent invoices.</TableCaption>
+      {/*<TableCaption>A list of your recent invoices.</TableCaption>*/}
       <TableHeader>
         <TableRow>
           <TableHead className="w-[100px]">Invoice</TableHead>
@@ -83,5 +103,8 @@ export function BillsTab() {
         </TableRow>
       </TableFooter>
     </Table>
+      {/**/}
+      <CreateBillDialog isDes={user.isDesigner} />
+      </div>
   );
 }
