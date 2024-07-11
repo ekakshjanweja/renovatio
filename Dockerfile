@@ -1,10 +1,12 @@
-FROM node:lts-alpine
+FROM node:21-alpine
 
 WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm ci
+RUN npm install -g npm@10.8.1
+
+RUN npm install --legacy-peer-deps
 
 COPY . .
 
