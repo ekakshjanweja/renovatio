@@ -1,6 +1,4 @@
-"use client";
-
-import Image from "next/image"
+"use client"
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -8,41 +6,40 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ReplicateFormSchema } from "@/types/zod-schema";
-import { Prediction } from "replicate";
 import { Button } from "@/components/ui/button";
+import { Prediction } from "replicate";
 import { Input } from "@/components/ui/input";
 import { getCurrentUser } from "@/services/user-service";
 import { notFound } from "next/navigation";
+import { auth } from "@/auth";
+import { ShowPrediction } from "./_components/prediction";
+import { ShowError } from "./_components/error";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
-export default async function Home() {
-
+export default function Home() {
   const [prediction, setPrediction] = useState<Prediction | null>(null);
   const [error, setError] = useState(null);
 
-  const session = await auth();
-
-  if (!session) {
-    notFound();
-  }
-
-  const user = await getCurrentUser();
-
-  if (user.id !== process.env.CYTO_USER_ID! || user.id !== process.env.STORMEJ_USER_ID! || user.id !== process.env.TARZI_USER_ID) {
-    notFound()
-  }
-
+  // const session = await auth();
+  //
+  // if (!session) {
+  //   notFound();
+  // }
+  //
+  // const user = await getCurrentUser();
+  //
+  // if (user.id !== process.env.CYTO_USER_ID! || user.id !== process.env.STORMEJ_USER_ID! || user.id !== process.env.TARZI_USER_ID) {
+  //   notFound()
+  // }
+  //
   const onSubmit = async (values: z.infer<typeof ReplicateFormSchema>) => {
     const response = await fetch("/api/predictions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      // body: new FormData(e.currentTarget),
-      body: JSON.stringify({
-        prompt: values.prompt
-      }),
+      body: JSON.stringify({ Prompt: values.prompt }),
     });
 
     let prediction = await response.json();
@@ -83,6 +80,7 @@ export default async function Home() {
         </CardHeader>
 
         <CardContent>
+          <ShowPrediction prediction={prediction} />
 
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 flex-col">
@@ -102,32 +100,14 @@ export default async function Home() {
                   </FormItem>
                 )} />
 
-              <Button type="submit">Go!</Button>
-
+              <Button type="submit" className="w-full">Go!</Button>
             </form>
           </Form>
 
+          <ShowError error={error} />
         </CardContent>
       </Card>
 
-      {error && <div>{error}</div>}
-
-      {prediction && (
-        <>
-          {prediction.output && (
-            <div className="image-wrapper mt-5">
-              <Image
-                src={prediction.output[prediction.output.length - 1]}
-                alt="output"
-                sizes="100vw"
-                height={768}
-                width={768}
-              />
-            </div>
-          )}
-          <p className="py-3 text-sm opacity-50">status: {prediction.status}</p>
-        </>
-      )}
     </main >
   )
 }
