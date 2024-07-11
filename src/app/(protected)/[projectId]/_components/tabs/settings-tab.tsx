@@ -8,8 +8,13 @@ interface SettingsTabProps {
 export const SettingsTab = ({ projectId }: SettingsTabProps) => {
   return (
     <>
-      <UploadProjectThumbnailComponent projectId={projectId} />
-      <DeleteProjectButton projectId={projectId} />
+      <div className="flex flex-col gap-4">
+        <UploadProjectThumbnailComponent projectId={projectId} />
+        <div className="flex ">
+          <p>Delete Project</p>
+          <DeleteProjectButton projectId={projectId} />
+        </div>
+      </div>
     </>
   );
 };
