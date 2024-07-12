@@ -27,7 +27,7 @@ const RoomPage = async ({ params }: RoomPageProps) => {
   const room: Room = await getRoomById(roomId);
 
   if (!room) {
-    return <>Error</>;
+    return notFound();
   }
 
   return (

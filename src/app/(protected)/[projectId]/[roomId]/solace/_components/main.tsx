@@ -18,10 +18,18 @@ import { Prediction } from "replicate";
 import { z } from "zod";
 import { ShowError } from "./error";
 import { ShowPrediction } from "./prediction";
+import { Room } from "@/types/interfaces";
+import { UploadImageForGenerationComponent } from "../../_components/upload-image-for-generation";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
-export const Main = () => {
+interface MainPrMainSolaceComponentProps {
+  room: Room;
+}
+
+export const MainSolaceComponent = ({
+  room,
+}: MainPrMainSolaceComponentProps) => {
   const [error, setError] = useState(null);
   const [prediction, setPrediction] = useState<Prediction | null>(null);
 
@@ -31,7 +39,10 @@ export const Main = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ Prompt: values.prompt }),
+      body: JSON.stringify({
+        Prompt: values.prompt,
+        image: room.imageForGeneration,
+      }),
     });
 
     let prediction = await response.json();
@@ -77,7 +88,11 @@ export const Main = () => {
           </CardHeader>
 
           <CardContent>
-            <ShowPrediction prediction={prediction} />
+            <ShowPrediction prediction={prediction} room={room} />
+
+            <div className="my-8">
+              <UploadImageForGenerationComponent room={room} />
+            </div>
 
             <Form {...form}>
               <form

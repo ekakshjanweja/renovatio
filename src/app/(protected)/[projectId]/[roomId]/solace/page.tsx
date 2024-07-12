@@ -1,9 +1,17 @@
 import { auth } from "@/auth";
 import { getCurrentUser } from "@/services/user-service";
 import { notFound } from "next/navigation";
-import { Main } from "./_components/main";
+import { MainSolaceComponent } from "./_components/main";
+import { Room } from "@/types/interfaces";
+import { getRoomById } from "@/actions/room-action";
 
-export default async function Home() {
+interface SolaceProps {
+  params: {
+    roomId: string;
+  };
+}
+
+const Solace = async ({ params }: SolaceProps) => {
   const session = await auth();
   const USER_ID = [
     process.env.TARZI_USER_ID,
@@ -21,9 +29,19 @@ export default async function Home() {
     notFound();
   }
 
+  const roomId = params.roomId;
+
+  const room: Room = await getRoomById(roomId);
+
+  if (!room) {
+    return notFound();
+  }
+
   return (
     <>
-      <Main />
+      <MainSolaceComponent room={room} />
     </>
   );
-}
+};
+
+export default Solace;
