@@ -1,16 +1,23 @@
-"use client"
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ReplicateFormSchema } from "@/types/zod-schema";
+"use client";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { ShowPrediction } from "./prediction";
-import { ShowError } from "./error";
+import { ReplicateFormSchema } from "@/types/zod-schema";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { Prediction } from "replicate";
+import { z } from "zod";
+import { ShowError } from "./error";
+import { ShowPrediction } from "./prediction";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -39,13 +46,15 @@ export const Main = () => {
       prediction.status !== "failed"
     ) {
       await sleep(1000);
-      const response = await fetch("/api/predictions/" + prediction.id, { cache: 'no-store' });
+      const response = await fetch("/api/predictions/" + prediction.id, {
+        cache: "no-store",
+      });
       prediction = await response.json();
       if (response.status !== 200) {
         setError(prediction.detail);
         return;
       }
-      console.log({ prediction })
+      console.log({ prediction });
       setPrediction(prediction);
     }
   };
@@ -54,23 +63,27 @@ export const Main = () => {
     resolver: zodResolver(ReplicateFormSchema),
     defaultValues: {
       prompt: "",
-    }
-  })
+    },
+  });
 
   return (
     <>
-      <main className="min-h-screen min-w-screen flex flex-col items-center justify-center bg-black">
+      <main className="min-h-screen min-w-screen flex flex-col items-center justify-center bg-white dark:bg-black">
         <Card className="w-11/12 sm:w-8/12">
           <CardHeader className="text-center">
-            <CardTitle>Dream interior design for the house of your dreams...</CardTitle>
+            <CardTitle>
+              Dream interior design for the house of your dreams...
+            </CardTitle>
           </CardHeader>
 
           <CardContent>
             <ShowPrediction prediction={prediction} />
 
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 flex-col">
-
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-8 flex-col"
+              >
                 <FormField
                   control={form.control}
                   name="prompt"
@@ -79,22 +92,27 @@ export const Main = () => {
                       <FormLabel>Enter Prompt</FormLabel>
 
                       <FormControl>
-                        <Input placeholder="a bohemian themed beach house..." {...field} />
+                        <Input
+                          placeholder="a bohemian themed beach house..."
+                          {...field}
+                        />
                       </FormControl>
 
                       <FormMessage />
                     </FormItem>
-                  )} />
+                  )}
+                />
 
-                <Button type="submit" className="w-full">Go!</Button>
+                <Button type="submit" className="w-full">
+                  Go!
+                </Button>
               </form>
             </Form>
 
             <ShowError error={error} />
           </CardContent>
         </Card>
-
-      </main >
+      </main>
     </>
-  )
-}
+  );
+};
