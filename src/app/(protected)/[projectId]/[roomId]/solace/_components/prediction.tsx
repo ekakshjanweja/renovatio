@@ -1,3 +1,7 @@
+"use client";
+
+import { updateRoom } from "@/actions/room-action";
+import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Room } from "@/types/interfaces";
 import Image from "next/image";
@@ -52,6 +56,21 @@ export function ShowPrediction({
                 </Label>
               </div>
             </div>
+          )}
+
+          {prediction.output && (
+            <>
+              <div className="flex items-center justify-center text-xl">
+                <Button
+                  variant={"outline"}
+                  onClick={() => {
+                    updateRoom(room.id, [prediction.output], null, null);
+                  }}
+                >
+                  Add to room images
+                </Button>
+              </div>
+            </>
           )}
           <p className="py-3 text-sm opacity-50 flex justify-center">
             status: {prediction.status}
