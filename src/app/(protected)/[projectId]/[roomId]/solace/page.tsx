@@ -13,11 +13,11 @@ interface SolaceProps {
 
 const Solace = async ({ params }: SolaceProps) => {
   const session = await auth();
-  const USER_ID = [
-    process.env.TARZI_USER_ID,
-    process.env.STORMEJ_USER_ID,
-    process.env.CYTO_USER_ID,
-  ];
+  // const USER_ID = [
+  //   process.env.TARZI_USER_ID,
+  //   process.env.STORMEJ_USER_ID,
+  //   process.env.CYTO_USER_ID,
+  // ];
 
   if (!session) {
     notFound();
@@ -25,7 +25,11 @@ const Solace = async ({ params }: SolaceProps) => {
 
   const user = await getCurrentUser();
 
-  if (!USER_ID.find((id) => id === user.id)) {
+  // if (!USER_ID.find((id) => id === user.id)) {
+  //   notFound();
+  // }
+
+  if (!user.isDesigner) {
     notFound();
   }
 
