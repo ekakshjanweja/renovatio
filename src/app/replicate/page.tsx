@@ -1,6 +1,6 @@
+import { auth } from "@/auth";
 import { getCurrentUser } from "@/services/user-service";
 import { notFound } from "next/navigation";
-import { auth } from "@/auth";
 import { Main } from "./_components/main";
 
 export default async function Home() {
@@ -9,7 +9,7 @@ export default async function Home() {
     process.env.TARZI_USER_ID,
     process.env.STORMEJ_USER_ID,
     process.env.CYTO_USER_ID,
-  ]
+  ];
 
   if (!session) {
     notFound();
@@ -17,13 +17,13 @@ export default async function Home() {
 
   const user = await getCurrentUser();
 
-  if (!USER_ID.find(id => id === user.id)) {
-    notFound()
+  if (!USER_ID.find((id) => id === user.id)) {
+    notFound();
   }
 
   return (
     <>
       <Main />
     </>
-  )
+  );
 }
