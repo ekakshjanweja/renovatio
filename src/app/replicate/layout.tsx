@@ -1,21 +1,22 @@
-import type { Metadata } from 'next'
-// import { Inter } from 'next/font/google'
-
-// const inter = Inter({ subsets: ['latin'] })
+import type { Metadata } from "next";
+import { Navbar } from "@/components/navbar";
 
 export const metadata: Metadata = {
-  title: 'Next.js + Replicate + Typescript',
-  description: 'Replicate Typescript Starter',
-}
+  title: "Next.js + Replicate + Typescript",
+  description: "Replicate Typescript Starter",
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <Navbar />
+        {children}
+      </body>
     </html>
-  )
+  );
 }
