@@ -75,3 +75,9 @@ export const BillSchema = z.object({
     .positive({ message: "Non Negative amount is not allowed" }),
   clientEmail: z.string().email(),
 });
+
+export const ReplicateFormSchema = z.object({
+  prompt: z.string().min(1, {
+    message: "no prompt was entered"
+  })
+})

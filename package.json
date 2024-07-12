@@ -47,6 +47,7 @@
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.51.2",
+    "replicate": "^0.31.1",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
     "tls": "^0.0.1",
@@ -56,7 +57,7 @@
     "zustand": "^4.5.2"
   },
   "devDependencies": {
-    "@types/node": "^20",
+    "@types/node": "^20.14.10",
     "@types/pg": "^8.11.5",
     "@types/react": "^18",
     "@types/react-dom": "^18",

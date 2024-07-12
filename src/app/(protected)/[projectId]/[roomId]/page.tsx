@@ -1,11 +1,13 @@
 import { getRoomById } from "@/actions/room-action";
 import { Room } from "@/types/interfaces";
 import { AutoScrollCarousel } from "../_components/auto-scroll-carousel";
-import { UploadRoomImagesComponent } from "./_components/upload-room-images-component";
 import { RoomImagesGrid } from "./_components/room-images-grid";
 import { EditRoomButton } from "./_components/edit-room-button";
 import { auth } from "@/auth";
 import { notFound } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { UploadRoomImagesComponent } from "./_components/upload-room-images-component";
 
 interface RoomPageProps {
   params: {
@@ -25,7 +27,7 @@ const RoomPage = async ({ params }: RoomPageProps) => {
   const room: Room = await getRoomById(roomId);
 
   if (!room) {
-    return <>Error</>;
+    return notFound();
   }
 
   return (
@@ -49,12 +51,11 @@ const RoomPage = async ({ params }: RoomPageProps) => {
           <div>
             <p>{room.description}</p>
           </div>
-          <div>
-            {room.images.length > 0 ? (
-              <UploadRoomImagesComponent roomId={roomId} />
-            ) : (
-              <></>
-            )}
+          <div className="flex gap-x-4 items-center justify-start">
+            <UploadRoomImagesComponent roomId={roomId} />
+            <Link href={`/${room.projectId}/${room.id}/solace`}>
+              <Button variant={"outline"}>Generate With AI</Button>
+            </Link>
           </div>
         </div>
 
