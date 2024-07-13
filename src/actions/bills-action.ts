@@ -17,6 +17,8 @@ export const createBill = async (values: z.infer<typeof BillSchema>, designerId:
   }
   
   const clientUser = await getUserByEmail(values.clientEmail);
+
+  try {
   await db.insert(bills).values({
     item: values.item,
     category: values.category,
@@ -25,8 +27,13 @@ export const createBill = async (values: z.infer<typeof BillSchema>, designerId:
     clientId: clientUser.id,
     designerId: designerId,
   });
-  
   return {success: "The bill has been created"}
+
+  } catch(e) {
+  return {fail: "Bill creation failed"}
+  }
+  
+  
 }
 
 export const getAllBills = async (userId: string, isDes = false) => {

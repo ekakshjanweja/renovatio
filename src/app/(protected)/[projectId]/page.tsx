@@ -19,7 +19,7 @@ const UserProjectPage = async ({ params }: UserProjectPageProps) => {
 
   const user = await getCurrentUser();
 
-  if (!session || !user.isDesigner) {
+  if (!session) {//|| !user.isDesigner) {
     notFound();
   }
 

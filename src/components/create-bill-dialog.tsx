@@ -1,6 +1,9 @@
 "use client"
 import { PlusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useToast } from "@/components/ui/use-toast";
 import {
   Dialog,
   DialogContent,
@@ -9,6 +12,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogClose,
 } from "@/components/ui/dialog"
 import {
   Form,
@@ -26,12 +30,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { BillSchema, CategoryList, BillStatusObj } from "@/types/zod-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { createBill } from "@/actions/bills-action";
+import React from 'react';
 
 interface CreateBillDialogProps {
   isDes: boolean;
@@ -53,17 +56,27 @@ export const CreateBillDialog = (props: CreateBillDialogProps) => {
     },
   });
 
+  const { toast } = useToast();
+  const [ openDialog, setOpenDialog ] = React.useState(false);
+
   const handleSubmission = (values: z.infer<typeof BillSchema>) => {
     // values contains values entered as object
     //
     console.log("values submitted are => ")
     console.log(JSON.stringify(values));
 
-    createBill(values, props.userId).then((val) => {console.log("promise returned: ", val)});
+    createBill(values, props.userId).then((val) => {
+      setOpenDialog(false);
+      toast({
+            title: `Created the Bill: ${Object.keys(val)[0]}`,
+            description: "Refresh the page if the bill isnt visible immediately",
+          })
+      });
+      console.log("donez")
   };
 
 
-    return(<Dialog>
+    return(<Dialog open={openDialog} onOpenChange={setOpenDialog}>
       <DialogTrigger asChild>
         <div className="w-full h-9 flex justify-center cursor-pointer items-center text-neutral-700 hover:text-neutral-300 hover:bg-neutral-900 transition-colors">
           <PlusCircle />
@@ -239,7 +252,7 @@ className="grid grid-cols-4 items-center gap-4"
               */}
           </div>
         <DialogFooter>
-          <Button type="submit">Save changes</Button>
+          <Button type="submit">Save</Button>
         </DialogFooter>
           </form>
         </Form>
