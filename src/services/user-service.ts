@@ -26,6 +26,7 @@ export const getUserById = async (id: string) => {
 };
 
 export const setUserDesigner = async (userId: string) => {
-
+    console.log("doing")
     const user = await db.update(users).set({isDesigner: true}).where(eq(users.id, userId)).returning({curId: users.id, updatedDesigner: users.isDesigner});
+    console.log("done")
 }

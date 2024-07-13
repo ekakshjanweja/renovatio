@@ -53,6 +53,8 @@ export const WaitListSchema = z.object({
 
 export const CategoryList = ["Tiles", "Cement", "Furniture", "Kitchenware"];
 
+export const BillStatusObj = {0: 'unpaid', 1: 'pending', 2: 'paid'};
+
 export const BillSchema = z.object({
   item: z
     .string()
@@ -63,17 +65,17 @@ export const BillSchema = z.object({
   category: z.enum(CategoryList),
   // {0: unpaid, 1: pending, 2: paid}
   status: z
-    .number()
+    .coerce.number()
     .lt(3, {
       message:
-        "Too big value for status, use these number: {0: unpaid, 1: pending, 2: paid}",
+        `Too big value for status, use these number: ${BillStatusObj}`,
     })
     .gte(0, {
       message:
-        "Too small value for status, use these numbers: {0: unpaid, 1: pending, 2: paid}",
+        `Too small value for status, use these numbers: ${BillStatusObj}`,
     }),
   amount: z
-    .number()
-    .positive({ message: "Non Negative amount is not allowed" }),
+    .coerce.number()
+    .positive({ message: "Invalid number, only positive amount allowed" }),
   clientEmail: z.string().email(),
 });

@@ -13,6 +13,8 @@ import { CreateBillDialog } from "@/components/create-bill-dialog";
 import { getCurrentUser } from "@/services/user-service";
 import { notFound } from "next/navigation";
 import { auth } from "@/auth";
+import { getAllBills } from "@/actions/bills-action";
+
 
 const invoices_bak = [
   {
@@ -59,8 +61,6 @@ const invoices_bak = [
   },
 ];
 
-const invoices = []
-
 interface BillsTabProps {
   projectId: string;
 }
@@ -71,6 +71,9 @@ export async function BillsTab({ projectId }: BillsTabProps) {
   // const project = await getProjectById(projectId);
   const session = await auth();
   const user = await getCurrentUser();
+
+  const invoices = await getAllBills(user.id, user.isDesigner);
+
   if (!session) {
     notFound();
   }
@@ -80,19 +83,19 @@ export async function BillsTab({ projectId }: BillsTabProps) {
       {/*<TableCaption>A list of your recent invoices.</TableCaption>*/}
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[100px]">Invoice</TableHead>
+          <TableHead className="w-[100px]">Item</TableHead>
           <TableHead>Status</TableHead>
-          <TableHead>Method</TableHead>
+          <TableHead>Client</TableHead>
           <TableHead className="text-right">Amount</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {invoices.map((invoice) => (
-          <TableRow key={invoice.invoice}>
-            <TableCell className="font-medium">{invoice.invoice}</TableCell>
-            <TableCell>{invoice.paymentStatus}</TableCell>
-            <TableCell>{invoice.paymentMethod}</TableCell>
-            <TableCell className="text-right">{invoice.totalAmount}</TableCell>
+          <TableRow key={invoice.id}>
+            <TableCell className="font-medium">{invoice.item}</TableCell>
+            <TableCell>{invoice.status}</TableCell>
+            <TableCell>{invoice.userName}</TableCell>
+            <TableCell className="text-right">{invoice.amount}</TableCell>
           </TableRow>
         ))}
       </TableBody>
@@ -104,7 +107,7 @@ export async function BillsTab({ projectId }: BillsTabProps) {
       </TableFooter>
     </Table>
       {/**/}
-      <CreateBillDialog isDes={user.isDesigner} />
+      <CreateBillDialog isDes={user.isDesigner} userId={user.id} />
       </div>
   );
 }
