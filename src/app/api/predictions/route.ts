@@ -12,9 +12,6 @@ export async function POST(req: Request) {
   }
 
   const prediction = await replicate.predictions.create({
-    // stable diffusion model
-    // version: "8beff3369e81422112d93b89ca01426147de542cd4684c244b673b105188fe5f",
-    // adirik/interior-design model
     version: "76604baddc85b1b4616e1c6475eca080da339c8875bd4996705440484a6eac38",
     input: {
       image: image,
