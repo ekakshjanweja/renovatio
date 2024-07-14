@@ -54,10 +54,11 @@ export const CreateBillDialog = (props: CreateBillDialogProps) => {
   const form = useForm<z.infer<typeof BillSchema>>({
     resolver: zodResolver(BillSchema),
     defaultValues: {
-      item: "",
-      category: "Cement",
-      status: 0,
-      amount: 0,
+      item: props.invoice?.item ?? "",
+      category: props.invoice?.category ?? "Cement",
+      status: props.invoice ? BillStatusObj[props.invoice?.status] : 0,
+      amount: props.invoice?.amount ?? 0,
+      clientEmail: props.invoice?.userEmail ?? "",
     },
   });
 
@@ -72,6 +73,7 @@ export const CreateBillDialog = (props: CreateBillDialogProps) => {
 
     if(props.invoice) {
 
+      values['amount'] = values['amount'].toString();
       updateBill(props.invoice, values).then((val: any) => {
         setOpenDialog(false);
       });
@@ -131,7 +133,7 @@ className="grid grid-cols-4 items-center gap-4"
                     <FormItem>
                       <FormLabel>Item Name</FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder="Item Name" type="text" value={props.invoice?.item ?? ""}/>
+                        <Input {...field} placeholder="Item Name" type="text"/>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -145,7 +147,7 @@ className="grid grid-cols-4 items-center gap-4"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Category</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={props.invoice?.category ?? field.value}>
+                        <Select onValueChange={field.onChange}>
                       <FormControl>
                           <SelectTrigger className="w-[180px]">
                             <SelectValue placeholder="Category" />
@@ -154,7 +156,7 @@ className="grid grid-cols-4 items-center gap-4"
                           <SelectContent>
                             {CategoryList.map((cat) => {
                               return(
-                              <SelectItem value={cat}>{cat}</SelectItem>
+                              <SelectItem key={cat} value={cat}>{cat}</SelectItem>
                             );
                           })}
                             {/*<SelectItem value="light">Light</SelectItem>
@@ -184,7 +186,7 @@ className="grid grid-cols-4 items-center gap-4"
                         <Select onValueChange={field.onChange} defaultValue={props.invoice?.status ?? field.value}>
                       <FormControl>
                           <SelectTrigger className="w-[180px]">
-                            <SelectValue placeholder={`${BillStatusObj[props.invoice?.status] ?? 'Status'}`}/>
+                            <SelectValue placeholder='Status'/>
                           </SelectTrigger>
                       </FormControl>
                           <SelectContent>
@@ -210,7 +212,7 @@ className="grid grid-cols-4 items-center gap-4"
                     <FormItem>
                       <FormLabel>Amount</FormLabel>
                       <FormControl>
-                        <Input {...field} type="number" value={props.invoice?.amount ?? 0} />
+                        <Input {...field} type="number" />
                       </FormControl>
                       <FormDescription>The amount to be paid by customer to Interior Designer</FormDescription>
                       <FormMessage />
@@ -226,7 +228,7 @@ className="grid grid-cols-4 items-center gap-4"
                     <FormItem>
                       <FormLabel>Client E-mail Address</FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder="Email" type="email" value={props.invoice?.userEmail ?? ""} />
+                        <Input {...field} placeholder="Email" type="text" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

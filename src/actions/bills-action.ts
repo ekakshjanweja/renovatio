@@ -7,6 +7,7 @@ import { getUserByEmail } from "@/services/user-service";
 import { BillSchema } from "@/types/zod-schema";
 import { z } from "zod";
 import { eq } from "drizzle-orm";
+import { diffObject } from "@/lib/utils";
 
 export const createBill = async (values: z.infer<typeof BillSchema>, designerId: string) => {
     // create bill server action to make a bill in the database
@@ -64,9 +65,19 @@ export const getAllBills = async (userId: string, isDes = false) => {
 
 export const updateBill = async (invoice: any, changed: any) => {
   // update the stuff
-  console.log("old:")
-  console.log(invoice);
-  console.log("new:")
-  console.log(changed);
 
+  const update = diffObject(invoice, changed);
+  Object.keys(update).forEach(key => update[key] === undefined && delete update[key])
+
+  if(Object.keys(update).length > 0) {
+    console.log("update is: ");
+    console.log(update);
+    await db.update(bills)
+      .set(update)
+      .where(eq(invoice.id, bills.id))
+    return 204
+  } else {
+    // NO UPDATES
+    return 304;
+  }
 }

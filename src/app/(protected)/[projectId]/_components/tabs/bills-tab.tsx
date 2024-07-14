@@ -47,7 +47,7 @@ export async function BillsTab({ projectId }: BillsTabProps) {
       </TableHeader>
       <TableBody className="w-full">
         {invoices.map((invoice) => (
-          <CreateBillDialog className="w-full" invoice={invoice} isDes={user.isDesigner} userId={user.id} />
+          <CreateBillDialog key={invoice.id} className="w-full" invoice={invoice} isDes={user.isDesigner} userId={user.id} />
         ))}
       </TableBody>
       <TableFooter>
