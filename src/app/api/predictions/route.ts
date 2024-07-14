@@ -1,3 +1,4 @@
+import { NextResponse } from "next/server";
 import Replicate from "replicate";
 
 const replicate = new Replicate({
@@ -26,17 +27,19 @@ export async function POST(req: Request) {
   const prediction = await replicate.predictions.create({
     version: "76604baddc85b1b4616e1c6475eca080da339c8875bd4996705440484a6eac38",
     input: {
-      image:
-        "https://replicate.delivery/pbxt/KhTNuTIKK1F1tvVl8e7mqOlhR3z3D0SAojAMN8BNftCvAubM/bedroom_3.jpg",
+      image: image,
+      // ??
+      //"https://replicate.delivery/pbxt/KhTNuTIKK1F1tvVl8e7mqOlhR3z3D0SAojAMN`8BNftCvAubM/bedroom_3.jpg",
       prompt: Prompt,
     },
   });
 
   if (prediction?.error) {
-    return new Response(JSON.stringify({ detail: prediction.error.detail }), {
-      status: 500,
-    });
+    return NextResponse.json(
+      { detail: prediction.error.detail },
+      { status: 500 }
+    );
   }
 
-  return new Response(JSON.stringify(prediction), { status: 201 });
+  return NextResponse.json(prediction, { status: 201 });
 }

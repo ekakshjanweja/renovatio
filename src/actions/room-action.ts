@@ -98,10 +98,6 @@ export const addImageForGeneration = async (
 
   if (prevImageUrl != null) {
     await deleteImageFromUploadThing(prevImageUrl);
-    await db
-      .update(rooms)
-      .set({ imageForGeneration: null })
-      .where(eq(rooms.id, roomId));
   }
 
   await db
