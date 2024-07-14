@@ -64,6 +64,14 @@ export const Navbar = async () => {
             )}
           </div>
 
+          {session === null && (
+            <Link href={"/landing"}>
+              <Button variant="link" size="sm" className="border-2 uppercase">
+                Try Now
+              </Button>
+            </Link>
+          )}
+
           <div className="hidden md:flex">
             {session === null ? (
               <>
