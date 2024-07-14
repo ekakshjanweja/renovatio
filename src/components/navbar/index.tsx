@@ -98,6 +98,18 @@ export const Navbar = async () => {
                       Home
                     </Button>
                   </Link>
+
+                  {!user.isDesigner && (
+                    <Link href={"/landing"}>
+                      <Button
+                        variant="link"
+                        size="sm"
+                        className="border-2 uppercase"
+                      >
+                        Try Now
+                      </Button>
+                    </Link>
+                  )}
                 </div>
               </>
             )}
