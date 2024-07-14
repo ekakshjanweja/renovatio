@@ -5,7 +5,8 @@ import { SettingsTab } from "./_components/tabs/settings-tab";
 import { auth } from "@/auth";
 import { notFound } from "next/navigation";
 import { getCurrentUser, setUserDesigner } from "@/services/user-service";
-import { db } from "@/db/index"
+//import { db } from "@/db/index"
+import db from "@/db/index"
 import { users } from "@/db/schema/users";
 
 interface UserProjectPageProps {
@@ -38,7 +39,7 @@ const UserProjectPage = async ({ params }: UserProjectPageProps) => {
             <DetailsTab projectId={projectId} />
           </TabsContent>
           <TabsContent value="bills">
-            <BillsTab />
+            <BillsTab projectId={projectId} />
           </TabsContent>
           <TabsContent value="settings">
             <SettingsTab projectId={projectId} />

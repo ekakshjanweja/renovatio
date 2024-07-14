@@ -53,7 +53,7 @@ export const WaitListSchema = z.object({
 
 export const CategoryList = ["Tiles", "Cement", "Furniture", "Kitchenware"];
 
-export const BillStatusObj = {0: 'unpaid', 1: 'pending', 2: 'paid'};
+export const BillStatusObj: {[key: number]: string;} = {0: 'unpaid', 1: 'pending', 2: 'paid'};
 
 export const BillSchema = z.object({
   item: z
@@ -62,6 +62,7 @@ export const BillSchema = z.object({
       message: "Bill Item Name is required",
     })
     .max(500, { message: "Bill Item Name cant exceed 500 characters" }),
+  // @ts-ignore
   category: z.enum(CategoryList),
   // {0: unpaid, 1: pending, 2: paid}
   status: z

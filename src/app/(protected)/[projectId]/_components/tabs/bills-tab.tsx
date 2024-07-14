@@ -27,7 +27,7 @@ export async function BillsTab({ projectId }: BillsTabProps) {
   const session = await auth();
   const user = await getCurrentUser();
 
-  const invoices = await getAllBills(user.id, user.isDesigner);
+  const invoices = await getAllBills(user.id, user.isDesigner ?? false);
   const total = invoices.reduce((total, invoice) => total + Number(invoice.amount), 0);
 
   if (!session) {
@@ -47,7 +47,7 @@ export async function BillsTab({ projectId }: BillsTabProps) {
       </TableHeader>
       <TableBody className="w-full">
         {invoices.map((invoice) => (
-          <CreateBillDialog key={invoice.id} className="w-full" invoice={invoice} isDes={user.isDesigner} userId={user.id} />
+          <CreateBillDialog key={invoice.id} invoice={invoice} isDes={user.isDesigner ?? false} userId={user.id} />
         ))}
       </TableBody>
       <TableFooter>
@@ -58,7 +58,7 @@ export async function BillsTab({ projectId }: BillsTabProps) {
       </TableFooter>
     </Table>
       {/**/}
-      <CreateBillDialog isDes={user.isDesigner} userId={user.id} />
+      <CreateBillDialog isDes={user.isDesigner ?? false} userId={user.id} />
       </div>
   );
 }

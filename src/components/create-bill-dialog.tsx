@@ -39,11 +39,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { createBill, updateBill } from "@/actions/bills-action";
 import React from 'react';
+import { z } from "zod";
 
 interface CreateBillDialogProps {
   isDes: boolean;
   userId: string;
-  invoice?: z.infer<typeof BillSchema>;
+  invoice?: z.infer<typeof BillSchema> & {userName: string; userEmail: string; id: string;};
 }
 
 export const CreateBillDialog = (props: CreateBillDialogProps) => {
@@ -56,7 +57,7 @@ export const CreateBillDialog = (props: CreateBillDialogProps) => {
     defaultValues: {
       item: props.invoice?.item ?? "",
       category: props.invoice?.category ?? "Cement",
-      status: props.invoice ? BillStatusObj[props.invoice?.status] : 0,
+      status: props.invoice?.status ?? 0,
       amount: props.invoice?.amount ?? 0,
       clientEmail: props.invoice?.userEmail ?? "",
     },
@@ -73,8 +74,9 @@ export const CreateBillDialog = (props: CreateBillDialogProps) => {
 
     if(props.invoice) {
 
-      values['amount'] = values['amount'].toString();
-      updateBill(props.invoice, values).then((val: any) => {
+      // for the update to have string instead
+      const newValues = {...values, amount: values['amount'].toString()};
+      updateBill(props.invoice, newValues).then((val: any) => {
         setOpenDialog(false);
       });
       
@@ -93,7 +95,7 @@ export const CreateBillDialog = (props: CreateBillDialogProps) => {
   };
 
 
-    return(<Dialog open={openDialog} onOpenChange={setOpenDialog} className="w-full">
+    return(<Dialog open={openDialog} onOpenChange={setOpenDialog}>
       <DialogTrigger className="w-full" asChild>
       
       {props.invoice ? 
@@ -126,7 +128,8 @@ export const CreateBillDialog = (props: CreateBillDialogProps) => {
           <div className="grid gap-4 py-4">
 
                 <FormField
-className="grid grid-cols-4 items-center gap-4"
+                  // @ts-ignore
+                  className="grid grid-cols-4 items-center gap-4"
                   control={form.control}
                   name="item"
                   render={({ field }) => (
@@ -141,7 +144,8 @@ className="grid grid-cols-4 items-center gap-4"
                 />
 
                 <FormField
-className="grid grid-cols-4 items-center gap-4"
+                  // @ts-ignore
+                  className="grid grid-cols-4 items-center gap-4"
                   control={form.control}
                   name="category"
                   render={({ field }) => (
@@ -169,7 +173,8 @@ className="grid grid-cols-4 items-center gap-4"
                   )}
                 />
                 <FormField
-className="grid grid-cols-4 items-center gap-4"
+                  // @ts-ignore
+                  className="grid grid-cols-4 items-center gap-4"
                   control={form.control}
                   name="status"
                   render={({ field }) => (
@@ -183,7 +188,7 @@ className="grid grid-cols-4 items-center gap-4"
                       <FormMessage />
                   */}
                       <FormLabel>Status</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={props.invoice?.status ?? field.value}>
+                        <Select onValueChange={field.onChange} defaultValue={props.invoice?.status?.toString() ?? field.value.toString()}>
                       <FormControl>
                           <SelectTrigger className="w-[180px]">
                             <SelectValue placeholder='Status'/>
@@ -192,7 +197,7 @@ className="grid grid-cols-4 items-center gap-4"
                           <SelectContent>
                             {Object.entries(BillStatusObj).map((status) => {
                               return(
-                              <SelectItem value={status[0]}>{status[1].charAt(0).toUpperCase() + status[1].slice(1)}</SelectItem>
+                              <SelectItem key={status[0]} value={status[0]}>{status[1].charAt(0).toUpperCase() + status[1].slice(1)}</SelectItem>
                             );
                           })}
                             {/*<SelectItem value="light">Light</SelectItem>
@@ -205,7 +210,8 @@ className="grid grid-cols-4 items-center gap-4"
                   )}
                 />
                 <FormField
-className="grid grid-cols-4 items-center gap-4"
+                  // @ts-ignore
+                  className="grid grid-cols-4 items-center gap-4"
                   control={form.control}
                   name="amount"
                   render={({ field }) => (
@@ -221,6 +227,7 @@ className="grid grid-cols-4 items-center gap-4"
                 />
 
                 <FormField
+                  // @ts-ignore
                   className="grid grid-cols-4 items-center gap-4"
                   control={form.control}
                   name="clientEmail"

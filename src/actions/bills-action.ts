@@ -48,14 +48,15 @@ export const getAllBills = async (userId: string, isDes = false) => {
   else
     res = await db.select().from(bills).where(eq(bills.clientId, userId))
   */
-  const res = await db
+  const res: (z.infer<typeof BillSchema> & {userName: string; userEmail: string; id: string;})[] = (await db
+    // @ts-ignore
     .select({userName: users.name, userEmail: users.email, ...bills})
     .from(users)
       // if i am designer, i want to see client name, and vice versa
     .innerJoin(bills, eq(isDes ? bills.clientId : bills.designerId, users.id))
 
       // if i am designer, i want to see all bills relevant to just ME
-    .where(eq(isDes ? bills.designerId : bills.clientId, userId));
+    .where(eq(isDes ? bills.designerId : bills.clientId, userId))) as unknown as (z.infer<typeof BillSchema> & {userName: string; userEmail: string; id: string;})[];
 
   //console.log("res is: ");
   //console.log(res);
@@ -67,7 +68,8 @@ export const updateBill = async (invoice: any, changed: any) => {
   // update the stuff
 
   const update = diffObject(invoice, changed);
-  Object.keys(update).forEach(key => update[key] === undefined && delete update[key])
+  // @ts-ignore
+  Object.keys(update).forEach(key => update[key] === undefined && delete update[key]);
 
   if(Object.keys(update).length > 0) {
     console.log("update is: ");
