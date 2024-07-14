@@ -80,3 +80,9 @@ export const BillSchema = z.object({
     .positive({ message: "Invalid number, only positive amount allowed" }),
   clientEmail: z.string().email(),
 });
+
+export const ReplicateFormSchema = z.object({
+  prompt: z.string().min(1, {
+    message: "no prompt was entered"
+  })
+})

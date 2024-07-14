@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { DeleteProjectButton } from "../delete-project-button";
 import { UploadProjectThumbnailComponent } from "../upload-component";
 
@@ -8,8 +9,11 @@ interface SettingsTabProps {
 export const SettingsTab = ({ projectId }: SettingsTabProps) => {
   return (
     <>
-      <UploadProjectThumbnailComponent projectId={projectId} />
-      <DeleteProjectButton projectId={projectId} />
+      <div className="flex flex-col gap-4 justify-start items-start">
+        <UploadProjectThumbnailComponent projectId={projectId} />
+
+        <DeleteProjectButton projectId={projectId} />
+      </div>
     </>
   );
 };

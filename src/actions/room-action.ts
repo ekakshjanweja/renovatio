@@ -85,6 +85,29 @@ export const deleteImageFromRoom = async (roomId: string, imageUrl: string) => {
   revalidatePath(`/api/${room.projectId}/${roomId}`);
 };
 
+export const addImageForGeneration = async (
+  roomId: string,
+  imageUrl: string,
+  prevImageUrl: string | null
+) => {
+  const room = (await db.select().from(rooms).where(eq(rooms.id, roomId)))[0];
+
+  if (!room) {
+    return { error: "Room Not Found!" };
+  }
+
+  if (prevImageUrl != null) {
+    await deleteImageFromUploadThing(prevImageUrl);
+  }
+
+  await db
+    .update(rooms)
+    .set({ imageForGeneration: imageUrl })
+    .where(eq(rooms.id, roomId));
+
+  revalidatePath(`/api/${room.projectId}/${roomId}`);
+};
+
 export const deleteRoom = async (roomId: string) => {
   await db.delete(rooms).where(eq(rooms.id, roomId));
 };

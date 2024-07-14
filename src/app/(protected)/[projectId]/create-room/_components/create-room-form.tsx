@@ -46,6 +46,7 @@ export const CreateRoomForm = ({ projectId }: CreateRoomFormProps) => {
       name: values.name,
       description: "",
       projectId: projectId,
+      imageForGeneration: null,
       images: [],
     };
 
