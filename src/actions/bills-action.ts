@@ -48,15 +48,22 @@ export const getAllBills = async (userId: string, isDes = false) => {
     res = await db.select().from(bills).where(eq(bills.clientId, userId))
   */
   const res = await db
-.select({userName: users.name, ...bills})
-.from(users)
-  // if i am designer, i want to see client name, and vice versa
-.innerJoin(bills, eq(isDes ? bills.clientId : bills.designerId, users.id))
+    .select({userName: users.name, userEmail: users.email, ...bills})
+    .from(users)
+      // if i am designer, i want to see client name, and vice versa
+    .innerJoin(bills, eq(isDes ? bills.clientId : bills.designerId, users.id))
 
-  // if i am designer, i want to see all bills relevant to just ME
-.where(eq(isDes ? bills.designerId : bills.clientId, userId));
+      // if i am designer, i want to see all bills relevant to just ME
+    .where(eq(isDes ? bills.designerId : bills.clientId, userId));
 
   //console.log("res is: ");
   //console.log(res);
   return res;
+}
+
+
+export const updateBill = async (invoice: any) => {
+  // update the stuff
+  console.log("to be updated received at backend: ")
+  console.log(invoice);
 }

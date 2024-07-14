@@ -35,24 +35,19 @@ export async function BillsTab({ projectId }: BillsTabProps) {
   }
   return (
     <div>
-    <Table>
+    <Table className="w-full">
       {/*<TableCaption>A list of your recent invoices.</TableCaption>*/}
       <TableHeader>
-        <TableRow>
-          <TableHead className="w-[100px]">Item</TableHead>
-          <TableHead>Status</TableHead>
-          <TableHead>{user.isDesigner ? 'Client' : 'Interior Designer'}</TableHead>
-          <TableHead className="text-right">Amount</TableHead>
+        <TableRow className="w-full">
+          <TableHead className="w-7/12">Item</TableHead>
+          <TableHead className="w-2/12">Status</TableHead>
+          <TableHead className="w-2/12">{user.isDesigner ? 'Client' : 'Interior Designer'}</TableHead>
+          <TableHead className="text-right w-1/12">Amount</TableHead>
         </TableRow>
       </TableHeader>
-      <TableBody>
+      <TableBody className="w-full">
         {invoices.map((invoice) => (
-          <TableRow key={invoice.id}>
-            <TableCell className="font-medium">{invoice.item}</TableCell>
-            <TableCell>{invoice.status}</TableCell>
-            <TableCell>{invoice.userName}</TableCell>
-            <TableCell className="text-right">{invoice.amount}</TableCell>
-          </TableRow>
+          <CreateBillDialog className="w-full" invoice={invoice} isDes={user.isDesigner} userId={user.id} />
         ))}
       </TableBody>
       <TableFooter>

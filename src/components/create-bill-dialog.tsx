@@ -30,21 +30,30 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import {
+  TableCell,
+  TableRow,
+} from "@/components/ui/table";
 import { BillSchema, CategoryList, BillStatusObj } from "@/types/zod-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { createBill } from "@/actions/bills-action";
+import { createBill, updateBill } from "@/actions/bills-action";
 import React from 'react';
 
 interface CreateBillDialogProps {
   isDes: boolean;
   userId: string;
+  invoice?: z.infer<typeof BillSchema>;
 }
+
 export const CreateBillDialog = (props: CreateBillDialogProps) => {
 
   if (!props.isDes) {
     return null;
   }
+  
+  console.log("props received: ");
+  console.log(props);
 
   const form = useForm<z.infer<typeof BillSchema>>({
     resolver: zodResolver(BillSchema),
@@ -65,27 +74,45 @@ export const CreateBillDialog = (props: CreateBillDialogProps) => {
     console.log("values submitted are => ")
     console.log(JSON.stringify(values));
 
-    createBill(values, props.userId).then((val) => {
-      setOpenDialog(false);
-      toast({
-            title: `Created the Bill: ${Object.keys(val)[0]}`,
-            description: "Refresh the page if the bill isnt visible immediately",
-          })
+    if(props.invoice) {
+
+      updateBill({...props.invoice, ...values});
+      
+    } else {
+
+      createBill(values, props.userId).then((val) => {
+        setOpenDialog(false);
+        toast({
+              title: `Created the Bill: ${Object.keys(val)[0]}`,
+              description: "Refresh the page if the bill isnt visible immediately",
+            })
       });
       console.log("donez")
+    }
+
   };
 
 
-    return(<Dialog open={openDialog} onOpenChange={setOpenDialog}>
-      <DialogTrigger asChild>
-        <div className="w-full h-9 flex justify-center cursor-pointer items-center text-neutral-700 hover:text-neutral-300 hover:bg-neutral-900 transition-colors">
+    return(<Dialog open={openDialog} onOpenChange={setOpenDialog} className="w-full">
+      <DialogTrigger className="w-full" asChild>
+      
+      {props.invoice ? 
+        <TableRow key={props.invoice.id} className="w-full flex justify-between">
+          <TableCell className="font-medium w-7/12">{props.invoice.item}</TableCell>
+          <TableCell className="w-2/12">{props.invoice.status}</TableCell>
+          <TableCell className="w-2/12">{props.invoice.userName}</TableCell>
+          <TableCell className="text-right w-1/12">{props.invoice.amount}</TableCell>
+        </TableRow>
+        : <div className="w-full h-9 flex justify-center cursor-pointer items-center text-neutral-700 hover:text-neutral-300 hover:bg-neutral-900 transition-colors">
           <PlusCircle />
           <div className="ml-4">Add Bill</div>
-      </div>
+        </div>
+      }
+        
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Add Bill</DialogTitle>
+          <DialogTitle>{props.invoice ? 'Update' : 'Add'} Bill</DialogTitle>
           <DialogDescription>
             Select Item, Category, status, and Amount
           </DialogDescription>
@@ -103,7 +130,7 @@ className="grid grid-cols-4 items-center gap-4"
                     <FormItem>
                       <FormLabel>Item Name</FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder="Item Name" type="text" />
+                        <Input {...field} placeholder="Item Name" type="text" value={props.invoice?.item ?? ""}/>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -117,7 +144,7 @@ className="grid grid-cols-4 items-center gap-4"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Category</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <Select onValueChange={field.onChange} defaultValue={props.invoice?.category ?? field.value}>
                       <FormControl>
                           <SelectTrigger className="w-[180px]">
                             <SelectValue placeholder="Category" />
@@ -153,10 +180,10 @@ className="grid grid-cols-4 items-center gap-4"
                       <FormMessage />
                   */}
                       <FormLabel>Status</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <Select onValueChange={field.onChange} defaultValue={props.invoice?.status ?? field.value}>
                       <FormControl>
                           <SelectTrigger className="w-[180px]">
-                            <SelectValue placeholder="Status" />
+                            <SelectValue placeholder={`${BillStatusObj[props.invoice?.status] ?? 'Status'}`}/>
                           </SelectTrigger>
                       </FormControl>
                           <SelectContent>
@@ -182,7 +209,7 @@ className="grid grid-cols-4 items-center gap-4"
                     <FormItem>
                       <FormLabel>Amount</FormLabel>
                       <FormControl>
-                        <Input {...field} type="number" />
+                        <Input {...field} type="number" value={props.invoice?.amount ?? 0} />
                       </FormControl>
                       <FormDescription>The amount to be paid by customer to Interior Designer</FormDescription>
                       <FormMessage />
@@ -198,7 +225,7 @@ className="grid grid-cols-4 items-center gap-4"
                     <FormItem>
                       <FormLabel>Client E-mail Address</FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder="Email" type="email" />
+                        <Input {...field} placeholder="Email" type="email" value={props.invoice?.userEmail ?? ""} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
