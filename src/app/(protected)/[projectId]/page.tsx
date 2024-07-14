@@ -4,7 +4,10 @@ import { BillsTab } from "./_components/tabs/bills-tab";
 import { SettingsTab } from "./_components/tabs/settings-tab";
 import { auth } from "@/auth";
 import { notFound } from "next/navigation";
-import { getCurrentUser } from "@/services/user-service";
+import { getCurrentUser, setUserDesigner } from "@/services/user-service";
+//import { db } from "@/db/index"
+import db from "@/db/index"
+import { users } from "@/db/schema/users";
 
 interface UserProjectPageProps {
   params: {
@@ -17,7 +20,7 @@ const UserProjectPage = async ({ params }: UserProjectPageProps) => {
 
   const user = await getCurrentUser();
 
-  if (!session || !user.isDesigner) {
+  if (!session) {//|| !user.isDesigner) {
     notFound();
   }
 
@@ -36,7 +39,7 @@ const UserProjectPage = async ({ params }: UserProjectPageProps) => {
             <DetailsTab projectId={projectId} />
           </TabsContent>
           <TabsContent value="bills">
-            <BillsTab />
+            <BillsTab projectId={projectId} />
           </TabsContent>
           <TabsContent value="settings">
             <SettingsTab projectId={projectId} />

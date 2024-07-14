@@ -8,80 +8,57 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { CreateBillDialog } from "@/components/create-bill-dialog";
+import { getCurrentUser } from "@/services/user-service";
+import { notFound } from "next/navigation";
+import { auth } from "@/auth";
+import { getAllBills } from "@/actions/bills-action";
 
-const invoices = [
-  {
-    invoice: "INV001",
-    paymentStatus: "Paid",
-    totalAmount: "$250.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV002",
-    paymentStatus: "Pending",
-    totalAmount: "$150.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV003",
-    paymentStatus: "Unpaid",
-    totalAmount: "$350.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV004",
-    paymentStatus: "Paid",
-    totalAmount: "$450.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV005",
-    paymentStatus: "Paid",
-    totalAmount: "$550.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV006",
-    paymentStatus: "Pending",
-    totalAmount: "$200.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV007",
-    paymentStatus: "Unpaid",
-    totalAmount: "$300.00",
-    paymentMethod: "Credit Card",
-  },
-];
 
-export function BillsTab() {
+interface BillsTabProps {
+  projectId: string;
+}
+
+export async function BillsTab({ projectId }: BillsTabProps) {
+  // we got project id, now lets fetch bills
+  // 
+  // const project = await getProjectById(projectId);
+  const session = await auth();
+  const user = await getCurrentUser();
+
+  const invoices = await getAllBills(user.id, user.isDesigner ?? false);
+  const total = invoices.reduce((total, invoice) => total + Number(invoice.amount), 0);
+
+  if (!session) {
+    notFound();
+  }
   return (
-    <Table>
-      <TableCaption>A list of your recent invoices.</TableCaption>
+    <div>
+    <Table className="w-full">
+      {/*<TableCaption>A list of your recent invoices.</TableCaption>*/}
       <TableHeader>
-        <TableRow>
-          <TableHead className="w-[100px]">Invoice</TableHead>
-          <TableHead>Status</TableHead>
-          <TableHead>Method</TableHead>
-          <TableHead className="text-right">Amount</TableHead>
+        <TableRow className="w-full">
+          <TableHead className="w-7/12">Item</TableHead>
+          <TableHead className="w-2/12">Status</TableHead>
+          <TableHead className="w-2/12">{user.isDesigner ? 'Client' : 'Interior Designer'}</TableHead>
+          <TableHead className="text-right w-1/12">Amount</TableHead>
         </TableRow>
       </TableHeader>
-      <TableBody>
+      <TableBody className="w-full">
         {invoices.map((invoice) => (
-          <TableRow key={invoice.invoice}>
-            <TableCell className="font-medium">{invoice.invoice}</TableCell>
-            <TableCell>{invoice.paymentStatus}</TableCell>
-            <TableCell>{invoice.paymentMethod}</TableCell>
-            <TableCell className="text-right">{invoice.totalAmount}</TableCell>
-          </TableRow>
+          <CreateBillDialog key={invoice.id} invoice={invoice} isDes={user.isDesigner ?? false} userId={user.id} />
         ))}
       </TableBody>
       <TableFooter>
         <TableRow>
           <TableCell colSpan={3}>Total</TableCell>
-          <TableCell className="text-right">$2,500.00</TableCell>
+          <TableCell className="text-right">{total}</TableCell>
         </TableRow>
       </TableFooter>
     </Table>
+      {/**/}
+      <CreateBillDialog isDes={user.isDesigner ?? false} userId={user.id} />
+      </div>
   );
 }
