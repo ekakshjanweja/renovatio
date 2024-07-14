@@ -62,8 +62,11 @@ export const getAllBills = async (userId: string, isDes = false) => {
 }
 
 
-export const updateBill = async (invoice: any) => {
+export const updateBill = async (invoice: any, changed: any) => {
   // update the stuff
-  console.log("to be updated received at backend: ")
+  console.log("old:")
   console.log(invoice);
+  console.log("new:")
+  console.log(changed);
+
 }

@@ -48,10 +48,6 @@ interface CreateBillDialogProps {
 
 export const CreateBillDialog = (props: CreateBillDialogProps) => {
 
-  if (!props.isDes) {
-    return null;
-  }
-  
   console.log("props received: ");
   console.log(props);
 
@@ -76,11 +72,13 @@ export const CreateBillDialog = (props: CreateBillDialogProps) => {
 
     if(props.invoice) {
 
-      updateBill({...props.invoice, ...values});
+      updateBill(props.invoice, values).then((val: any) => {
+        setOpenDialog(false);
+      });
       
     } else {
 
-      createBill(values, props.userId).then((val) => {
+      createBill(values, props.userId).then((val: any) => {
         setOpenDialog(false);
         toast({
               title: `Created the Bill: ${Object.keys(val)[0]}`,
@@ -110,6 +108,9 @@ export const CreateBillDialog = (props: CreateBillDialogProps) => {
       }
         
       </DialogTrigger>
+    {
+     props.isDes ? 
+
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>{props.invoice ? 'Update' : 'Add'} Bill</DialogTitle>
@@ -232,51 +233,7 @@ className="grid grid-cols-4 items-center gap-4"
                   )}
                 />
 
-              {/*
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="item" className="text-right">
-              item
-            </Label>
-            <Input
-              id="item"
-              defaultValue="Pedro Duarte"
-              className="col-span-3"
-            />
-          </div>
-
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="category" className="text-right">
-              category
-            </Label>
-            <Input
-              id="category"
-              defaultValue="@peduarte"
-              className="col-span-3"
-            />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="status" className="text-right">
-              status
-            </Label>
-            <Input
-              id="status"
-              defaultValue="@peduarte"
-              className="col-span-3"
-            />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="amount" className="text-right">
-              amount
-            </Label>
-            <Input
-              id="amount"
-              type="number"
-              defaultValue="0"
-              className="col-span-3"
-            />
-          </div>
-
-              */}
+              
           </div>
         <DialogFooter>
           <Button type="submit">Save</Button>
@@ -284,6 +241,10 @@ className="grid grid-cols-4 items-center gap-4"
           </form>
         </Form>
       </DialogContent>
+      :
+        null
+    }
+
     </Dialog>
-  );
-}
+    )
+    }
