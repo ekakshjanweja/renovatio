@@ -37,7 +37,7 @@ export async function POST(req: Request) {
   if (prediction?.error) {
     return NextResponse.json(
       { detail: prediction.error.detail },
-      { status: 500 }
+      { status: 500 },
     );
   }
 

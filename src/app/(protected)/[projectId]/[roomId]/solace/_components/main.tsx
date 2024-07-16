@@ -20,6 +20,7 @@ import { ShowError } from "./error";
 import { ShowPrediction } from "./prediction";
 import { Room } from "@/types/interfaces";
 import { UploadImageForGenerationComponent } from "../../_components/upload-image-for-generation";
+import { CancelButton } from "./cancelPredictionButton";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -54,7 +55,8 @@ export const MainSolaceComponent = ({
 
     while (
       prediction.status !== "succeeded" &&
-      prediction.status !== "failed"
+      prediction.status !== "failed" &&
+      prediction.status !== "canceled"
     ) {
       await sleep(1000);
       const response = await fetch("/api/predictions/" + prediction.id, {
@@ -73,6 +75,8 @@ export const MainSolaceComponent = ({
   const form = useForm<z.infer<typeof ReplicateFormSchema>>({
     resolver: zodResolver(ReplicateFormSchema),
     defaultValues: {
+      image:
+        "https://replicate.delivery/pbxt/KhTNuTIKK1F1tvVl8e7mqOlhR3z3D0SAojAMN8BNftCvAubM/bedroom_3.jpg",
       prompt: "",
     },
   });
@@ -123,6 +127,8 @@ export const MainSolaceComponent = ({
                 </Button>
               </form>
             </Form>
+
+            <CancelButton prediction={prediction} />
 
             <ShowError error={error} />
           </CardContent>
