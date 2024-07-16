@@ -53,7 +53,11 @@ export const WaitListSchema = z.object({
 
 export const CategoryList = ["Tiles", "Cement", "Furniture", "Kitchenware"];
 
-export const BillStatusObj: {[key: number]: string;} = {0: 'unpaid', 1: 'pending', 2: 'paid'};
+export const BillStatusObj: { [key: number]: string } = {
+  0: "unpaid",
+  1: "pending",
+  2: "paid",
+};
 
 export const BillSchema = z.object({
   item: z
@@ -65,24 +69,23 @@ export const BillSchema = z.object({
   // @ts-ignore
   category: z.enum(CategoryList),
   // {0: unpaid, 1: pending, 2: paid}
-  status: z
-    .coerce.number()
+  status: z.coerce
+    .number()
     .lt(3, {
-      message:
-        `Too big value for status, use these number: ${BillStatusObj}`,
+      message: `Too big value for status, use these number: ${BillStatusObj}`,
     })
     .gte(0, {
-      message:
-        `Too small value for status, use these numbers: ${BillStatusObj}`,
+      message: `Too small value for status, use these numbers: ${BillStatusObj}`,
     }),
-  amount: z
-    .coerce.number()
+  amount: z.coerce
+    .number()
     .positive({ message: "Invalid number, only positive amount allowed" }),
   clientEmail: z.string().email(),
 });
 
 export const ReplicateFormSchema = z.object({
+  image: z.string().url({ message: "Invalid URL" }),
   prompt: z.string().min(1, {
-    message: "no prompt was entered"
-  })
-})
+    message: "no prompt was entered",
+  }),
+});
