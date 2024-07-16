@@ -1,3 +1,4 @@
+import { log } from "console";
 import { NextResponse } from "next/server";
 import Replicate, { Prediction } from "replicate";
 
@@ -41,11 +42,13 @@ export async function POST(req: Request) {
       //"https://replicate.delivery/pbxt/KhTNuTIKK1F1tvVl8e7mqOlhR3z3D0SAojAMN`8BNftCvAubM/bedroom_3.jpg",
       prompt: Prompt,
     },
+    webhook: `${WEBHOOK_HOST}/api/webhooks`,
+    webhook_events_filter: ["start", "completed"],
   });
 
-  if (prediction?.error) {
-    console.log(prediction.error.detail);
+  log(prediction.completed_at);
 
+  if (prediction?.error) {
     return NextResponse.json(
       { detail: prediction.error.detail },
       { status: 500 }

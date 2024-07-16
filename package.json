@@ -28,6 +28,7 @@
     "@radix-ui/react-toast": "^1.2.1",
     "@tabler/icons-react": "^2.47.0",
     "@uploadthing/react": "^6.5.1",
+    "ai": "^3.2.26",
     "bcryptjs": "^2.4.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
