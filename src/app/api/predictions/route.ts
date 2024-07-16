@@ -44,6 +44,8 @@ export async function POST(req: Request) {
   });
 
   if (prediction?.error) {
+    console.log(prediction.error.detail);
+
     return NextResponse.json(
       { detail: prediction.error.detail },
       { status: 500 }
