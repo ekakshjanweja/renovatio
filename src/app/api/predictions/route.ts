@@ -34,7 +34,6 @@ export async function POST(req: Request) {
   // }
 
   const prediction = await replicate.predictions.create({
-    stream: true,
     version: "76604baddc85b1b4616e1c6475eca080da339c8875bd4996705440484a6eac38",
     input: {
       image: image,
