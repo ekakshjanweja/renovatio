@@ -26,7 +26,14 @@ export async function POST(req: Request) {
     throw new Error("The REPLICATE_API_TOKEN environment variable is not set.");
   }
 
-  const options = {
+  // {
+  //   ...options,
+  //   stream: true,
+  //   webhook: `${WEBHOOK_HOST}/api/webhooks`,
+  //   webhook_events_filter: ["start", "completed"],
+  // }
+
+  const prediction = await replicate.predictions.create({
     version: "76604baddc85b1b4616e1c6475eca080da339c8875bd4996705440484a6eac38",
     input: {
       image: image,
@@ -34,13 +41,6 @@ export async function POST(req: Request) {
       //"https://replicate.delivery/pbxt/KhTNuTIKK1F1tvVl8e7mqOlhR3z3D0SAojAMN`8BNftCvAubM/bedroom_3.jpg",
       prompt: Prompt,
     },
-  };
-
-  const prediction = await replicate.predictions.create({
-    ...options,
-    stream: true,
-    webhook: `${WEBHOOK_HOST}/api/webhooks`,
-    webhook_events_filter: ["start", "completed"],
   });
 
   if (prediction?.error) {
