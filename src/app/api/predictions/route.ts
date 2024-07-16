@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import Replicate from "replicate";
+import Replicate, { Prediction } from "replicate";
 
 const replicate = new Replicate({
   auth: process.env.REPLICATE_API_TOKEN,
@@ -17,6 +17,8 @@ const replicate = new Replicate({
 //   }
 // };
 
+const WEBHOOK_HOST = "https://renovatio-design.vercel.app";
+
 export async function POST(req: Request) {
   const { Prompt, image } = await req.json();
 
@@ -24,7 +26,7 @@ export async function POST(req: Request) {
     throw new Error("The REPLICATE_API_TOKEN environment variable is not set.");
   }
 
-  const prediction = await replicate.predictions.create({
+  const options: Prediction = {
     version: "76604baddc85b1b4616e1c6475eca080da339c8875bd4996705440484a6eac38",
     input: {
       image: image,
@@ -32,7 +34,24 @@ export async function POST(req: Request) {
       //"https://replicate.delivery/pbxt/KhTNuTIKK1F1tvVl8e7mqOlhR3z3D0SAojAMN`8BNftCvAubM/bedroom_3.jpg",
       prompt: Prompt,
     },
-  });
+    id: "",
+    status: "starting",
+    model: "",
+    source: "api",
+    created_at: "",
+    urls: {
+      get: "",
+      cancel: "",
+      stream: undefined,
+    },
+  };
+
+  if (WEBHOOK_HOST) {
+    options.webhook = `${WEBHOOK_HOST}/api/webhooks`;
+    options.webhook_events_filter = ["start", "completed"];
+  }
+
+  const prediction = await replicate.predictions.create(options);
 
   if (prediction?.error) {
     return NextResponse.json(
