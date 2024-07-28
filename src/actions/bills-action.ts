@@ -3,7 +3,7 @@
 import db from "@/db";
 import { bills } from "@/db/schema/bills";
 import { users } from "@/db/schema/users";
-import { getUserByEmail } from "@/services/user-service";
+import { getUserByEmail } from "@/actions/user-action";
 import { BillSchema } from "@/types/zod-schema";
 import { z } from "zod";
 import { eq } from "drizzle-orm";

@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { getCurrentUser } from "@/services/user-service";
+import { getCurrentUser } from "@/actions/user-action";
 
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";

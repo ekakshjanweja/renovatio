@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { CreateBillDialog } from "@/components/create-bill-dialog";
-import { getCurrentUser } from "@/services/user-service";
+import { getCurrentUser } from "@/actions/user-action";
 import { notFound } from "next/navigation";
 import { auth } from "@/auth";
 import { getAllBills } from "@/actions/bills-action";

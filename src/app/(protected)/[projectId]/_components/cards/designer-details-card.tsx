@@ -1,4 +1,4 @@
-import { getUserById } from "@/services/user-service";
+import { getUserById } from "@/actions/user-action";
 import notFound from "../../../not-found";
 import {
   Card,

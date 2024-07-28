@@ -2,7 +2,7 @@
 
 import db from "@/db";
 import { projects } from "@/db/schema/projects";
-import { getCurrentUser, getUserByEmail } from "@/services/user-service";
+import { getCurrentUser, getUserByEmail } from "@/actions/user-action";
 import { CreateProjectSchema } from "@/types/zod-schema";
 import { eq } from "drizzle-orm";
 import { UTApi } from "uploadthing/server";
