@@ -2,7 +2,7 @@ import { auth } from "@/auth";
 import { getAllProjectsForCurrentUser } from "@/services/project-service";
 import { notFound } from "next/navigation";
 import { ProjectCard } from "./_components/project-card";
-import { setUserDesigner } from "@/services/user-service"
+import { setUserDesigner } from "@/actions/user-action";
 
 const Dashboard = async () => {
   const session = await auth();

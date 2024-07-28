@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { NavbarDropdownMenu } from "./nav-dropdown";
 import { auth } from "@/auth";
-import { getCurrentUser } from "@/services/user-service";
+import { getCurrentUser } from "@/actions/user-action";
 import { ProfileSection } from "./profile-section";
 import { headers } from "next/headers";
 import { Plus } from "lucide-react";

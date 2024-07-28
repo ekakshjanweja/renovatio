@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import { getCurrentUser } from "@/services/user-service";
+import { getCurrentUser } from "@/actions/user-action";
 import { notFound } from "next/navigation";
 import { MainSolaceComponent } from "./_components/main";
 import { Room } from "@/types/interfaces";

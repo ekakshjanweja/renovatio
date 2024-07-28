@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { getCurrentUser, getUserById } from "@/services/user-service";
+import { getCurrentUser, getUserById } from "@/actions/user-action";
 import Link from "next/link";
 
 export const ExploreProjectCard = async ({
