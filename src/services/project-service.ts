@@ -1,7 +1,7 @@
 import db from "@/db";
 import { projects } from "@/db/schema/projects";
 import { eq } from "drizzle-orm";
-import { getCurrentUser } from "./user-service";
+import { getCurrentUser } from "../actions/user-action";
 
 export const getAllProjectsForCurrentUser = async () => {
   const user = await getCurrentUser();
