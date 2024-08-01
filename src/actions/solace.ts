@@ -1,4 +1,20 @@
 "use server";
+import { SolaceGeneration } from "@/types/solace/SolaceInterfaces";
+
+export const getImage = async (id: string): Promise<string> => {
+  const url = `https://cloud.leonardo.ai/api/rest/v1/generations/${id}`;
+
+  const response = await fetch(url, {
+    method: "GET",
+    headers: {
+      accept: "application/json",
+      authorization: `Bearer ${process.env.LEONARDO_API_KEY}`,
+    },
+  });
+
+  let images = (await response.json())["generations_by_pk"] as SolaceGeneration;
+  return images.generated_images[0]!.url;
+};
 
 import { GenerateImageButton } from "@/app/(protected)/[projectId]/_components/generate-image-button";
 import { Generations, ImageGenerationJob } from "@/types/interfaces";
@@ -7,6 +23,7 @@ import { NextResponse } from "next/server";
 const apiKey = process.env.LEONARDO_API_KEY!;
 
 export const generateImage = async () => {
+<<<<<<< HEAD
   try {
     if (!apiKey) {
       throw new Error("could not find api key");
@@ -66,6 +83,26 @@ export const generateImage = async () => {
       error: error,
     });
   }
+=======
+  const url = "https://cloud.leonardo.ai/api/rest/v1/generations";
+  const headers = {
+    "Content-Type": "application/json",
+    accept: "application/json",
+    authorization: `Bearer ${process.env.LEONARDO_API_KEY!}`,
+  };
+
+  const response = await fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify({
+      height: 512,
+      prompt: "A cat staring at a window",
+      width: 512,
+      num_images: 1,
+      presetStyle: "CINEMATIC",
+    }),
+  });
+>>>>>>> 15bbe26 (changes)
 };
 
 export const getGenerations = async (generationId: string) => {
