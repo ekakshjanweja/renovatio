@@ -27,8 +27,6 @@ import {
 import { useState } from "react";
 
 export const MainSolaceComponent = ({ room }: { room: Room }) => {
-  const [inputImage, setInputImage] = useState<string | null>(null);
-
   const onSubmit = async (values: z.infer<typeof ReplicateFormSchema>) => {
     const response = await getImage("a77eb69a-926d-4bfe-bd65-d02dcb6614d2");
     console.log(response);
@@ -55,7 +53,15 @@ export const MainSolaceComponent = ({ room }: { room: Room }) => {
           </CardHeader>
 
           <CardContent>
-            {inputImage && <ShowImage room={room} />}
+            <Image
+              src={
+                room.imageForGeneration ||
+                "https://replicate.delivery/pbxt/KhTNuTIKK1F1tvVl8e7mqOlhR3z3D0SAojAMN8BNftCvAubM/bedroom_3.jpg"
+              }
+              width={400}
+              height={400}
+              alt="uploaded-image"
+            />
 
             <Form {...form}>
               <form
@@ -107,19 +113,5 @@ const ImageUploadAccordion = ({ room }: { room: Room }) => {
         </AccordionContent>
       </AccordionItem>
     </Accordion>
-  );
-};
-
-const ShowImage = ({ room }: { room: Room }) => {
-  return (
-    <Image
-      src={
-        room.imageForGeneration ||
-        "https://replicate.delivery/pbxt/KhTNuTIKK1F1tvVl8e7mqOlhR3z3D0SAojAMN8BNftCvAubM/bedroom_3.jpg"
-      }
-      width={400}
-      height={400}
-      alt="uploaded-image"
-    />
   );
 };
