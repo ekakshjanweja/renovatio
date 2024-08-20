@@ -6,7 +6,7 @@ import { auth } from "@/auth";
 import { notFound } from "next/navigation";
 import { getCurrentUser, setUserDesigner } from "@/actions/user-action";
 //import { db } from "@/db/index"
-import db from "@/db/index"
+import db from "@/db/index";
 import { users } from "@/db/schema/users";
 
 interface UserProjectPageProps {
@@ -20,7 +20,8 @@ const UserProjectPage = async ({ params }: UserProjectPageProps) => {
 
   const user = await getCurrentUser();
 
-  if (!session) {//|| !user.isDesigner) {
+  if (!session) {
+    //|| !user.isDesigner) {
     notFound();
   }
 
