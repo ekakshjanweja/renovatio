@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/card";
 import { getCurrentUser, getUserById } from "@/actions/user-action";
 import Link from "next/link";
-import { GenerateImageButton } from "../generate-image-button";
 
 export const ExploreProjectCard = async ({
   projectId,
@@ -42,10 +41,6 @@ export const ExploreProjectCard = async ({
               <Link href={`/${projectId}/create-room`}>
                 <Button variant={"outline"}>Create Room</Button>
               </Link>
-            </div>
-            <div className="flex justify-between items-center space-y-4">
-              <p className="text-lg">Solace</p>
-              <GenerateImageButton />
             </div>
 
             <div className="flex justify-between items-center space-y-4">
