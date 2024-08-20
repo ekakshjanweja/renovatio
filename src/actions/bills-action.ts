@@ -8,7 +8,6 @@ import { BillSchema } from "@/types/zod-schema";
 import { z } from "zod";
 import { eq } from "drizzle-orm";
 import { diffObject } from "@/lib/utils";
-import { getUserByEmail } from "./user-action";
 
 export const createBill = async (
   values: z.infer<typeof BillSchema>,
