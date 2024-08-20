@@ -1,6 +1,14 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { ReplicateFormSchema } from "@/types/zod-schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { Room } from "@/types/interfaces";
+import { UploadImageForGenerationComponent } from "../../_components/upload-image-for-generation";
+import Image from "next/image";
 import {
   Form,
   FormControl,
@@ -9,71 +17,35 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { ReplicateFormSchema } from "@/types/zod-schema";
-import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from "@/components/ui/accordion";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { Prediction } from "replicate";
-import { z } from "zod";
-import { ShowError } from "./error";
-import { ShowPrediction } from "./prediction";
-import { Room } from "@/types/interfaces";
-import { UploadImageForGenerationComponent } from "../../_components/upload-image-for-generation";
+import { generateImage } from "@/actions/solace";
 
-const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
-
-interface MainPrMainSolaceComponentProps {
-  room: Room;
-}
-
-export const MainSolaceComponent = ({
-  room,
-}: MainPrMainSolaceComponentProps) => {
-  const [error, setError] = useState(null);
-  const [prediction, setPrediction] = useState<Prediction | null>(null);
+export const MainSolaceComponent = ({ room }: { room: Room }) => {
+  const [generatedImage, setGeneratedImage] = useState<string | null>(null);
 
   const onSubmit = async (values: z.infer<typeof ReplicateFormSchema>) => {
-    const response = await fetch("/api/predictions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        Prompt: values.prompt,
-        image: room.imageForGeneration,
-      }),
-    });
+    console.log("Start Image Generation");
 
-    let prediction = await response.json();
-    if (response.status !== 201) {
-      setError(prediction.detail);
-      return;
-    }
-    setPrediction(prediction);
+    const response = await generateImage(values.prompt);
 
-    while (
-      prediction.status !== "succeeded" &&
-      prediction.status !== "failed"
-    ) {
-      await sleep(1000);
-      const response = await fetch("/api/predictions/" + prediction.id, {
-        cache: "no-store",
-      });
-      prediction = await response.json();
-      if (response.status !== 200) {
-        setError(prediction.detail);
-        return;
-      }
-      console.log({ prediction });
-      setPrediction(prediction);
-    }
+    console.log("Image Generation Complete");
+
+    setGeneratedImage(response);
   };
 
   const form = useForm<z.infer<typeof ReplicateFormSchema>>({
     resolver: zodResolver(ReplicateFormSchema),
     defaultValues: {
       prompt: "",
+      Image:
+        room.imageForGeneration ||
+        "https://replicate.delivery/pbxt/KhTNuTIKK1F1tvVl8e7mqOlhR3z3D0SAojAMN8BNftCvAubM/bedroom_3.jpg",
     },
   });
 
@@ -88,12 +60,14 @@ export const MainSolaceComponent = ({
           </CardHeader>
 
           <CardContent>
-            <ShowPrediction prediction={prediction} room={room} />
-
-            <div className="my-8">
-              <UploadImageForGenerationComponent room={room} />
-            </div>
-
+            {generatedImage !== null && (
+              <Image
+                src={generatedImage}
+                width={400}
+                height={400}
+                alt="uploaded-image"
+              />
+            )}
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
@@ -118,16 +92,31 @@ export const MainSolaceComponent = ({
                   )}
                 />
 
+                <ImageUploadAccordion room={room} />
+
                 <Button type="submit" className="w-full">
                   Go!
                 </Button>
               </form>
             </Form>
-
-            <ShowError error={error} />
           </CardContent>
         </Card>
       </main>
     </>
+  );
+};
+
+const ImageUploadAccordion = ({ room }: { room: Room }) => {
+  return (
+    <Accordion type="single" collapsible className="w-full">
+      <AccordionItem value="item-1">
+        <AccordionTrigger>
+          <FormLabel>Upload Image</FormLabel>
+        </AccordionTrigger>
+        <AccordionContent className="m-2">
+          <UploadImageForGenerationComponent room={room} />
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
   );
 };

@@ -3,11 +3,11 @@
 import db from "@/db";
 import { bills } from "@/db/schema/bills";
 import { users } from "@/db/schema/users";
+import { getUserByEmail } from "@/actions/user-action";
 import { BillSchema } from "@/types/zod-schema";
 import { z } from "zod";
 import { eq } from "drizzle-orm";
 import { diffObject } from "@/lib/utils";
-import { getUserByEmail } from "./user-action";
 
 export const createBill = async (
   values: z.infer<typeof BillSchema>,

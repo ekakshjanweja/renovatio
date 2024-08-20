@@ -42,11 +42,12 @@ export const ExploreProjectCard = async ({
                 <Button variant={"outline"}>Create Room</Button>
               </Link>
             </div>
+
             <div className="flex justify-between items-center space-y-4">
-              <p className="text-lg">Project Plans</p>
+              <p className="text-lg">Generate Image</p>
               <Button variant={"outline"}>Upload Plan</Button>
             </div>
-            <CardHeader className="px-0">
+            {/* <CardHeader className="px-0">
               <div className="flex items-center justify-between">
                 <div className="flex flex-col">
                   <CardTitle>
@@ -62,11 +63,11 @@ export const ExploreProjectCard = async ({
                   </AvatarFallback>
                 </Avatar>
               </div>
-            </CardHeader>
+            </CardHeader> */}
 
-            <div className="h-[60px] overflow-hidden mb-4">
+            {/* <div className="h-[60px] overflow-hidden mb-4">
               <p className="text-sm text-muted-foreground">{designerBio}</p>
-            </div>
+            </div> */}
           </div>
         </CardContent>
       </Card>
