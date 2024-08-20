@@ -1,86 +1,117 @@
 "use server";
-import { SolaceGeneration } from "@/types/solace/SolaceInterfaces";
-import { GenerateImageButton } from "@/app/(protected)/[projectId]/_components/generate-image-button";
+
 import { Generations, ImageGenerationJob } from "@/types/interfaces";
-import { NextResponse } from "next/server";
-
-export const getImage = async (id: string): Promise<string> => {
-  const url = `https://cloud.leonardo.ai/api/rest/v1/generations/${id}`;
-
-  const response = await fetch(url, {
-    method: "GET",
-    headers: {
-      accept: "application/json",
-      authorization: `Bearer ${process.env.LEONARDO_API_KEY}`,
-    },
-  });
-
-  let images = (await response.json())["generations_by_pk"] as SolaceGeneration;
-  return images.generated_images[0]!.url;
-};
+import { Leonardo } from "@leonardo-ai/sdk";
+import {
+  GetGenerationByIdResponse,
+  GetGenerationByIdResponseBody,
+} from "@leonardo-ai/sdk/sdk/models/operations";
+import { SdGenerationStyle } from "@leonardo-ai/sdk/sdk/models/shared";
 
 const apiKey = process.env.LEONARDO_API_KEY!;
 
-export const generateImage = async () => {
-  try {
-    if (!apiKey) {
-      throw new Error("could not find api key");
-    }
+const leonardo = new Leonardo({
+  bearerAuth: apiKey,
+});
 
-    const url = "https://cloud.leonardo.ai/api/rest/v1/generations";
-
-    const options = {
-      method: "POST",
-      headers: {
-        accept: "application/json",
-        "content-type": "application/json",
-        authorization: `Bearer  ${apiKey}`,
-      },
-      body: JSON.stringify({
-        alchemy: false,
-        height: 256,
-        width: 256,
-        modelId: "aa77f04e-3eec-4034-9c07-d0f619684628",
-        num_images: 1,
-        presetStyle: "CINEMATIC",
-        prompt: "A majestic cat in the snow",
-        photoReal: false,
-        promptMagic: false,
-      }),
-    };
-
-    const response = await fetch(url, options);
-
-    if (!response.ok) {
-      throw new Error("Failed to initiate image generation.");
-    }
-
-    const data = await response.json();
-
-    const job: ImageGenerationJob = data["sdGenerationJob"];
-
-    //TODO: Get Generated Image
-
-    const generationResponse: NextResponse = await getGenerations(
-      job.generationId,
-    );
-
-    const generations: Generations = await generationResponse.json();
-
-    const generatedImageUrl = generations.generated_images[0].url;
-
-    console.log(GenerateImageButton);
-
-    return NextResponse.json({
-      status: "success",
-      data: generatedImageUrl,
-    });
-  } catch (error) {
-    return NextResponse.json({
-      status: "error",
-      error: error,
-    });
+export const generateImage = async (prompt: string) => {
+  if (!apiKey) {
+    console.log("could not find api key");
+    return null;
   }
+
+  // const url = "https://cloud.leonardo.ai/api/rest/v1/generations";
+
+  const leonardoKinoXL = "aa77f04e-3eec-4034-9c07-d0f619684628";
+  const leonardoPhoenix = "6b645e3a-d64f-4341-a6d8-7a3690fbf042";
+
+  // const options = {
+  //   method: "POST",
+  //   headers: {
+  //     accept: "application/json",
+  //     "content-type": "application/json",
+  //     authorization: `Bearer 45c614de-891d-497b-a952-818c84b97d87`,
+  //   },
+  //   body: JSON.stringify({
+  //     alchemy: true,
+  //     height: 1024,
+  //     width: 1024,
+  //     modelId: leonardoKinoXL,
+  //     num_images: 1,
+  //     presetStyle: "CINEMATIC",
+  //     prompt: prompt,
+  //     photoReal: true,
+  //     promptMagic: false,
+  //   }),
+  // };
+
+  const result = await leonardo.image.createGeneration({
+    // alchemy: true,
+    height: 1024,
+    width: 1024,
+    modelId: "aa77f04e-3eec-4034-9c07-d0f619684628",
+    numImages: 1,
+    presetStyle: SdGenerationStyle.Cinematic,
+    prompt: prompt,
+    // photoReal: true,
+    promptMagic: false,
+  });
+
+  if (result.statusCode !== 200) {
+    console.log("failed to initiate image generation");
+    return null;
+  }
+
+  const job = result.object;
+
+  const generationResponse = await getGenerations(
+    job?.sdGenerationJob?.generationId!
+  );
+
+  // const response = await fetch(url, options);
+
+  // if (!response.ok) {
+  //   console.log(response);
+
+  //   console.log("Failed to initiate image generation.");
+  //   return null;
+  // }
+
+  // const data = await response.json();
+
+  // const job: ImageGenerationJob = data["sdGenerationJob"];
+
+  // const generationResponse = await getGenerations(job.generationId);
+
+  if (generationResponse["data"] === "error") {
+    console.log("failed to get generated image.");
+    return null;
+  }
+
+  const generations = generationResponse[
+    "data"
+  ] as GetGenerationByIdResponseBody;
+
+  // if (generations === undefined) {
+  //   console.log("Failed to get generated image.");
+  //   return null;
+  // }
+
+  const generatedImages = generations.generationsByPk?.generatedImages;
+
+  if (generatedImages === undefined) {
+    console.log("an error occurred while getting generated image");
+    return null;
+  }
+
+  const generatedImageUrl = generatedImages[0].url;
+
+  if (generatedImageUrl === undefined) {
+    console.log("failed to get generated image url");
+    return null;
+  }
+
+  return generatedImageUrl;
 };
 
 export const getGenerations = async (generationId: string) => {
@@ -89,77 +120,69 @@ export const getGenerations = async (generationId: string) => {
       throw new Error("could not find api key");
     }
 
-    const url = `https://cloud.leonardo.ai/api/rest/v1/generations/${generateImage}`;
+    const url = `https://cloud.leonardo.ai/api/rest/v1/generations/${generationId}`;
 
-    const options = {
-      method: "GET",
-      headers: {
-        accept: "application/json",
-        authorization: `Bearer  ${apiKey}`,
-      },
-    };
+    const result = await leonardo.image.getGenerationById(generationId);
 
-    const response = await fetch(url, options);
-
-    if (!response.ok) {
-      throw new Error("Failed to get generated image.");
+    if (result.statusCode !== 200) {
+      throw new Error("failed to get generated image.");
     }
 
-    const data = await response.json();
+    let generations = result.object;
 
-    const generations: Generations = data["generations_by_pk"];
+    let generatedImages = generations?.generationsByPk?.generatedImages;
 
-    return NextResponse.json({
+    if (generatedImages !== undefined && generatedImages.length === 0) {
+      const result = await getGenerations(generationId);
+
+      if (result["status"] === "error") {
+        throw result["data"];
+      }
+
+      generations = result["data"] as GetGenerationByIdResponseBody;
+    }
+
+    // const options = {
+    //   method: "GET",
+    //   headers: {
+    //     accept: "application/json",
+    //     authorization: `Bearer ${apiKey}`,
+    //   },
+    // };
+
+    // const response = await fetch(url, options);
+
+    // if (!response.ok) {
+    //   throw new Error("Failed to get generated image.");
+    // }
+
+    // const data = await response.json();
+
+    // let generations: Generations = data["generations_by_pk"];
+
+    // //TODO: BAD Implementation -> try with a webhook
+    // //Kindda Like Polling
+
+    // if (generations.generated_images.length === 0) {
+    //   const result = await getGenerations(generationId);
+
+    //   if (result["status"] === "error") {
+    //     throw result["data"];
+    //   }
+
+    //   generations = result["data"] as Generations;
+    // }
+
+    return {
       status: "success",
       data: generations,
-    });
+    };
   } catch (error) {
-    return NextResponse.json({
+    console.log(error);
+
+    return {
       status: "error",
-      error: error,
-    });
+      data: "failed to get generated image.",
+    };
   }
 };
-
-// export const generateImage = async () => {
-//   //   const url = "https://cloud.leonardo.ai/api/rest/v1/generations";
-//   //   const headers = {
-//   //     "Content-Type": "application/json",
-//   //     accept: "application/json",
-//   //     authorization: `Bearer ${process.env.LEONARDO_API_KEY!}`,
-//   //   };
-
-//   //   const response = await fetch(url, {
-//   //     method: "POST",
-//   //     headers,
-//   //     body: JSON.stringify({
-//   //       height: 512,
-//   //       prompt: "A cat staring at a window",
-//   //       width: 512,
-//   //       presetStyle: "CINEMATIC",
-//   //     }),
-//   //   });
-
-//   const generatedImg = "a77eb69a-926d-4bfe-bd65-d02dcb6614d2";
-
-//   const url = `https://cloud.leonardo.ai/api/rest/v1/generations/${generatedImg}`;
-
-//   const headers = {
-//     "Content-Type": "application/json",
-//     accept: "application/json",
-//     authorization: `Bearer ${process.env.LEONARDO_API_KEY!}`,
-//   };
-
-//   const response = await fetch(url, {
-//     method: "GET",
-//     headers,
-//   });
-
-//   const data = await response.json();
-
-//   const image = data["generations_by_pk"]["generated_images"][0]["url"];
-
-//   console.log(image);
-
-//   return image;
-// };

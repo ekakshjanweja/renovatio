@@ -9,7 +9,6 @@ import { z } from "zod";
 import { Room } from "@/types/interfaces";
 import { UploadImageForGenerationComponent } from "../../_components/upload-image-for-generation";
 import Image from "next/image";
-import { getImage } from "@/actions/solace";
 import {
   Form,
   FormControl,
@@ -25,11 +24,19 @@ import {
   AccordionContent,
 } from "@/components/ui/accordion";
 import { useState } from "react";
+import { generateImage } from "@/actions/solace";
 
 export const MainSolaceComponent = ({ room }: { room: Room }) => {
+  const [generatedImage, setGeneratedImage] = useState<string | null>(null);
+
   const onSubmit = async (values: z.infer<typeof ReplicateFormSchema>) => {
-    const response = await getImage("a77eb69a-926d-4bfe-bd65-d02dcb6614d2");
-    console.log(response);
+    console.log("Start Image Generation");
+
+    const response = await generateImage(values.prompt);
+
+    console.log("Image Generation Complete");
+
+    setGeneratedImage(response);
   };
 
   const form = useForm<z.infer<typeof ReplicateFormSchema>>({
@@ -53,16 +60,14 @@ export const MainSolaceComponent = ({ room }: { room: Room }) => {
           </CardHeader>
 
           <CardContent>
-            <Image
-              src={
-                room.imageForGeneration ||
-                "https://replicate.delivery/pbxt/KhTNuTIKK1F1tvVl8e7mqOlhR3z3D0SAojAMN8BNftCvAubM/bedroom_3.jpg"
-              }
-              width={400}
-              height={400}
-              alt="uploaded-image"
-            />
-
+            {generatedImage !== null && (
+              <Image
+                src={generatedImage}
+                width={400}
+                height={400}
+                alt="uploaded-image"
+              />
+            )}
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
