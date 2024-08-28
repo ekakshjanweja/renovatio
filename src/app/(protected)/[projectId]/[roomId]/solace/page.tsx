@@ -5,6 +5,8 @@ import { MainSolaceComponent } from "./_components/main";
 import { Room } from "@/types/interfaces";
 import { getRoomById } from "@/actions/room-action";
 
+const apiKey = process.env.LEONARDO_API_KEY!;
+
 interface SolaceProps {
   params: {
     roomId: string;
@@ -43,7 +45,7 @@ const Solace = async ({ params }: SolaceProps) => {
 
   return (
     <>
-      <MainSolaceComponent room={room} />
+      <MainSolaceComponent room={room} apiKey={apiKey} />
     </>
   );
 };

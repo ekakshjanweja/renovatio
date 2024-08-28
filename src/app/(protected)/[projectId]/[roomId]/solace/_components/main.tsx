@@ -8,7 +8,6 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Room } from "@/types/interfaces";
 import { UploadImageForGenerationComponent } from "../../_components/upload-image-for-generation";
-import Image from "next/image";
 import {
   Form,
   FormControl,
@@ -24,19 +23,23 @@ import {
   AccordionContent,
 } from "@/components/ui/accordion";
 import { useState } from "react";
-import { generateImage } from "@/actions/solace";
+import { SdGenerationStyle } from "@leonardo-ai/sdk/sdk/models/shared";
+import { GetGenerationByIdResponseBody } from "@leonardo-ai/sdk/sdk/models/operations";
+import { Leonardo } from "@leonardo-ai/sdk";
+import { boolean } from "drizzle-orm/mysql-core";
+import { SolaceResultComponent } from "./result";
 
-export const MainSolaceComponent = ({ room }: { room: Room }) => {
-  const [generatedImage, setGeneratedImage] = useState<string | null>(null);
+export const MainSolaceComponent = ({
+  room,
+  apiKey,
+}: {
+  room: Room;
+  apiKey: string;
+}) => {
+  const [showResult, setShowResult] = useState<string | null>(null);
 
-  const onSubmit = async (values: z.infer<typeof ReplicateFormSchema>) => {
-    console.log("Start Image Generation");
-
-    const response = await generateImage(values.prompt);
-
-    console.log("Image Generation Complete");
-
-    setGeneratedImage(response);
+  const onSubmit = (values: z.infer<typeof ReplicateFormSchema>) => {
+    setShowResult(values.prompt);
   };
 
   const form = useForm<z.infer<typeof ReplicateFormSchema>>({
@@ -60,14 +63,10 @@ export const MainSolaceComponent = ({ room }: { room: Room }) => {
           </CardHeader>
 
           <CardContent>
-            {generatedImage !== null && (
-              <Image
-                src={generatedImage}
-                width={400}
-                height={400}
-                alt="uploaded-image"
-              />
+            {showResult !== null && (
+              <SolaceResultComponent prompt={showResult} apiKey={apiKey} />
             )}
+
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
