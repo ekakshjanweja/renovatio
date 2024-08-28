@@ -88,4 +88,5 @@ export const ReplicateFormSchema = z.object({
     message: "no prompt was entered",
   }),
   Image: z.string().url({ message: "Invalid Image URL" }),
+  betterImages: z.boolean(),
 });
