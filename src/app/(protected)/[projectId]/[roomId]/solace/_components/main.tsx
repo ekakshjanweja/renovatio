@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { ReplicateFormSchema } from "@/types/zod-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { set, z } from "zod";
 import { Room } from "@/types/interfaces";
 import { UploadImageForGenerationComponent } from "../../_components/upload-image-for-generation";
 import {
@@ -23,11 +23,8 @@ import {
   AccordionContent,
 } from "@/components/ui/accordion";
 import { useState } from "react";
-import { SdGenerationStyle } from "@leonardo-ai/sdk/sdk/models/shared";
-import { GetGenerationByIdResponseBody } from "@leonardo-ai/sdk/sdk/models/operations";
-import { Leonardo } from "@leonardo-ai/sdk";
-import { boolean } from "drizzle-orm/mysql-core";
 import { SolaceResultComponent } from "./result";
+import { Switch } from "@/components/ui/switch";
 
 export const MainSolaceComponent = ({
   room,
@@ -37,8 +34,11 @@ export const MainSolaceComponent = ({
   apiKey: string;
 }) => {
   const [showResult, setShowResult] = useState<string | null>(null);
+  const [setshowBetterImages, setSetshowBetterImages] =
+    useState<boolean>(false);
 
   const onSubmit = (values: z.infer<typeof ReplicateFormSchema>) => {
+    setSetshowBetterImages(values.betterImages);
     setShowResult(values.prompt);
   };
 
@@ -49,6 +49,7 @@ export const MainSolaceComponent = ({
       Image:
         room.imageForGeneration ||
         "https://replicate.delivery/pbxt/KhTNuTIKK1F1tvVl8e7mqOlhR3z3D0SAojAMN8BNftCvAubM/bedroom_3.jpg",
+      betterImages: false,
     },
   });
 
@@ -64,7 +65,11 @@ export const MainSolaceComponent = ({
 
           <CardContent>
             {showResult !== null && (
-              <SolaceResultComponent prompt={showResult} apiKey={apiKey} />
+              <SolaceResultComponent
+                prompt={showResult}
+                apiKey={apiKey}
+                betterImages={setshowBetterImages}
+              />
             )}
 
             <Form {...form}>
@@ -86,6 +91,25 @@ export const MainSolaceComponent = ({
                         />
                       </FormControl>
 
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="betterImages"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <div className="flex items-center justify-between py-4">
+                          <p>Generate Better Images</p>
+                          <Switch
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </div>
+                      </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}

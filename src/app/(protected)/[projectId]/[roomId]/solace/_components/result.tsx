@@ -1,7 +1,10 @@
 "use client";
 
 import { Leonardo } from "@leonardo-ai/sdk";
-import { GetGenerationByIdResponseBody } from "@leonardo-ai/sdk/sdk/models/operations";
+import {
+  CreateGenerationRequestBody,
+  GetGenerationByIdResponseBody,
+} from "@leonardo-ai/sdk/sdk/models/operations";
 import { SdGenerationStyle } from "@leonardo-ai/sdk/sdk/models/shared";
 import { useEffect, useState } from "react";
 import Image from "next/image";
@@ -9,11 +12,13 @@ import Image from "next/image";
 interface SolaceResultComponentProps {
   prompt: string;
   apiKey: string;
+  betterImages: boolean;
 }
 
 export const SolaceResultComponent = ({
   prompt,
   apiKey,
+  betterImages,
 }: SolaceResultComponentProps) => {
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
 
@@ -32,17 +37,33 @@ export const SolaceResultComponent = ({
         const leonardoKinoXL = "aa77f04e-3eec-4034-9c07-d0f619684628";
         const leonardoPhoenix = "6b645e3a-d64f-4341-a6d8-7a3690fbf042";
 
-        const result = await leonardo.image.createGeneration({
-          // alchemy: true,
+        const options: CreateGenerationRequestBody = {
           height: 1024,
           width: 1024,
-          modelId: "aa77f04e-3eec-4034-9c07-d0f619684628",
+          modelId: leonardoKinoXL,
           numImages: 1,
           presetStyle: SdGenerationStyle.Cinematic,
           prompt: prompt,
-          // photoReal: true,
           promptMagic: false,
-        });
+          alchemy: false,
+          photoReal: false,
+        };
+
+        const alchemyOptions: CreateGenerationRequestBody = {
+          height: 1024,
+          width: 1024,
+          numImages: 1,
+          modelId: null,
+          presetStyle: SdGenerationStyle.Cinematic,
+          prompt: prompt,
+          promptMagic: false,
+          alchemy: true,
+          photoReal: true,
+        };
+
+        const result = await leonardo.image.createGeneration(
+          betterImages ? alchemyOptions : options
+        );
 
         if (result.statusCode !== 200) {
           console.log("failed to initiate image generation");
