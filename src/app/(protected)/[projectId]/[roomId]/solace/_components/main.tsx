@@ -130,7 +130,9 @@ export const MainSolaceComponent = ({
 };
 
 const ImageUploadAccordion = ({ room }: { room: Room }) => {
-  const handleButtonClick = async () => {
+  const handleButtonClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
     if (!room.imageForGeneration) {
       return;
     }
