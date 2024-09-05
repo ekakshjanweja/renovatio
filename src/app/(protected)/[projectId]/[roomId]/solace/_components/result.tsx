@@ -8,17 +8,23 @@ import {
 import { SdGenerationStyle } from "@leonardo-ai/sdk/sdk/models/shared";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { updateRoom } from "@/actions/room-action";
+import { Loader2 } from "lucide-react";
 
 interface SolaceResultComponentProps {
   prompt: string;
   apiKey: string;
   betterImages: boolean;
+
+  roomId: string;
 }
 
 export const SolaceResultComponent = ({
   prompt,
   apiKey,
   betterImages,
+  roomId,
 }: SolaceResultComponentProps) => {
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
 
@@ -108,8 +114,6 @@ export const SolaceResultComponent = ({
             throw new Error("could not find api key");
           }
 
-          const url = `https://cloud.leonardo.ai/api/rest/v1/generations/${generationId}`;
-
           const result = await leonardo.image.getGenerationById(generationId);
 
           if (result.statusCode !== 200) {
@@ -154,14 +158,28 @@ export const SolaceResultComponent = ({
 
   return (
     <>
-      {generatedImage !== null && (
-        <Image
-          src={generatedImage}
-          width={400}
-          height={400}
-          alt="uploaded-image"
-        />
-      )}
+      <div>
+        {generatedImage !== null ? (
+          <div className="flex flex-col items-center justify-center gap-y-4">
+            <Image
+              src={generatedImage}
+              width={400}
+              height={400}
+              alt="uploaded-image"
+            />
+            <Button
+              className="rounded-full bg-custom hover:bg-custom"
+              onClick={() => updateRoom(roomId, [generatedImage], null, null)}
+            >
+              Save to project
+            </Button>
+          </div>
+        ) : (
+          <div>
+            <Loader2 className="w-10 h-10 animate-spin" />
+          </div>
+        )}
+      </div>
     </>
   );
 };

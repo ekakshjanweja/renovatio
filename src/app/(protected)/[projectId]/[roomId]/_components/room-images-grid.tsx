@@ -14,7 +14,7 @@ interface RoomImagesGridProps {
 export const RoomImagesGrid = ({ images, roomId }: RoomImagesGridProps) => {
   return (
     <>
-      <div className="grid md:auto-rows-[18rem] grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 max-w-full mx-auto my-8">
+      <div className="grid md:auto-rows-[18rem] grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 max-w-full mx-auto my-8 gap-y-52">
         {images.map((image, index) => (
           <>
             <Card key={index}>
