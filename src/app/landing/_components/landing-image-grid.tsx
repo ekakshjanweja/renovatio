@@ -22,43 +22,32 @@ export default function LandingImageGrid() {
   ];
 
   return (
-    <div className="container mx-auto px-4 py-8 flex">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
+    <>
+      <div className="z-0 absolute mt-36 bg-gradient-to-b from-transparent via-neutral-700 to-transparent w-full h-[300px] md:h-[500px] opacity-50"></div>
+      <div className="z-0 absolute mx-4 md:mx-16 mt-36 grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-x-24 gap-y-8 overflow-hidden ">
         {cards.map((card, index) => (
-          //   <Card key={index} className="w-full max-w-[300px] mx-auto">
-          //     <CardContent className="p-0">
-          //       <div className="relative w-full h-[400px]">
-          //         <Image
-          //           src={card.imageUrl}
-          //           alt={""}
-          //           fill
-          //           style={{ objectFit: "cover" }}
-          //           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-          //         />
-          //       </div>
-          //     </CardContent>
-          //   </Card>
-          <Card key={index}>
-            <CardContent
-              //   className={
-              //     "flex aspect-auto p-0  h-[300px] md:h-[500px] w-[100px] md:w-[300px]"
-              //   }
-              className="flex aspect-auto p-0 h-[300px] md:h-[500px] w-[100px] md:w-[300px] rounded-xl"
-            >
-              <div className="relative h-[300px] md:h-[500px] w-[100px] md:w-[300px] rounded-xl">
+          <Card
+            key={index}
+            className={`bg-gradient-to-b from-neutral-500 to-neutral-950 opacity-50  hover:opacity-100 transition-all duration-300
+         ${index === 1 ? "hidden lg:block" : ""}
+         ${index === 2 ? "hidden xl:block" : ""}
+         ${index === 3 ? "hidden 2xl:block" : ""}
+       `}
+          >
+            <CardContent className="flex aspect-auto p-0 rounded-xl">
+              <div className="relative h-[300px] w-[300px] md:h-[500px] md:w-[500px] lg:h-[500px] lg:w-[600px] rounded-xl mix-blend-overlay">
                 <Image
                   className="rounded-xl"
                   src={card.imageUrl}
                   alt=""
                   fill
                   style={{ objectFit: "cover" }}
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                 />
               </div>
             </CardContent>
           </Card>
         ))}
       </div>
-    </div>
+    </>
   );
 }
