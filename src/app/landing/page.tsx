@@ -21,15 +21,16 @@ const LandingPage = () => {
   };
 
   return (
-    <>
+    <div>
       <div className="text-center flex flex-col items-center justify-between min-h-[calc(100vh-64px)] mt-32">
         <div className="max-w-3xl z-10">
           <p className="text-4xl md:text-6xl font-semibold bg-gradient-to-r from-neutral-100 to-neutral-500 text-transparent bg-clip-text">
-            Elevate Your Vision with Cutting-Edge Design
+            {"Elevate Your Vision with Cutting-Edge Design"}
           </p>
           <p className="hidden md:block text-xl font-medium text-slate-300">
-            Streamline Project Management, Enhance Collaboration, and Deliver
-            Stunning Designs in Real-Time with Our AI-Driven Platform
+            {
+              "Streamline Project Management, Enhance Collaboration, and Deliver Stunning Designs in Real-Time with Our AI-Driven Platform"
+            }
           </p>
 
           <Button
