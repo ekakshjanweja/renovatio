@@ -69,6 +69,7 @@ export const MainSolaceComponent = ({
                 prompt={showResult}
                 apiKey={apiKey}
                 betterImages={setshowBetterImages}
+                roomId={room.id}
               />
             )}
 
@@ -115,7 +116,7 @@ export const MainSolaceComponent = ({
                   )}
                 />
 
-                <ImageUploadAccordion room={room} />
+                {/* <ImageUploadAccordion room={room} /> */}
 
                 <Button type="submit" className="w-full">
                   Go!
