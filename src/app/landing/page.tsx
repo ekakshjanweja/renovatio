@@ -42,7 +42,7 @@ const LandingPage = () => {
 
         <LandingImageGrid />
       </div>
-    </>
+    </div>
   );
 };
 
