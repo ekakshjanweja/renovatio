@@ -1,13 +1,13 @@
 "use client";
+import generatePrompt from "@/actions/generatePrompt";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { ReplicateFormSchema } from "@/types/zod-schema";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { set, z } from "zod";
-import { Room } from "@/types/interfaces";
-import { UploadImageForGenerationComponent } from "../../_components/upload-image-for-generation";
 import {
   Form,
   FormControl,
@@ -16,15 +16,16 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  Accordion,
-  AccordionItem,
-  AccordionTrigger,
-  AccordionContent,
-} from "@/components/ui/accordion";
-import { useState } from "react";
-import { SolaceResultComponent } from "./result";
+import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
+import { Room } from "@/types/interfaces";
+import { ReplicateFormSchema } from "@/types/zod-schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { UploadImageForGenerationComponent } from "../../_components/upload-image-for-generation";
+import { SolaceResultComponent } from "./result";
 
 export const MainSolaceComponent = ({
   room,
@@ -91,7 +92,6 @@ export const MainSolaceComponent = ({
                           {...field}
                         />
                       </FormControl>
-
                       <FormMessage />
                     </FormItem>
                   )}
@@ -131,14 +131,26 @@ export const MainSolaceComponent = ({
 };
 
 const ImageUploadAccordion = ({ room }: { room: Room }) => {
+  const handleButtonClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    if (!room.imageForGeneration) {
+      return;
+    }
+
+    const guessedPrompt = await generatePrompt(room.imageForGeneration);
+    console.log(guessedPrompt);
+  };
+
   return (
     <Accordion type="single" collapsible className="w-full">
       <AccordionItem value="item-1">
         <AccordionTrigger>
           <FormLabel>Upload Image</FormLabel>
         </AccordionTrigger>
-        <AccordionContent className="m-2">
+        <AccordionContent className="m-2 flex justify-between items-center">
           <UploadImageForGenerationComponent room={room} />
+          <Button onClick={handleButtonClick}>Generate Prompt</Button>
         </AccordionContent>
       </AccordionItem>
     </Accordion>
