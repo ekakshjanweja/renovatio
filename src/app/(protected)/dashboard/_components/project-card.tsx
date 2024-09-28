@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Edit } from "lucide-react";
+import { Edit, ImagePlus } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -28,10 +28,10 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
       <Link
         href={`/${project.id}`}
         className={cn(
-          "relative row-span-1 rounded-xl group/bento hover:shadow-xl transition duration-200 shadow-input dark:shadow-none p-0 dark:bg-stone-800 dark:border-stone-50/[0.2] bg-neutral-50 border border-transparent justify-between flex flex-col space-y-4"
+          "row-span-1 rounded-xl group/bento hover:shadow-xl transition duration-200 shadow-input dark:shadow-none p-0 dark:bg-stone-900 dark:border-stone-50/[0.2] bg-neutral-50 border border-transparent justify-between flex flex-col space-y-4"
         )}
       >
-        <div className="flex flex-1 w-full h-full  min-h-[6rem] max-h-56 rounded-xl p-0">
+        <div className="flex flex-1 w-full h-full min-h-[6rem] max-h-56 rounded-xl p-0 bg-gradient-to-tl from-lime-950 to-stone-950">
           {project.thumbnailUrl && (
             <Image
               alt={project.name}
@@ -45,8 +45,15 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
               blurDataURL={project.thumbnailUrl!}
             />
           )}
+
+          {!project.thumbnailUrl && (
+            <div className="flex items-center justify-center w-full">
+              <ImagePlus className="h-8 w-8 opacity-50" />
+            </div>
+          )}
         </div>
-        <div className="p-2 group-hover/bento:translate-x-2 transition duration-200">
+
+        <div className="px-2 pb-2 group-hover/bento:translate-x-2 transition duration-200">
           <div className="font-bold text-stone-600 dark:text-stone-200">
             {project.name}
           </div>
