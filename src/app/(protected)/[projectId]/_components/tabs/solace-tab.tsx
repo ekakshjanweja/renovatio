@@ -28,8 +28,7 @@ export default function SolaceTab() {
 
   const handleGenerateImages = async () => {
     const leonardo = new Leonardo({
-      // bearerAuth: process.env.LEONARDO_API_KEY!,
-      bearerAuth: "dd154187-a19e-46fa-8a3e-f6c5cff03abc",
+      bearerAuth: process.env.LEONARDO_API_KEY!,
     });
 
     const leonardoKinoXL = "aa77f04e-3eec-4034-9c07-d0f619684628";
