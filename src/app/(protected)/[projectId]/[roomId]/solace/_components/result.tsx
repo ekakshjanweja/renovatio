@@ -68,7 +68,7 @@ export const SolaceResultComponent = ({
         };
 
         const result = await leonardo.image.createGeneration(
-          betterImages ? alchemyOptions : options
+          betterImages ? alchemyOptions : options,
         );
 
         if (result.statusCode !== 200) {
@@ -79,7 +79,7 @@ export const SolaceResultComponent = ({
         const job = result.object;
 
         const generationResponse = await getGenerations(
-          job?.sdGenerationJob?.generationId!
+          job?.sdGenerationJob?.generationId!,
         );
 
         if (generationResponse["data"] === "error") {
@@ -154,7 +154,7 @@ export const SolaceResultComponent = ({
     };
 
     startImageGeneration();
-  }, []);
+  }, [apiKey, betterImages, prompt]);
 
   return (
     <>

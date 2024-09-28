@@ -29,16 +29,17 @@ export async function BillsTab({ projectId }: BillsTabProps) {
   const invoices = await getAllBills(user.id, user.isDesigner ?? false);
   const total = invoices.reduce(
     (total, invoice) => total + Number(invoice.amount),
-    0
+    0,
   );
 
   if (!session) {
     notFound();
   }
+
   return (
     <div>
       <Table className="w-full">
-        {/*<TableCaption>A list of your recent invoices.</TableCaption>*/}
+        <TableCaption>A list of your recent invoices.</TableCaption>
         <TableHeader>
           <TableRow className="w-full">
             <TableHead className="w-7/12">Item</TableHead>
