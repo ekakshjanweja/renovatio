@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { Edit } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -27,10 +28,10 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
       <Link
         href={`/${project.id}`}
         className={cn(
-          "row-span-1 rounded-xl group/bento hover:shadow-xl transition duration-200 shadow-input dark:shadow-none p-4 dark:bg-stone-950 dark:border-stone-50/[0.2] bg-neutral-50 border border-transparent justify-between flex flex-col space-y-4"
+          "relative row-span-1 rounded-xl group/bento hover:shadow-xl transition duration-200 shadow-input dark:shadow-none p-0 dark:bg-stone-800 dark:border-stone-50/[0.2] bg-neutral-50 border border-transparent justify-between flex flex-col space-y-4"
         )}
       >
-        <div className="flex flex-1 w-full h-full  min-h-[6rem] max-h-56 rounded-xl ">
+        <div className="flex flex-1 w-full h-full  min-h-[6rem] max-h-56 rounded-xl p-0">
           {project.thumbnailUrl && (
             <Image
               alt={project.name}
@@ -45,7 +46,7 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
             />
           )}
         </div>
-        <div className=" group-hover/bento:translate-x-2 transition duration-200">
+        <div className="p-2 group-hover/bento:translate-x-2 transition duration-200">
           <div className="font-bold text-stone-600 dark:text-stone-200">
             {project.name}
           </div>
@@ -57,6 +58,7 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
             <p className="text-lime-400 dark:text-lime-400 ml-1"> Planning</p>
           </Button>
         </div>
+        {/* <Edit className="absolute right-12" /> */}
       </Link>
     </>
   );

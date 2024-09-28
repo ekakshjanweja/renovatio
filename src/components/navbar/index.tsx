@@ -1,25 +1,31 @@
-import { ModeToggle } from "@/components/mode-toggle";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { NavbarDropdownMenu } from "./nav-dropdown";
-import { auth } from "@/auth";
 import { getCurrentUser } from "@/actions/user-action";
 import { ProfileSection } from "./profile-section";
-import { headers } from "next/headers";
-import { Plus } from "lucide-react";
+import LoginButton from "@/components/navbar/login-button";
+import NavbarTags from "@/components/navbar/navbar-tags";
 
 export const Navbar = async () => {
-  const headerList = headers();
-
-  const pathname = headerList.get("x-pathname");
-
-  const session = await auth();
-
   const user = await getCurrentUser();
 
   return (
     <>
-      <nav className="p-2 rounded-md flex justify-between items-center">
+      <div>
+        <nav className="p-2 rounded-md md:flex justify-between items-center hidden md:visible">
+          <h1 className="text-lg font-semibold mr-4 text-custom">renovatio</h1>
+          <div className="flex items-center gap-x-4">
+            {user && <NavbarTags />}
+            <p>pricing</p>
+            <p>about us</p>
+            {user && <ProfileSection image={user.image} username={user.name} />}
+            {!user && <LoginButton />}
+          </div>
+        </nav>
+        <nav className="flex justify-between items-center visible md:hidden my-4">
+          <h1 className="text-lg font-semibold mr-4 text-custom">renovatio</h1>
+          {user && <ProfileSection image={user.image} username={user.name} />}
+          {!user && <LoginButton />}
+        </nav>
+      </div>
+      {/* <nav className="p-2 rounded-md flex justify-between items-center">
         <h1 className="text-lg font-semibold mr-4">renovatio</h1>
         <div className="flex items-center gap-x-4">
           <div className="hidden md:flex">
@@ -132,7 +138,7 @@ export const Navbar = async () => {
           </div>
           <ModeToggle />
         </div>
-      </nav>
+      </nav> */}
     </>
   );
 };
