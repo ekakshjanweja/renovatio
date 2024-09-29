@@ -16,7 +16,6 @@ interface SolaceResultComponentProps {
   prompt: string;
   apiKey: string;
   betterImages: boolean;
-
   roomId: string;
 }
 

@@ -8,7 +8,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   return (
     <>
       <Navbar />
-      <div className="p-2">{children}</div>
+      <div className="mx-4 sm:mx-2 md:mx-0 p-2">{children}</div>
     </>
   );
 };

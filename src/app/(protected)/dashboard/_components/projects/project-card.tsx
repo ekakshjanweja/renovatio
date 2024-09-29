@@ -31,7 +31,7 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
           "row-span-1 rounded-xl group/bento hover:shadow-xl transition duration-200 shadow-input dark:shadow-none p-0 dark:bg-stone-900 dark:border-stone-50/[0.2] bg-neutral-50 border border-transparent justify-between flex flex-col space-y-4"
         )}
       >
-        <div className="flex flex-1 w-full h-full min-h-[6rem] max-h-56 rounded-xl p-0 bg-gradient-to-tl from-lime-950 to-stone-950">
+        <div className="aspect-square flex flex-1 w-full h-full min-h-[6rem] md:max-h-56 rounded-xl p-0 bg-gradient-to-tl from-lime-950 to-stone-950">
           {project.thumbnailUrl && (
             <Image
               alt={project.name}

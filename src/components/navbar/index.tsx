@@ -8,7 +8,7 @@ export const Navbar = async () => {
 
   return (
     <>
-      <div>
+      <div className="mx-4">
         <nav className="p-2 rounded-md md:flex justify-between items-center hidden md:visible">
           <h1 className="text-lg font-semibold mr-4 text-custom">renovatio</h1>
           <div className="flex items-center gap-x-4">
