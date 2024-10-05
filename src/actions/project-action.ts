@@ -7,6 +7,7 @@ import { CreateProjectSchema } from "@/types/zod-schema";
 import { eq } from "drizzle-orm";
 import { UTApi } from "uploadthing/server";
 import * as z from "zod";
+import { revalidatePath } from "next/cache";
 
 interface ProjectModel {
   name: string;
@@ -18,6 +19,7 @@ interface ProjectModel {
   imageModel: string[];
   designerId: string;
   userId: string;
+  images: string[];
 }
 
 export const getAllProjectsForCurrentUser = async () => {
@@ -80,17 +82,7 @@ export const createProject = async (
   console.log({ designer });
 
   const insertProject = async (project: ProjectModel) => {
-    await db.insert(projects).values({
-      id: projectId,
-      name: project.name,
-      thumbnailUrl: project.thumbnailUrl,
-      location: project.location,
-      area: project.area,
-      description: project.description,
-      category: project.category,
-      designerId: project.designerId,
-      userId: project.userId,
-    });
+    await db.insert(projects).values({ id: projectId, ...project });
   };
 
   insertProject({
@@ -103,6 +95,7 @@ export const createProject = async (
     imageModel: [],
     designerId: designer.id,
     userId: user.id,
+    images: [],
   });
 
   return { success: "Project added!" };
@@ -130,4 +123,34 @@ export const deleteProject = async (projectId: string) => {
   await db.delete(projects).where(eq(projects.id, projectId));
 
   return { success: "Project deleted!" };
+};
+
+export const addImageToProject = async (
+  projectId: string,
+  imageUrl: string
+) => {
+  const project = await db
+    .select()
+    .from(projects)
+    .where(eq(projects.id, projectId))
+    .then((res) => res[0]);
+
+  if (!project) {
+    return { error: "Project not found!" };
+  }
+
+  if (project.images.includes(imageUrl)) {
+    return { error: "Image already exists in project!" };
+  }
+
+  const updatedImages = [...project.images, imageUrl];
+
+  await db
+    .update(projects)
+    .set({ images: updatedImages })
+    .where(eq(projects.id, projectId));
+
+  revalidatePath(`/api/projects/${projectId}`);
+
+  return { success: "Image added to project!" };
 };

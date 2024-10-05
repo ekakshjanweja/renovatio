@@ -7,6 +7,21 @@ export interface Room {
   projectId: string;
 }
 
+export interface Project {
+  id: string;
+  name: string;
+  createdAt: Date | null;
+  updatedAt: Date | null;
+  userId: string | null;
+  thumbnailUrl: string | null;
+  location: string;
+  area: number;
+  description: string;
+  category: string;
+  images: string[];
+  designerId: string | null;
+}
+
 export interface ImageGenerationJob {
   generationId: string;
   apiCreditCost: number;

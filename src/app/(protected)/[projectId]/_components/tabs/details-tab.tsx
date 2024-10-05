@@ -7,6 +7,7 @@ import { ExploreProjectCard } from "../cards/explore-project-card";
 import { getAllRoomsForProject } from "@/actions/room-action";
 import { Room } from "@/types/interfaces";
 import { RoomCard } from "../cards/room-card";
+import Image from "next/image";
 
 interface DetailsTabProps {
   projectId: string;
@@ -39,6 +40,20 @@ export const DetailsTab = async ({ projectId }: DetailsTabProps) => {
         {rooms.map((room) => (
           <>
             <RoomCard room={room} />
+          </>
+        ))}
+
+        {project.images.map((image) => (
+          <>
+            <div className="relative w-[350px] aspect-square">
+              <Image
+                src={image}
+                alt={"uploaded-image"}
+                fill
+                className="rounded-md object-cover transition-all duration-300"
+                sizes="100vw"
+              />
+            </div>
           </>
         ))}
       </div>

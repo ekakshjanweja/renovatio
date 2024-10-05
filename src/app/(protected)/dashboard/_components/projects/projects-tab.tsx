@@ -1,9 +1,12 @@
 import { getAllProjectsForCurrentUser } from "@/services/project-service";
 import { ProjectCard } from "./project-card";
-import { SquareButton } from "../square-button";
+import { AddProjectButtonn } from "../add-project-button";
+import { getCurrentUser } from "@/actions/user-action";
 
 export const ProjectTab = async () => {
   const projects = await getAllProjectsForCurrentUser();
+
+  const user = await getCurrentUser();
 
   return (
     <>
@@ -13,15 +16,7 @@ export const ProjectTab = async () => {
             <h1 className="text-2xl pb-2 font-semibold">Project Management</h1>
             <p className="pb-4">Manage your interior design projects</p>
           </div>
-          {/* 
-          <Button
-            variant={"default"}
-            className="mb-4 rounded-md opacity-80 bg-custom hover:opacity-100 hover:bg-custom p-0"
-          >
-            <Plus className="h-6 w-6" />
-          </Button> */}
-
-          <SquareButton />
+        {user.isDesigner && <AddProjectButtonn />}
         </div>
         <div className="grid md:auto-rows-[18rem] grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 max-w-full mx-auto">
           {projects.map((project) => (

@@ -1,11 +1,10 @@
 import { auth } from "@/auth";
-import { getAllProjectsForCurrentUser } from "@/services/project-service";
 import { notFound } from "next/navigation";
-import { ProjectCard } from "./_components/projects/project-card";
-import { setUserDesigner } from "@/actions/user-action";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ProjectTab } from "./_components/projects/projects-tab";
 import { SolaceTab } from "./_components/solace/solace-tab";
+import { getAllProjectsForCurrentUser } from "@/actions/project-action";
+import { Project } from "@/types/interfaces";
 
 const Dashboard = async () => {
   const session = await auth();
@@ -14,7 +13,9 @@ const Dashboard = async () => {
     notFound();
   }
 
-  const projects = await getAllProjectsForCurrentUser();
+  const projects: Project[] = await getAllProjectsForCurrentUser();
+
+  const leonardoApiKey = process.env.LEONARDO_API_KEY!;
 
   return (
     <>
@@ -27,8 +28,8 @@ const Dashboard = async () => {
           <TabsContent value="projects">
             <ProjectTab />
           </TabsContent>
-          <TabsContent value="solace">
-            <SolaceTab />
+          <TabsContent value="solace" className="flex justify-center">
+            <SolaceTab apiKey={leonardoApiKey} projects={projects} />
           </TabsContent>
         </Tabs>
       </div>
