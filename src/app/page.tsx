@@ -7,7 +7,7 @@ const MainPage = async () => {
   if (session) {
     redirect("/dashboard");
   } else {
-    redirect("/home");
+    redirect("/landing");
   }
 };
 

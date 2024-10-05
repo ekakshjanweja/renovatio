@@ -6,9 +6,7 @@ import { CreateProjectForm } from "./_components/create-project/create-project-f
 const CreateProject = async () => {
   const session = await auth();
 
-  const user = await getCurrentUser();
-
-  if (!session || !user.isDesigner) {
+  if (!session) {
     notFound();
   }
 
