@@ -29,8 +29,8 @@ const UserProjectPage = async ({ params }: UserProjectPageProps) => {
 
   return (
     <>
-      <div className="p-2">
-        <Tabs defaultValue="details" className="w-full">
+      <div className="flex items-center justify-center w-full px-4 md:px-2">
+        <Tabs defaultValue="details" className="max-w-7xl">
           <TabsList>
             <TabsTrigger value="details">Details</TabsTrigger>
             <TabsTrigger value="bills">Bills</TabsTrigger>

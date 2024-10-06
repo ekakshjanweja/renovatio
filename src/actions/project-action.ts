@@ -154,3 +154,33 @@ export const addImageToProject = async (
 
   return { success: "Image added to project!" };
 };
+
+export const removeImageFromProject = async (
+  projectId: string,
+  imageUrl: string
+) => {
+  const project = await db
+    .select()
+    .from(projects)
+    .where(eq(projects.id, projectId))
+    .then((res) => res[0]);
+
+  if (!project) {
+    return { error: "Project not found!" };
+  }
+
+  if (!project.images.includes(imageUrl)) {
+    return { error: "Image not found in project!" };
+  }
+
+  const updatedImages = project.images.filter((image) => image !== imageUrl);
+
+  await db
+    .update(projects)
+    .set({ images: updatedImages })
+    .where(eq(projects.id, projectId));
+
+  revalidatePath(`/${projectId}`);
+
+  return { success: "Image removed from project!" };
+};

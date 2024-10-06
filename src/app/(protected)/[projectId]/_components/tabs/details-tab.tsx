@@ -4,17 +4,24 @@ import { ProjectDetailsCard } from "../cards/project-details-card";
 import { DesignerDetailsCard } from "../cards/designer-details-card";
 import { PlanDetailsCard } from "../cards/plan-details-card";
 import { ExploreProjectCard } from "../cards/explore-project-card";
-import { getAllRoomsForProject } from "@/actions/room-action";
-import { Room } from "@/types/interfaces";
+import {
+  deleteImageFromRoom,
+  getAllRoomsForProject,
+} from "@/actions/room-action";
+import { Project, Room } from "@/types/interfaces";
 import { RoomCard } from "../cards/room-card";
 import Image from "next/image";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Trash2 } from "lucide-react";
+import { ProjectImageGrid } from "../project-images-grid";
 
 interface DetailsTabProps {
   projectId: string;
 }
 
 export const DetailsTab = async ({ projectId }: DetailsTabProps) => {
-  const project = await getProjectById(projectId);
+  const project: Project = await getProjectById(projectId);
 
   const projectImages: string[] = [
     project.thumbnailUrl!,
@@ -29,7 +36,7 @@ export const DetailsTab = async ({ projectId }: DetailsTabProps) => {
 
   return (
     <>
-      <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 max-w-full gap-y-8 gap-x-4 md:gap-x-16 mx-auto justify-center">
+      <div className="w-full mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-y-8 gap-x-4 md:gap-x-16 mx-auto justify-center">
         <AutoScrollCarousel images={projectImages} />
         <ProjectDetailsCard project={project} />
         <ExploreProjectCard
@@ -42,21 +49,8 @@ export const DetailsTab = async ({ projectId }: DetailsTabProps) => {
             <RoomCard room={room} />
           </>
         ))}
-
-        {project.images.map((image) => (
-          <>
-            <div className="relative w-[350px] aspect-square">
-              <Image
-                src={image}
-                alt={"uploaded-image"}
-                fill
-                className="rounded-md object-cover transition-all duration-300"
-                sizes="100vw"
-              />
-            </div>
-          </>
-        ))}
       </div>
+      <ProjectImageGrid project={project} />
     </>
   );
 };
