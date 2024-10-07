@@ -1,4 +1,3 @@
-import { GeneratedImage } from "@/types/interfaces";
 import { Leonardo } from "@leonardo-ai/sdk";
 import {
   CreateGenerationRequestBody,

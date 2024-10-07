@@ -15,6 +15,7 @@ export const users = pgTable("user", {
   phone: text("phone"),
   isDesigner: boolean("isDesigner").default(false),
   remaining: integer("remaining").notNull().default(100),
+  isPro: boolean("isPro").default(false),
 
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),

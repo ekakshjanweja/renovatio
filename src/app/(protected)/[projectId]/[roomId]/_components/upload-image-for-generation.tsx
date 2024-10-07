@@ -1,6 +1,5 @@
 "use client";
 
-import { addImageForGeneration, updateRoom } from "@/actions/room-action";
 import { UploadDropzone } from "@/lib/uploadthing";
 import { Room } from "@/types/interfaces";
 
@@ -26,11 +25,11 @@ export const UploadImageForGenerationComponent = ({
             },
           }}
           onClientUploadComplete={(res) => {
-            addImageForGeneration(
-              room.id,
-              res?.[0]?.url,
-              room.imageForGeneration
-            );
+            /*
+              TODO: 
+                1. Upload Images
+                2. Add the uploaded
+            */
           }}
         />
       </div>

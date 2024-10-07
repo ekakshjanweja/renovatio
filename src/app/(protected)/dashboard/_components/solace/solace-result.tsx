@@ -1,19 +1,14 @@
 "use client";
-import { Leonardo } from "@leonardo-ai/sdk";
-import {
-  CreateGenerationRequestBody,
-  GetGenerationByIdResponseBody,
-} from "@leonardo-ai/sdk/sdk/models/operations";
+
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
-import { SdGenerationStyle } from "@leonardo-ai/sdk/sdk/models/shared";
-import { GeneratedImage, Project } from "@/types/interfaces";
+import { Project } from "@/types/interfaces";
 import { cn } from "@/lib/utils";
 import { UrlCopy } from "@/components/url-copy";
 import { generateImage } from "@/actions/solace-action";
 import { SaveToProjectDialog } from "./save-to-project-dialog";
+import { GeneratedImages } from "@leonardo-ai/sdk/sdk/models/operations";
 
 interface SolaceResultProps {
   prompt: string;
@@ -35,10 +30,10 @@ export const SolaceResult = ({
   projects,
 }: SolaceResultProps) => {
   const [generatedImages, setGeneratedImages] = useState<
-    GeneratedImage[] | undefined
+    GeneratedImages[] | undefined
   >(undefined);
 
-  const [selectedImage, setSelectedImage] = useState<GeneratedImage | null>(
+  const [selectedImage, setSelectedImage] = useState<GeneratedImages | null>(
     null
   );
 
@@ -56,9 +51,9 @@ export const SolaceResult = ({
           apiKey
         );
 
-        setGeneratedImages(response as GeneratedImage[] | undefined);
+        setGeneratedImages(response as GeneratedImages[] | undefined);
         if (response !== undefined) {
-          setSelectedImage(response[0] as GeneratedImage);
+          setSelectedImage(response[0] as GeneratedImages);
         }
       };
 
@@ -85,7 +80,7 @@ export const SolaceResult = ({
           <div className="flex flex-col lg:flex lg:flex-row items-start justify-center">
             <div className="relative w-[95vw] md:w-[50vw] lg:w-[40vw] aspect-square">
               <Image
-                src={selectedImage.url}
+                src={selectedImage.url ?? ""}
                 alt="uploaded-image"
                 fill
                 className="rounded-md object-cover"
@@ -105,7 +100,7 @@ export const SolaceResult = ({
 
               <div className="lex flex-col gap-y-2 w-full">
                 <p className="text-sm">Image Url</p>
-                <UrlCopy url={selectedImage.url} />
+                <UrlCopy url={selectedImage.url ?? ""} />
               </div>
               <div className="flex w-full items-center justify-between gap-x-4">
                 <p className="flex items-center justify-center flex-1 py-2 bg-neutral-800 rounded-lg hover:bg-custom transition-all duration-300">
@@ -124,7 +119,7 @@ export const SolaceResult = ({
 
                 <SaveToProjectDialog
                   projects={projects}
-                  imageUrl={selectedImage.url}
+                  imageUrl={selectedImage.url ?? ""}
                 />
               </div>
             </div>
@@ -143,7 +138,7 @@ export const SolaceResult = ({
               >
                 <div className="relative w-[45vw] md:w-[20vw] lg:w-[10vw] aspect-square">
                   <Image
-                    src={image.url}
+                    src={image.url ?? ""}
                     alt={`generated-image-${index}`}
                     fill
                     className={cn(
