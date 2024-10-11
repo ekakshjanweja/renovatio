@@ -6,7 +6,7 @@ import { Loader2 } from "lucide-react";
 import { Project } from "@/types/interfaces";
 import { cn } from "@/lib/utils";
 import { UrlCopy } from "@/components/url-copy";
-import { generateImage } from "@/actions/solace-action";
+import { generateImage } from "@/actions/solace-generation-action";
 import { SaveToProjectDialog } from "./save-to-project-dialog";
 import { GeneratedImages } from "@leonardo-ai/sdk/sdk/models/operations";
 
@@ -53,7 +53,7 @@ export const SolaceResult = ({
 
         setGeneratedImages(response as GeneratedImages[] | undefined);
         if (response !== undefined) {
-          setSelectedImage(response[0] as GeneratedImages);
+          setSelectedImage(response.data.generatedImages[0] as GeneratedImages);
         }
       };
 
