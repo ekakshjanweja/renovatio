@@ -1,6 +1,11 @@
-import { modelEnum, modelEnumSchema } from '@/enums/model'
-import { roomTypeEnum, roomTypeEnumSchema } from '@/enums/room-type'
-import { styleEnum, styleEnumSchema } from '@/enums/style'
+import {
+  modelEnum,
+  modelEnumSchema,
+  roomTypeEnum,
+  roomTypeEnumSchema,
+  styleEnum,
+  styleEnumSchema
+} from '@/lib/enums'
 import {
   boolean,
   integer,

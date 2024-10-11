@@ -55,6 +55,7 @@
     "react-dom": "^18",
     "react-hook-form": "^7.51.2",
     "replicate": "^0.31.1",
+    "supabase": "^1.204.3",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
     "tls": "^0.0.1",
