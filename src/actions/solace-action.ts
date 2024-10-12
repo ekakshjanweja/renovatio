@@ -3,7 +3,7 @@
 import db from '@/db'
 import { solace, SolaceInsert, SolaceSelect } from '@/db/schema/solace'
 import { eq } from 'drizzle-orm'
-import { getCurrentUser, updateUsage } from './user-action'
+import { getCurrentUser } from './user-action'
 
 export const getSolaceHistory = async () => {
   const user = await getCurrentUser()

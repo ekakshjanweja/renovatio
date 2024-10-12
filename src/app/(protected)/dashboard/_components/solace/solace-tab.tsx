@@ -44,7 +44,7 @@ export const SolaceTab = ({
 
         {showResult && (
           <CardContent className="w-full">
-            <SolaceResult
+            {/* <SolaceResult
               apiKey={apiKey}
               isEnhanced={isEnhanced}
               prompt={prompt}
@@ -52,7 +52,7 @@ export const SolaceTab = ({
               numberOfImages={parseInt(numberOfImages)}
               style={style}
               projects={projects}
-            />
+            /> */}
           </CardContent>
         )}
 

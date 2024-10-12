@@ -51,9 +51,12 @@ export const SolaceResult = ({
           apiKey
         );
 
-        setGeneratedImages(response as GeneratedImages[] | undefined);
         if (response !== undefined) {
-          setSelectedImage(response.data.generatedImages[0] as GeneratedImages);
+          if (response.status === "error") return;
+
+          const images = response.data;
+          setGeneratedImages(response?.data as GeneratedImages[] | undefined);
+          setSelectedImage(images[0] as GeneratedImages);
         }
       };
 

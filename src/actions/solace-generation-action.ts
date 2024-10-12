@@ -4,7 +4,7 @@ import {
   GetGenerationByIdResponseBody
 } from '@leonardo-ai/sdk/sdk/models/operations'
 import { SdGenerationStyle } from '@leonardo-ai/sdk/sdk/models/shared'
-import { updateUsage } from './user-action'
+import { getCurrentUser, updateUsage } from './user-action'
 
 export const generateImage = async (
   prompt: string,
@@ -50,6 +50,15 @@ export const generateImage = async (
     photoReal: true
   }
 
+  const currentUser = await getCurrentUser()
+
+  if (currentUser.remaining < 4) {
+    return {
+      status: 'error',
+      data: 'You have insufficient credits to generate this image.'
+    }
+  }
+
   const result = await leonardo.image.createGeneration(
     isEnhanced ? alchemyOptions : options
   )
@@ -91,10 +100,7 @@ export const generateImage = async (
 
   return {
     status: 'success',
-    data: {
-      generatedImages,
-      usage: usage.data
-    }
+    data: generatedImages
   }
 }
 
