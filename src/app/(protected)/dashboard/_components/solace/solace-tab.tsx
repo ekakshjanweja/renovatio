@@ -44,7 +44,7 @@ export const SolaceTab = ({
 
         {showResult && (
           <CardContent className="w-full">
-            {/* <SolaceResult
+            <SolaceResult
               apiKey={apiKey}
               isEnhanced={isEnhanced}
               prompt={prompt}
@@ -52,7 +52,7 @@ export const SolaceTab = ({
               numberOfImages={parseInt(numberOfImages)}
               style={style}
               projects={projects}
-            /> */}
+            />
           </CardContent>
         )}
 
@@ -160,6 +160,7 @@ export const SolaceTab = ({
                 className="w-full border-custom border-2 rounded-full"
                 variant={"outline"}
                 onClick={handleGenerateImages}
+                disabled={!prompt}
               >
                 Generate Images
               </Button>

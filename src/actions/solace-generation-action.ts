@@ -1,3 +1,5 @@
+'use server'
+
 import { Leonardo } from '@leonardo-ai/sdk'
 import {
   CreateGenerationRequestBody,
@@ -20,7 +22,10 @@ export const generateImage = async (
 
   if (!apiKey) {
     console.log('could not find api key')
-    return undefined
+    return {
+      status: 'error',
+      data: 'could not find api key'
+    }
   }
 
   const leonardoKinoXL = 'aa77f04e-3eec-4034-9c07-d0f619684628'
@@ -64,8 +69,10 @@ export const generateImage = async (
   )
 
   if (result.statusCode !== 200) {
-    console.log('failed to initiate image generation')
-    return undefined
+    return {
+      status: 'error',
+      data: 'failed to initiate image generation'
+    }
   }
 
   const job = result.object
@@ -77,8 +84,10 @@ export const generateImage = async (
   )
 
   if (generationResponse['data'] === 'error') {
-    console.log('failed to get generated image.')
-    return undefined
+    return {
+      status: 'error',
+      data: 'failed to get generated image.'
+    }
   }
 
   const generations = generationResponse[
@@ -88,19 +97,27 @@ export const generateImage = async (
   const generatedImages = generations.generationsByPk?.generatedImages
 
   if (generatedImages === undefined) {
-    console.log('an error occurred while getting generated image')
-    return undefined
+    return {
+      status: 'error',
+      data: 'an error occurred while getting generated image'
+    }
   }
 
   const usage = await updateUsage()
 
   if (usage.status === 'error') {
-    throw usage.data
+    return {
+      status: 'error',
+      data: 'failed to update usage'
+    }
   }
 
   return {
     status: 'success',
-    data: generatedImages
+    data: {
+      images: generatedImages,
+      usage: 200
+    }
   }
 }
 
