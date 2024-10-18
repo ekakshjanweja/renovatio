@@ -12,6 +12,7 @@ import { SolaceInsert, Variation } from "@/db/schema/solace";
 import { ROOM_TYPE, roomTypeNames } from "@/lib/enums/room_type_enum";
 import { STYLE, styleNames } from "@/lib/enums/style_enum";
 import { modelEnumSchema } from "@/lib/enums/model_enum";
+import { v4 as uuidv4 } from "uuid";
 
 export const generateImage = async (
   prompt: string,
@@ -128,6 +129,7 @@ export const generateImage = async (
   });
 
   const imageToSaveInHistory: SolaceInsert = {
+    id: uuidv4(),
     prompt: prompt,
     coverUrl:
       generatedImages[0].url === undefined ? "" : generatedImages[0].url,
