@@ -11,12 +11,15 @@ import { SaveToProjectDialog } from "./save-to-project-dialog";
 import { GeneratedImages } from "@leonardo-ai/sdk/sdk/models/operations";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { z } from "zod";
+import { ROOM_TYPE } from "@/lib/enums/room_type_enum";
+import { STYLE } from "@/lib/enums/style_enum";
 
 interface SolaceResultProps {
   prompt: string;
-  roomType: string;
+  roomType: ROOM_TYPE;
   numberOfImages: number;
-  style: string;
+  style: STYLE;
   isEnhanced: boolean;
   apiKey: string;
   projects: Project[];
