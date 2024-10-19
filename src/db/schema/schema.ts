@@ -1,5 +1,6 @@
 import { accounts } from "./accounts";
 import { bills } from "./bills";
+import { todos } from "./todos";
 import { designers } from "./designers";
 import { projects } from "./projects";
 import { rooms } from "./rooms";
@@ -15,5 +16,6 @@ export const schema = {
   accounts,
   sessions,
   verificationTokens,
-  bills
+  bills,
+  todos
 };

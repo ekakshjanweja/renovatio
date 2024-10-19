@@ -36,26 +36,27 @@ export async function BillsTab({ projectId }: BillsTabProps) {
     notFound();
   }
   return (
-    <div>
-      <Table className="w-full">
+    <div className="flex flex-col gap-2 w-full">
+      <Table>
         {/*<TableCaption>A list of your recent invoices.</TableCaption>*/}
         <TableHeader>
-          <TableRow className="w-full">
-            <TableHead className="w-7/12">Item</TableHead>
-            <TableHead className="w-2/12">Status</TableHead>
-            <TableHead className="w-2/12">
+          <TableRow>
+            <TableHead>Item</TableHead>
+            <TableHead>Status</TableHead>
+            <TableHead>
               {user.isDesigner ? "Client" : "Interior Designer"}
             </TableHead>
-            <TableHead className="text-right w-1/12">Amount</TableHead>
+            <TableHead className="text-right">Amount</TableHead>
           </TableRow>
         </TableHeader>
-        <TableBody className="w-full">
+        <TableBody className="w-full grow">
           {invoices.map((invoice) => (
             <CreateBillDialog
               key={invoice.id}
               invoice={invoice}
               isDes={user.isDesigner ?? false}
               userId={user.id}
+              className={"w-full grow"}
             />
           ))}
         </TableBody>

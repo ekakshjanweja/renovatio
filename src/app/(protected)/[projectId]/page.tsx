@@ -1,5 +1,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DetailsTab } from "./_components/tabs/details-tab";
+import { TodoTab } from "./_components/tabs/todo-tab";
 import { BillsTab } from "./_components/tabs/bills-tab";
 import { SettingsTab } from "./_components/tabs/settings-tab";
 import { auth } from "@/auth";
@@ -33,11 +34,15 @@ const UserProjectPage = async ({ params }: UserProjectPageProps) => {
         <Tabs defaultValue="details" className="max-w-7xl">
           <TabsList>
             <TabsTrigger value="details">Details</TabsTrigger>
+            <TabsTrigger value="todo">Todo</TabsTrigger>
             <TabsTrigger value="bills">Bills</TabsTrigger>
             <TabsTrigger value="settings">Settings</TabsTrigger>
           </TabsList>
           <TabsContent value="details">
             <DetailsTab projectId={projectId} />
+          </TabsContent>
+          <TabsContent value="todo">
+            <TodoTab projectId={projectId} />
           </TabsContent>
           <TabsContent value="bills">
             <BillsTab projectId={projectId} />

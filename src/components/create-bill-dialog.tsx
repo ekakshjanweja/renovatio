@@ -45,6 +45,7 @@ interface CreateBillDialogProps {
   isDes: boolean;
   userId: string;
   invoice?: z.infer<typeof BillSchema> & {userName: string; userEmail: string; id: string;};
+  className? : string;
 }
 
 export const CreateBillDialog = (props: CreateBillDialogProps) => {
@@ -96,16 +97,16 @@ export const CreateBillDialog = (props: CreateBillDialogProps) => {
 
 
     return(<Dialog open={openDialog} onOpenChange={setOpenDialog}>
-      <DialogTrigger className="w-full" asChild>
+      <DialogTrigger className={"w-full " + props.className} asChild>
       
       {props.invoice ? 
-        <TableRow key={props.invoice.id} className="w-full flex justify-between">
-          <TableCell className="font-medium w-7/12">{props.invoice.item}</TableCell>
-          <TableCell className="w-2/12">{props.invoice.status}</TableCell>
-          <TableCell className="w-2/12">{props.invoice.userName}</TableCell>
-          <TableCell className="text-right w-1/12">{props.invoice.amount}</TableCell>
+        <TableRow key={props.invoice.id} className="w-full grow flex justify-between">
+          <TableCell className="font-medium">{props.invoice.item}</TableCell>
+          <TableCell className="">{props.invoice.status}</TableCell>
+          <TableCell className="">{props.invoice.userName}</TableCell>
+          <TableCell className="text-right">{props.invoice.amount}</TableCell>
         </TableRow>
-        : <div className="w-full h-9 flex justify-center cursor-pointer items-center text-neutral-700 hover:text-neutral-300 hover:bg-neutral-900 transition-colors">
+        : <div className="h-9 flex justify-center cursor-pointer items-center text-neutral-700 hover:text-neutral-300 hover:bg-neutral-900 transition-colors">
           <PlusCircle />
           <div className="ml-4">Add Bill</div>
         </div>
