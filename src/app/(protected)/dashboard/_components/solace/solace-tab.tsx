@@ -33,7 +33,11 @@ import { Slider } from "@/components/ui/slider";
 export const SolaceTab = ({
   apiKey,
   projects,
+  userId,
+  remainingCredits,
 }: {
+  userId: string;
+  remainingCredits: number;
   apiKey: string;
   projects: Project[];
 }) => {
@@ -68,6 +72,8 @@ export const SolaceTab = ({
               numberOfImages={numberOfImages}
               style={style}
               projects={projects}
+              userId={userId}
+              remainingCredits={remainingCredits}
             />
           </CardContent>
         )}

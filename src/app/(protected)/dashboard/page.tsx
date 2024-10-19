@@ -7,9 +7,11 @@ import { getAllProjectsForCurrentUser } from "@/actions/project-action";
 import { Project } from "@/types/interfaces";
 import { HistoryTab } from "./_components/history/history-tab";
 import { getSolaceHistory } from "@/actions/solace-action";
+import { getCurrentUser } from "@/actions/user-action";
 
 const Dashboard = async () => {
   const session = await auth();
+  const user = await getCurrentUser();
 
   if (!session) {
     notFound();
@@ -34,7 +36,12 @@ const Dashboard = async () => {
             <ProjectTab />
           </TabsContent>
           <TabsContent value="solace" className="flex justify-center">
-            <SolaceTab apiKey={leonardoApiKey} projects={projects} />
+            <SolaceTab
+              apiKey={leonardoApiKey}
+              projects={projects}
+              userId={user.id}
+              remainingCredits={user.remaining}
+            />
           </TabsContent>
           <TabsContent value="history" className="flex justify-center">
             <HistoryTab history={solaceHistory.history} />
