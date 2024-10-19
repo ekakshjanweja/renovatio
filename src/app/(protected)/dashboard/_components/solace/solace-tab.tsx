@@ -104,26 +104,6 @@ export const SolaceTab = ({
                     <span>4</span>
                     <span>5</span>
                   </div>
-                  {/* <Tabs
-                    value={numberOfImages}
-                    onValueChange={setNumberOfImages}
-                    className="w-full"
-                  >
-                    <TabsList className="grid w-full grid-cols-2 h-auto">
-                      <TabsTrigger value="1" className="py-2">
-                        1
-                      </TabsTrigger>
-                      <TabsTrigger value="3" className="py-2">
-                        3
-                      </TabsTrigger>
-                      <TabsTrigger value="2" className="py-2">
-                        2
-                      </TabsTrigger>
-                      <TabsTrigger value="4" className="py-2">
-                        4
-                      </TabsTrigger>
-                    </TabsList>
-                  </Tabs> */}
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Style</label>
