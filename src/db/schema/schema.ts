@@ -1,11 +1,12 @@
-import { accounts } from "./accounts";
-import { bills } from "./bills";
-import { designers } from "./designers";
-import { projects } from "./projects";
-import { rooms } from "./rooms";
-import { sessions } from "./sessions";
-import { users } from "./users";
-import { verificationTokens } from "./verification-tokens";
+import { accounts } from './accounts'
+import { bills } from './bills'
+import { designers } from './designers'
+import { projects } from './projects'
+import { rooms } from './rooms'
+import { sessions } from './sessions'
+import { solace } from './solace'
+import { users } from './users'
+import { verificationTokens } from './verification-tokens'
 
 export const schema = {
   users,
@@ -15,5 +16,6 @@ export const schema = {
   accounts,
   sessions,
   verificationTokens,
-  bills
-};
+  bills,
+  solace
+}

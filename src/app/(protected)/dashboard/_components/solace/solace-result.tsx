@@ -2,19 +2,24 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { Loader2 } from "lucide-react";
+import { AlertCircle, Loader2 } from "lucide-react";
 import { Project } from "@/types/interfaces";
 import { cn } from "@/lib/utils";
 import { UrlCopy } from "@/components/url-copy";
-import { generateImage } from "@/actions/solace-action";
+import { generateImage } from "@/actions/solace-generation-action";
 import { SaveToProjectDialog } from "./save-to-project-dialog";
 import { GeneratedImages } from "@leonardo-ai/sdk/sdk/models/operations";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { z } from "zod";
+import { ROOM_TYPE } from "@/lib/enums/room_type_enum";
+import { STYLE } from "@/lib/enums/style_enum";
 
 interface SolaceResultProps {
   prompt: string;
-  roomType: string;
+  roomType: ROOM_TYPE;
   numberOfImages: number;
-  style: string;
+  style: STYLE;
   isEnhanced: boolean;
   apiKey: string;
   projects: Project[];
@@ -37,26 +42,41 @@ export const SolaceResult = ({
     null
   );
 
+  const [error, setError] = useState<string | null>(null);
+
   const effectRan = useRef(false);
 
   useEffect(() => {
     if (effectRan.current == false) {
       const startImageGeneration = async () => {
-        const response = await generateImage(
-          prompt,
-          roomType,
-          numberOfImages,
-          style,
-          isEnhanced,
-          apiKey
-        );
+        try {
+          const response = await generateImage(
+            prompt,
+            roomType,
+            numberOfImages,
+            style,
+            isEnhanced,
+            apiKey
+          );
 
-        setGeneratedImages(response as GeneratedImages[] | undefined);
-        if (response !== undefined) {
-          setSelectedImage(response[0] as GeneratedImages);
+          if (response.status === "error") {
+            throw new Error(response.data as string);
+          }
+          const data = response.data as {
+            images: GeneratedImages[];
+            usage: number;
+          };
+
+          const images = data.images as GeneratedImages[];
+
+          setGeneratedImages(images as GeneratedImages[] | undefined);
+          setSelectedImage(images[0] as GeneratedImages);
+        } catch (error) {
+          setError(
+            error instanceof Error ? error.message : "An error occurred"
+          );
         }
       };
-
       startImageGeneration();
     }
 
@@ -65,9 +85,28 @@ export const SolaceResult = ({
     };
   }, []);
 
+  if (error) {
+    return (
+      <div className="flex justify-start relative h-full w-[70vw] items-center transition-all duration-300">
+        <Card className="w-full max-w-md bg-destructive text-destructive-foreground">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <AlertCircle className="h-5 w-5" />
+              Error
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="gap-y-6">
+            <p className="text-xl w-full">{error}</p>
+            <Button className="mt-6">Get Pro</Button>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   if (generatedImages === undefined) {
     return (
-      <div className="flex justify-center relative aspect-square w-[20vw] items-center transition-all duration-300">
+      <div className="flex justify-center relative  h-full w-[70vw] items-center transition-all duration-300">
         <Loader2 className="w-10 h-10 animate-spin" />
       </div>
     );

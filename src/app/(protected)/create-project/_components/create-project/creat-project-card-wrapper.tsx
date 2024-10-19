@@ -7,11 +7,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import Link from "next/link";
-import { signIn } from "next-auth/react";
-import { usePathname } from "next/navigation";
 
 interface CreateProjectCardWrapperProps {
   title: string;
