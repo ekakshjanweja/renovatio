@@ -16,7 +16,7 @@ export const HistoryTab = ({ history }: HistoryTabProps) => {
           </div>
         </div>
         <div className="grid md:auto-rows-[24rem] grid-cols-1 md:grid-cols-3 lg:grid-cols-4 max-w-full mx-auto gap-6">
-          {history.map((item) => (
+          {history.reverse().map((item) => (
             <>
               <HistoryCard item={item} />
             </>
