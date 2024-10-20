@@ -18,8 +18,6 @@ import { Input } from "@/components/ui/input";
 import { FormError } from "@/components/form/form-error";
 import { FormSuccess } from "@/components/form/form-success";
 import { Button } from "@/components/ui/button";
-
-import { UploadDropzone } from "@/lib/uploadthing";
 import { createProject } from "@/actions/project-action";
 import { useRouter } from "next/navigation";
 

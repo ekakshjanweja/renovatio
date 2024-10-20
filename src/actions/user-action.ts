@@ -1,8 +1,9 @@
+"use server";
+
 import { auth } from "@/auth";
 import db from "@/db/index";
 import { users } from "@/db/schema/users";
 import { eq } from "drizzle-orm";
-import { NextResponse } from "next/server";
 
 export const getCurrentUser = async () => {
   const session = await auth();
@@ -42,17 +43,38 @@ export const updateUsage = async () => {
 
     await db
       .update(users)
-      .set({ remaining: user.remaining - 1 })
+      .set({ remaining: user.remaining - 4 })
       .where(eq(users.id, user.id));
 
-    return NextResponse.json({
+    return {
       status: "success",
-      updatedUsage: user.remaining - 1,
-    });
+      data: user.remaining - 4,
+    };
   } catch (error) {
-    return NextResponse.json({
+    return {
       status: "error",
-      error: "failed to update usage",
-    });
+      data: "failed to update usage",
+    };
+  }
+};
+
+export const setUserPro = async () => {
+  try {
+    const user = await getCurrentUser();
+
+    await db
+      .update(users)
+      .set({ isPro: true, remaining: 1000 })
+      .where(eq(users.id, user.id));
+
+    return {
+      status: "success",
+      data: user.isPro,
+    };
+  } catch (error) {
+    return {
+      status: "error",
+      data: "failed to update user to pro",
+    };
   }
 };

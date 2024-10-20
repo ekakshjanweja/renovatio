@@ -9,14 +9,13 @@ import { UTApi } from "uploadthing/server";
 import * as z from "zod";
 import { revalidatePath } from "next/cache";
 
-interface ProjectModel {
+interface ProjectInputModel {
   name: string;
   thumbnailUrl?: string;
   location: string;
   area: number;
   description: string;
   category: string;
-  imageModel: string[];
   designerId: string;
   userId: string;
   images: string[];
@@ -79,24 +78,19 @@ export const createProject = async (
 
   const designer = await getCurrentUser();
 
-  console.log({ designer });
-
-  const insertProject = async (project: ProjectModel) => {
-    await db.insert(projects).values({ id: projectId, ...project });
-  };
-
-  insertProject({
+  const project: ProjectInputModel = {
     name: values.projectName,
     thumbnailUrl: "",
     location: values.location,
     area: parseInt(values.area),
     description: values.description,
     category: values.category,
-    imageModel: [],
     designerId: designer.id,
     userId: user.id,
     images: [],
-  });
+  };
+
+  await db.insert(projects).values({ id: projectId, ...project });
 
   return { success: "Project added!" };
 };

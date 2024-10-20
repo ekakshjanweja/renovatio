@@ -1,8 +1,6 @@
 import { integer, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 import { users } from "./users";
 
-//TODO: Add Status Property to Project Model
-
 export const projects = pgTable("projects", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
@@ -18,6 +16,7 @@ export const projects = pgTable("projects", {
   userId: text("user_id").references(() => users.id, {
     onDelete: "cascade",
   }),
+  status: text("status").notNull().default("draft"),
 
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
