@@ -83,6 +83,42 @@ export const BillSchema = z.object({
   clientEmail: z.string().email(),
 });
 
+enum TodoCategories { 
+  "Design", 
+  "Plan", 
+  "Presentation", 
+  "Modeling", 
+  "Site" };
+
+enum TodoStatus {
+  mightDo = 0, pending = 1, someProgress = 2, almostDone = 3, done = 4
+}
+
+export const TodoSchema = z.object({
+  title: z
+    .string()
+    .min(1, {
+      message: "Todo title is required",
+    })
+    .max(500, { message: "Title cant exceed 500 characters" }),
+
+  // @ts-ignore
+  category: z.enum(Object.keys(TodoCategories)),
+
+  dependsOn: z.number().nullable(),
+
+  // @ts-ignore
+  status: z.enum(Object.keys(TodoStatus)),
+
+  description: z
+    .string()
+    .min(1, {
+      message: "Todo Description is required",
+    })
+    .max(3000, { message: "Description cant exceed 3000 characters" }),
+});
+
+
 export const ReplicateFormSchema = z.object({
   prompt: z.string().min(1, {
     message: "no prompt was entered",
