@@ -34,12 +34,12 @@ export const createTodo = async (
   }
 };
 
-export const getAllTodos = async (userId: string, isDes = false) => {
+export const getAllTodos = async (userId: string) => {
   // gets all todos of that designer
 
   const res: (z.infer<typeof TodoSchema> & {
     id: number;
-    designerId: number;
+    designerId: string;
   })[] = (await db
     // @ts-ignore
     .select()
@@ -49,7 +49,7 @@ export const getAllTodos = async (userId: string, isDes = false) => {
       eq(todos.designerId, userId)
     )) as unknown as (z.infer<typeof TodoSchema> & {
     id: number;
-    designerId: number;
+    designerId: string;
   })[];
 
   console.log("res is: ");

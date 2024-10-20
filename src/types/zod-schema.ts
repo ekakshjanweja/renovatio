@@ -83,16 +83,21 @@ export const BillSchema = z.object({
   clientEmail: z.string().email(),
 });
 
-enum TodoCategories { 
+const TodoCategories = [ 
   "Design", 
   "Plan", 
   "Presentation", 
   "Modeling", 
-  "Site" };
+  "Site" 
+];
 
-enum TodoStatus {
-  mightDo = 0, pending = 1, someProgress = 2, almostDone = 3, done = 4
-}
+export const TodoStatusObj: { [key: number]: string } = {
+  0: "mightDo",
+  1: "pending",
+  2: "someProgress",
+  3: "almostDone",
+  4: "done",
+};
 
 export const TodoSchema = z.object({
   title: z
@@ -103,12 +108,19 @@ export const TodoSchema = z.object({
     .max(500, { message: "Title cant exceed 500 characters" }),
 
   // @ts-ignore
-  category: z.enum(Object.keys(TodoCategories)),
+  category: z.enum(TodoCategories),
 
   dependsOn: z.number().nullable(),
 
   // @ts-ignore
-  status: z.enum(Object.keys(TodoStatus)),
+  status: z.coerce
+    .number()
+    .lt(5, {
+      message: `Too big value for status, use these number: ${TodoStatusObj}`,
+    })
+    .gte(0, {
+      message: `Too small value for status, use these numbers: ${TodoStatusObj}`,
+    }),
 
   description: z
     .string()
