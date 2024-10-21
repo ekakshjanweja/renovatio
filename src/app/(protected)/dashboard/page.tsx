@@ -8,6 +8,7 @@ import { Project } from "@/types/interfaces";
 import { HistoryTab } from "./_components/history/history-tab";
 import { getSolaceHistory } from "@/actions/solace-action";
 import { getCurrentUser } from "@/actions/user-action";
+import { Swappy } from "./_components/swappy";
 
 const Dashboard = async () => {
   const session = await auth();
@@ -31,6 +32,7 @@ const Dashboard = async () => {
             <TabsTrigger value="projects">Projects</TabsTrigger>
             <TabsTrigger value="solace">Solace</TabsTrigger>
             <TabsTrigger value="history">History</TabsTrigger>
+            <TabsTrigger value="swappy">swappy</TabsTrigger>
           </TabsList>
           <TabsContent value="projects">
             <ProjectTab />
@@ -45,6 +47,9 @@ const Dashboard = async () => {
           </TabsContent>
           <TabsContent value="history" className="flex justify-center">
             <HistoryTab history={solaceHistory.history} />
+          </TabsContent>
+          <TabsContent value="swappy" className="flex justify-center">
+            <Swappy />
           </TabsContent>
         </Tabs>
       </div>
