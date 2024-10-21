@@ -10,6 +10,7 @@ import { UrlCopy } from "@/components/url-copy";
 import { SolaceSelect } from "@/db/schema/solace";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 
 interface HistoryCardProps {
@@ -18,6 +19,30 @@ interface HistoryCardProps {
 
 export const HistoryCard = ({ item }: HistoryCardProps) => {
   const [selectedItem, setSelectedItem] = useState<string>(item.coverUrl);
+
+  return (
+    <>
+      <Link href={`/h/${item.id}`}>
+        <div className="cursor-pointer min-h-[24rem] max-h-[24rem] rounded-xl group/bento hover:shadow-xl transition duration-200 shadow-input dark:shadow-none p-0 dark:bg-stone-900 dark:border-stone-50/[0.2] bg-neutral-50 border border-transparent justify-between flex flex-col space-y-4">
+          <div className="w-full">
+            <Image
+              alt={item.id}
+              src={item.coverUrl}
+              width="0"
+              height="0"
+              sizes="100vw"
+              className="rounded-xl object-cover w-full"
+              quality={50}
+              placeholder="blur"
+              blurDataURL={item.coverUrl}
+            />
+          </div>
+          <div className="px-4 pb-4 overflow-hidden">{item.prompt}</div>
+        </div>
+      </Link>
+    </>
+  );
+
   return (
     <>
       <Dialog>

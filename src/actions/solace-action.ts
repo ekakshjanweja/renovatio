@@ -1,38 +1,44 @@
-"use server";
+'use server'
 
-import db from "@/db";
-import { solace, SolaceInsert, SolaceSelect } from "@/db/schema/solace";
-import { eq } from "drizzle-orm";
-import { getCurrentUser } from "./user-action";
-import { revalidatePath } from "next/cache";
+import db from '@/db'
+import { solace, SolaceInsert, SolaceSelect } from '@/db/schema/solace'
+import { eq } from 'drizzle-orm'
+import { getCurrentUser } from './user-action'
+import { revalidatePath } from 'next/cache'
 
 export const getSolaceHistory = async () => {
-  const user = await getCurrentUser();
+  const user = await getCurrentUser()
 
   const history = await db
     .select()
     .from(solace)
-    .where(eq(solace.generatedBy, user.id));
+    .where(eq(solace.generatedBy, user.id))
 
   return {
-    history: history as SolaceSelect[],
-  };
-};
+    history: history as SolaceSelect[]
+  }
+}
+
+export const getSolaceHistoryById = async (id: string) => {
+  const history = await db.select().from(solace).where(eq(solace.id, id))
+
+  return history[0] as SolaceSelect
+}
 
 export const saveSolaceHistory = async (image: SolaceInsert) => {
   if (image.id === undefined || image.id === null) {
-    return { error: "Image ID is required!" };
+    return { error: 'Image ID is required!' }
   }
 
   const existingImage = (
     await db.select().from(solace).where(eq(solace.id, image.id!))
-  )[0];
+  )[0]
 
   if (existingImage) {
-    return { error: "Image Already Exists!" };
+    return { error: 'Image Already Exists!' }
   }
 
-  await db.insert(solace).values(image);
+  await db.insert(solace).values(image)
 
-  revalidatePath("/dashboard");
-};
+  revalidatePath('/dashboard')
+}
