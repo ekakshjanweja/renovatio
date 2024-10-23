@@ -8,6 +8,13 @@
       "when": 1729424716271,
       "tag": "0000_slim_jack_murdock",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1729681073082,
+      "tag": "0001_lovely_rocket_racer",
+      "breakpoints": true
     }
   ]
 }

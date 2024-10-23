@@ -88,7 +88,8 @@ const TodoCategories = [
   "Plan", 
   "Presentation", 
   "Modeling", 
-  "Site" 
+  "Site",
+  "Other",
 ];
 
 export const TodoStatusObj: { [key: number]: string } = {
@@ -100,6 +101,7 @@ export const TodoStatusObj: { [key: number]: string } = {
 };
 
 export const TodoSchema = z.object({
+  id: z.number().gte(0),
   title: z
     .string()
     .min(1, {
@@ -111,6 +113,8 @@ export const TodoSchema = z.object({
   category: z.enum(TodoCategories),
 
   dependsOn: z.number().nullable(),
+
+  projectId: z.string(),
 
   // @ts-ignore
   status: z.coerce
@@ -138,3 +142,5 @@ export const ReplicateFormSchema = z.object({
   Image: z.string().url({ message: "Invalid Image URL" }),
   betterImages: z.boolean(),
 });
+
+export type Todo = z.infer<typeof TodoSchema>;

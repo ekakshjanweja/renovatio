@@ -1,6 +1,7 @@
 import { integer, serial, pgTable, text, uuid } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 import { users } from "./users";
+import { projects } from "./projects";
 
 export const todos: any = pgTable("todos", {
     id: serial("id").primaryKey(),
@@ -10,6 +11,7 @@ export const todos: any = pgTable("todos", {
       () => todos.id,
       { onDelete: "set null" }
     ),
+    projectId: text("project_id").references(() => projects.id, {onDelete: "cascade"}),
     status: integer("status"),
     description: text("description"),
     designerId: text("designer_id").references(() => users.id, {onDelete: "cascade"}),
@@ -20,7 +22,8 @@ export const todosRelations = relations(todos, ({ one }) => ({
     fields: [todos.dependsOn],
     references: [todos.id],
   }),
-}));
+}
+));
 
 // Schema for inserting a todo
 //const insertTodoSchema = createInsertSchema(todos);
