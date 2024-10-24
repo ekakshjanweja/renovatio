@@ -26,6 +26,7 @@ import { v4 as uuidv4 } from "uuid";
 import { MutableRequestCookiesAdapter } from "next/dist/server/web/spec-extension/adapters/request-cookies";
 import MaskEditor from "@/components/MaskEditor";
 import { Slider } from "@/components/ui/slider";
+import getMask from "@/lib/getMask";
 
 interface SolaceResultProps {
   prompt: string;
@@ -368,7 +369,9 @@ export const SolaceResult = ({
                   imageUrl={selectedImage.url ?? ""}
                 />
               </div>
-              <div>Mask Editor</div>
+              <div className="flex">
+                Mask Editor <Button onClick={getMask}>Get Mask</Button>
+              </div>
               <div className="flex justify-center items-center w-[300px]">
                 Cursor Size:
                 <Slider
