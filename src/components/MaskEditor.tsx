@@ -141,6 +141,7 @@ function MaskEditor({ props }: { props: MaskEditorProps }) {
         width={props.width}
         height={props.height}
         className="absolute top-0 left-0 pointer-events-auto"
+        id="mask-canvas"
         style={{
           opacity: 0.75,
           mixBlendMode: "normal",
