@@ -7,95 +7,126 @@ function MaskEditor({ props }: { props: MaskEditorProps }) {
   const maskCanvasRef = useRef<HTMLCanvasElement | null>(null);
   const cursorCanvasRef = useRef<HTMLCanvasElement | null>(null);
 
-  function hexToRGB(color: string) {
-    let parts = color.replace("#", "").match(/.{1,2}/g);
-    return parts!.map((part) => parseInt(part, 16));
-  }
-
-  // Drawing image on base canvas.
+  // Drawing image on base canvas
   useEffect(() => {
-    console.log(props.cursorSize);
     if (!canvasRef.current) return;
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d")!;
-    const image = new Image(props.width, props.height);
+    const image = new Image();
     image.src = props.image;
     image.onload = () => {
       ctx.drawImage(image, 0, 0, props.width, props.height);
     };
   }, [props]);
 
-  // Drawing cursor on base canvas
+  // Initialize mask canvas with transparent background
+  useEffect(() => {
+    if (!maskCanvasRef.current) return;
+    const maskCtx = maskCanvasRef.current.getContext("2d")!;
+    maskCtx.clearRect(0, 0, props.width, props.height);
+    maskCtx.fillStyle = "rgba(0, 0, 0, 0)";
+    maskCtx.fillRect(0, 0, props.width, props.height);
+  }, [props.width, props.height]);
+
+  // Drawing cursor
+  const drawCursor = useCallback(
+    (ctx: CanvasRenderingContext2D, x: number, y: number) => {
+      ctx.clearRect(0, 0, props.width, props.height);
+      ctx.beginPath();
+      ctx.strokeStyle = "#23272d";
+      ctx.lineWidth = 1.5;
+      ctx.arc(x, y, props.cursorSize, 0, Math.PI * 2);
+      ctx.stroke();
+    },
+    [props.width, props.height, props.cursorSize],
+  );
+
+  // Handle cursor visibility and movement
   useEffect(() => {
     if (!cursorCanvasRef.current) return;
 
     const cursorCanvas = cursorCanvasRef.current;
-    const cursorCtx = cursorCanvas?.getContext("2d")!;
+    const cursorCtx = cursorCanvas.getContext("2d")!;
+    const parentDiv = cursorCanvas.parentElement;
 
-    const listener = (e: MouseEvent) => {
-      cursorCtx.clearRect(0, 0, props.width, props.height);
-      cursorCtx.beginPath();
-      cursorCtx.arc(e.offsetX, e.offsetY, props.cursorSize, 0, 360);
-      cursorCtx.fill();
-      cursorCtx.stroke();
+    if (!parentDiv) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const rect = cursorCanvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      drawCursor(cursorCtx, x, y);
     };
 
-    cursorCanvas.addEventListener("mousemove", listener);
+    const handleMouseEnter = (e: MouseEvent) => {
+      const rect = cursorCanvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      drawCursor(cursorCtx, x, y);
+    };
+
+    const handleMouseLeave = () => {
+      cursorCtx.clearRect(0, 0, props.width, props.height);
+    };
+
+    parentDiv.addEventListener("mousemove", handleMouseMove);
+    parentDiv.addEventListener("mouseenter", handleMouseEnter);
+    parentDiv.addEventListener("mouseleave", handleMouseLeave);
 
     return () => {
-      cursorCanvas.removeEventListener("mousemove", listener);
+      parentDiv.removeEventListener("mousemove", handleMouseMove);
+      parentDiv.removeEventListener("mouseenter", handleMouseEnter);
+      parentDiv.removeEventListener("mouseleave", handleMouseLeave);
     };
-  }, [props]);
+  }, [props.width, props.height, drawCursor]);
 
+  // Drawing mask
   useEffect(() => {
-    const listener = (event: MouseEvent) => {
-      const cursorCtx = canvasRef.current?.getContext("2d");
+    if (!maskCanvasRef.current) return;
 
-      if (cursorCtx) {
-        cursorCtx.clearRect(0, 0, props.width, props.height);
+    const maskCanvas = maskCanvasRef.current;
+    const maskCtx = maskCanvas.getContext("2d", { willReadFrequently: true })!;
 
-        cursorCtx.beginPath();
-        cursorCtx.fillStyle = "#23272d88";
-        cursorCtx.strokeStyle = "#23272d";
-        cursorCtx.arc(event.offsetX, event.offsetY, props.cursorSize, 0, 360);
-        cursorCtx.fill();
-        cursorCtx.stroke();
-      }
+    let isDrawing = false;
 
-      const maskCtx = maskCanvasRef.current?.getContext("2d");
+    const draw = (e: MouseEvent) => {
+      if (!isDrawing && e.type !== "mousedown") return;
 
-      if (maskCtx && event.buttons > 0) {
-        maskCtx.beginPath();
-        maskCtx.fillStyle =
-          event.buttons > 1 || event.shiftKey ? "#ffffff" : "#23272d";
-        maskCtx.arc(event.offsetX, event.offsetY, props.cursorSize, 0, 360);
-        maskCtx.fill();
-      }
+      maskCtx.beginPath();
+      maskCtx.fillStyle =
+        e.buttons === 2 || e.shiftKey
+          ? "rgba(0, 0, 0, 0)"
+          : "rgba(0, 0, 0, 0.7)";
+      maskCtx.globalCompositeOperation =
+        e.buttons === 2 || e.shiftKey ? "destination-out" : "source-over";
+      maskCtx.arc(e.offsetX, e.offsetY, props.cursorSize, 0, Math.PI * 2);
+      maskCtx.fill();
     };
-  }, [props]);
 
-  // Drawing canvas
-  const replaceMaskColor = useCallback(
-    (hexColor: string, invert: boolean) => {
-      const maskCtx = maskCanvasRef.current?.getContext("2d");
-      const imageData = maskCtx?.getImageData(0, 0, props.width, props.height);
-      const color = hexToRGB(hexColor);
-      if (imageData) {
-        for (var i = 0; i < imageData?.data.length; i += 4) {
-          const pixelColor =
-            (imageData.data[i] === 255) != invert ? [255, 255, 255] : color;
-          imageData.data[i] = pixelColor[0];
-          imageData.data[i + 1] = pixelColor[1];
-          imageData.data[i + 2] = pixelColor[2];
-          imageData.data[i + 3] = imageData.data[i + 3];
-        }
-        maskCtx?.putImageData(imageData, 0, 0);
-      }
-    },
-    [maskCanvasRef, props],
-  );
+    const startDrawing = (e: MouseEvent) => {
+      isDrawing = true;
+      draw(e);
+    };
 
-  useEffect(() => replaceMaskColor("#23272d", false), [replaceMaskColor]);
+    const stopDrawing = () => {
+      isDrawing = false;
+      maskCtx.globalCompositeOperation = "source-over";
+    };
+
+    maskCanvas.addEventListener("mousedown", startDrawing);
+    maskCanvas.addEventListener("mousemove", draw);
+    maskCanvas.addEventListener("mouseup", stopDrawing);
+    maskCanvas.addEventListener("mouseout", stopDrawing);
+    maskCanvas.addEventListener("contextmenu", (e) => e.preventDefault());
+
+    return () => {
+      maskCanvas.removeEventListener("mousedown", startDrawing);
+      maskCanvas.removeEventListener("mousemove", draw);
+      maskCanvas.removeEventListener("mouseup", stopDrawing);
+      maskCanvas.removeEventListener("mouseout", stopDrawing);
+      maskCanvas.removeEventListener("contextmenu", (e) => e.preventDefault());
+    };
+  }, [props.cursorSize]);
 
   return (
     <div className="relative w-fit">
@@ -109,7 +140,7 @@ function MaskEditor({ props }: { props: MaskEditorProps }) {
         ref={maskCanvasRef}
         width={props.width}
         height={props.height}
-        className="absolute top-0 left-0"
+        className="absolute top-0 left-0 pointer-events-auto"
         style={{
           opacity: 0.75,
           mixBlendMode: "normal",
@@ -119,7 +150,7 @@ function MaskEditor({ props }: { props: MaskEditorProps }) {
         ref={cursorCanvasRef}
         width={props.width}
         height={props.height}
-        className="absolute top-0 left-0 rounded-xl cursor-crosshair"
+        className="absolute top-0 left-0 rounded-xl cursor-crosshair pointer-events-none"
       />
     </div>
   );
