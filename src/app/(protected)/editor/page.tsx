@@ -1,58 +1,35 @@
 "use client";
-
-import { useSearchParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
-import { Toolbar } from "./components/Toolbar";
-import { init } from "./scripts/utils";
+import MaskEditor from "@/components/MaskEditor";
+import { Slider } from "@/components/ui/slider";
+import { useState } from "react";
 
 function SolaceEditor() {
-  const searchParams = useSearchParams();
-
-  const [canvasDimensions, setCanvasDimensions] = useState({
-    width: 0.97 * window.innerWidth,
-    height: 0.97 * (window.innerHeight - 90),
-  });
-  const [isMask, setIsMask] = useState<boolean>(false);
-  const [imageURL, setImageURL] = useState<string | null>(
-    searchParams.get("image"),
-  );
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  useEffect(() => {
-    if (isMask) document.body.style.cursor = "crosshair";
-    if (!isMask) {
-      document.body.style.cursor = "default";
-    }
-    const canvas = canvasRef.current!;
-    const ctx = canvas.getContext("2d", { willReadFrequently: true })!;
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    function updateDimensions() {
-      setCanvasDimensions({
-        width: 0.97 * window.innerWidth,
-        height: 0.97 * (window.innerHeight - 90),
-      });
-    }
-
-    init(canvas, imageURL, isMask);
-    window.addEventListener("resize", updateDimensions);
-
-    return () => {
-      window.removeEventListener("resize", updateDimensions);
-    };
-  }, [imageURL, isMask]);
+  // size of cursor in pixels
+  const [cursorSize, setCursorSize] = useState<number>(10);
 
   return (
     <>
-      <Toolbar isMask={isMask} setIsMask={setIsMask} />
-      <div className="flex justify-center">
-        <canvas
-          ref={canvasRef}
-          className="bg-[#13161b] rounded-xl border-2 border-[#a7d129]"
-          width={canvasDimensions.width}
-          height={canvasDimensions.height}
-        ></canvas>
+      <div className="flex justify-center items-center pt-4">
+        <MaskEditor
+          props={{
+            height: 400,
+            width: 400,
+            image:
+              "https://cdn.leonardo.ai/users/28134775-7926-489d-bcb7-dc47a2aba5a2/generations/e2551212-4781-497a-a438-f413b1b432b6/Default_A_minimal_Grey_themed_villa_facade_asthetic_nature_min_0.jpg",
+            cursorSize: cursorSize,
+          }}
+        />
+      </div>
+
+      <div className="flex justify-center items-center w-[300px]">
+        <Slider
+          className="w-[60%]"
+          min={5}
+          max={30}
+          step={3}
+          value={[cursorSize]}
+          onValueChange={(value) => setCursorSize(value[0])}
+        />
       </div>
     </>
   );

@@ -7,12 +7,7 @@ export const metadata: Metadata = {
 };
 
 const EditorLayout = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <>
-      <Navbar />
-      {children}
-    </>
-  );
+  return <>{children}</>;
 };
 
 export default EditorLayout;
