@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { MaskEditorProps } from "@/types/mask-editor";
 
 function MaskEditor({ props }: { props: MaskEditorProps }) {
@@ -7,7 +7,12 @@ function MaskEditor({ props }: { props: MaskEditorProps }) {
   const maskCanvasRef = useRef<HTMLCanvasElement | null>(null);
   const cursorCanvasRef = useRef<HTMLCanvasElement | null>(null);
 
-  // base canvas
+  function hexToRGB(color: string) {
+    let parts = color.replace("#", "").match(/.{1,2}/g);
+    return parts!.map((part) => parseInt(part, 16));
+  }
+
+  // Drawing image on base canvas.
   useEffect(() => {
     console.log(props.cursorSize);
     if (!canvasRef.current) return;
@@ -20,7 +25,7 @@ function MaskEditor({ props }: { props: MaskEditorProps }) {
     };
   }, [props]);
 
-  // cursor canvas
+  // Drawing cursor on base canvas
   useEffect(() => {
     if (!cursorCanvasRef.current) return;
 
@@ -42,6 +47,56 @@ function MaskEditor({ props }: { props: MaskEditorProps }) {
     };
   }, [props]);
 
+  useEffect(() => {
+    const listener = (event: MouseEvent) => {
+      const cursorCtx = canvasRef.current?.getContext("2d");
+
+      if (cursorCtx) {
+        cursorCtx.clearRect(0, 0, props.width, props.height);
+
+        cursorCtx.beginPath();
+        cursorCtx.fillStyle = "#23272d88";
+        cursorCtx.strokeStyle = "#23272d";
+        cursorCtx.arc(event.offsetX, event.offsetY, props.cursorSize, 0, 360);
+        cursorCtx.fill();
+        cursorCtx.stroke();
+      }
+
+      const maskCtx = maskCanvasRef.current?.getContext("2d");
+
+      if (maskCtx && event.buttons > 0) {
+        maskCtx.beginPath();
+        maskCtx.fillStyle =
+          event.buttons > 1 || event.shiftKey ? "#ffffff" : "#23272d";
+        maskCtx.arc(event.offsetX, event.offsetY, props.cursorSize, 0, 360);
+        maskCtx.fill();
+      }
+    };
+  }, [props]);
+
+  // Drawing canvas
+  const replaceMaskColor = useCallback(
+    (hexColor: string, invert: boolean) => {
+      const maskCtx = maskCanvasRef.current?.getContext("2d");
+      const imageData = maskCtx?.getImageData(0, 0, props.width, props.height);
+      const color = hexToRGB(hexColor);
+      if (imageData) {
+        for (var i = 0; i < imageData?.data.length; i += 4) {
+          const pixelColor =
+            (imageData.data[i] === 255) != invert ? [255, 255, 255] : color;
+          imageData.data[i] = pixelColor[0];
+          imageData.data[i + 1] = pixelColor[1];
+          imageData.data[i + 2] = pixelColor[2];
+          imageData.data[i + 3] = imageData.data[i + 3];
+        }
+        maskCtx?.putImageData(imageData, 0, 0);
+      }
+    },
+    [maskCanvasRef, props],
+  );
+
+  useEffect(() => replaceMaskColor("#23272d", false), [replaceMaskColor]);
+
   return (
     <div className="relative w-fit">
       <canvas
@@ -55,6 +110,10 @@ function MaskEditor({ props }: { props: MaskEditorProps }) {
         width={props.width}
         height={props.height}
         className="absolute top-0 left-0"
+        style={{
+          opacity: 0.75,
+          mixBlendMode: "normal",
+        }}
       />
       <canvas
         ref={cursorCanvasRef}
