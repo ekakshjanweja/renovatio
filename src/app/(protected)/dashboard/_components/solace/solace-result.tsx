@@ -24,9 +24,9 @@ import { STYLE, styleNames } from "@/lib/enums/style_enum";
 import { modelEnumSchema } from "@/lib/enums/model_enum";
 import { v4 as uuidv4 } from "uuid";
 import { MutableRequestCookiesAdapter } from "next/dist/server/web/spec-extension/adapters/request-cookies";
-import MaskEditor from "@/components/MaskEditor";
 import { Slider } from "@/components/ui/slider";
 import getMask from "@/lib/getMask";
+import MaskEditor from "@/components/mask-editor";
 
 interface SolaceResultProps {
   prompt: string;
@@ -56,7 +56,7 @@ export const SolaceResult = ({
   >(undefined);
 
   const [selectedImage, setSelectedImage] = useState<GeneratedImages | null>(
-    null,
+    null
   );
   const [cursorSize, setCursorSize] = useState<number>(10);
 
@@ -72,7 +72,7 @@ export const SolaceResult = ({
       style: STYLE,
       isEnhanced: boolean,
       apiKey: string,
-      contextualImageUrl?: string,
+      contextualImageUrl?: string
     ) => {
       const leonardo = new Leonardo({
         bearerAuth: apiKey,
@@ -122,7 +122,7 @@ export const SolaceResult = ({
       }
 
       const result = await leonardo.image.createGeneration(
-        isEnhanced ? alchemyOptions : options,
+        isEnhanced ? alchemyOptions : options
       );
 
       if (result.statusCode !== 200) {
@@ -137,7 +137,7 @@ export const SolaceResult = ({
       const generationResponse = await getGenerations(
         job?.sdGenerationJob?.generationId!,
         apiKey,
-        leonardo,
+        leonardo
       );
 
       if (generationResponse["data"] === "error") {
@@ -209,7 +209,7 @@ export const SolaceResult = ({
     const getGenerations = async (
       generationId: string,
       apiKey: string,
-      leonardo: Leonardo,
+      leonardo: Leonardo
     ) => {
       try {
         if (!apiKey) {
@@ -258,7 +258,7 @@ export const SolaceResult = ({
             numberOfImages,
             style,
             isEnhanced,
-            apiKey,
+            apiKey
           );
 
           if (response.status === "error") {
@@ -275,7 +275,7 @@ export const SolaceResult = ({
           setSelectedImage(images[0] as GeneratedImages);
         } catch (error) {
           setError(
-            error instanceof Error ? error.message : "An error occurred",
+            error instanceof Error ? error.message : "An error occurred"
           );
         }
       };
@@ -369,7 +369,7 @@ export const SolaceResult = ({
                   imageUrl={selectedImage.url ?? ""}
                 />
               </div>
-              <div className="flex">
+              <div className="flex gap-x-6 justify-center items-center">
                 Mask Editor <Button onClick={getMask}>Get Mask</Button>
               </div>
               <div className="flex justify-center items-center w-[300px]">
@@ -414,7 +414,7 @@ export const SolaceResult = ({
                       "rounded-md object-cover transition-all duration-300",
                       selectedImage === image
                         ? "border-2 border-custom"
-                        : "opacity-50",
+                        : "opacity-50"
                     )}
                     sizes="100vw"
                   />
