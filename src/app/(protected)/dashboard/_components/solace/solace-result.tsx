@@ -23,6 +23,10 @@ import { ROOM_TYPE, roomTypeNames } from "@/lib/enums/room_type_enum";
 import { STYLE, styleNames } from "@/lib/enums/style_enum";
 import { modelEnumSchema } from "@/lib/enums/model_enum";
 import { v4 as uuidv4 } from "uuid";
+import { MutableRequestCookiesAdapter } from "next/dist/server/web/spec-extension/adapters/request-cookies";
+import { Slider } from "@/components/ui/slider";
+import getMask from "@/lib/getMask";
+import MaskEditor from "@/components/mask-editor";
 
 interface SolaceResultProps {
   prompt: string;
@@ -54,6 +58,7 @@ export const SolaceResult = ({
   const [selectedImage, setSelectedImage] = useState<GeneratedImages | null>(
     null
   );
+  const [cursorSize, setCursorSize] = useState<number>(10);
 
   const [error, setError] = useState<string | null>(null);
 
@@ -82,7 +87,6 @@ export const SolaceResult = ({
       }
 
       const leonardoKinoXL = "aa77f04e-3eec-4034-9c07-d0f619684628";
-      const leonardoPhoenix = "6b645e3a-d64f-4341-a6d8-7a3690fbf042";
 
       const options: CreateGenerationRequestBody = {
         height: 1024,
@@ -281,7 +285,16 @@ export const SolaceResult = ({
     return () => {
       effectRan.current = true;
     };
-  }, []);
+  }, [
+    apiKey,
+    isEnhanced,
+    numberOfImages,
+    prompt,
+    remainingCredits,
+    roomType,
+    style,
+    userId,
+  ]);
 
   if (error) {
     return (
@@ -327,14 +340,12 @@ export const SolaceResult = ({
 
             <div className="mt-8 lg:mt-0 flex flex-col justify-start items-start relative w-[95vw] lg:w-[40vw] lg:pl-4 overflow-x-auto gap-y-4">
               <p className="text-xl mb-4">Generation Properties</p>
-
               <div className="flex flex-col gap-y-2 w-full">
                 <p className="text-sm">Prompt</p>
                 <p className="p-4 bg-neutral-200 rounded-xl text-neutral-800 w-full text-lg font-medium">
                   {prompt}
                 </p>
               </div>
-
               <div className="lex flex-col gap-y-2 w-full">
                 <p className="text-sm">Image Url</p>
                 <UrlCopy url={selectedImage.url ?? ""} />
@@ -353,12 +364,33 @@ export const SolaceResult = ({
                     Enhanced
                   </p>
                 )}
-
                 <SaveToProjectDialog
                   projects={projects}
                   imageUrl={selectedImage.url ?? ""}
                 />
               </div>
+              <div className="flex gap-x-6 justify-center items-center">
+                Mask Editor <Button onClick={getMask}>Get Mask</Button>
+              </div>
+              <div className="flex justify-center items-center w-[300px]">
+                Cursor Size:
+                <Slider
+                  className="w-[60%]"
+                  min={5}
+                  max={30}
+                  step={3}
+                  value={[cursorSize]}
+                  onValueChange={(value) => setCursorSize(value[0])}
+                />
+              </div>
+              <MaskEditor
+                props={{
+                  height: 300,
+                  width: 300,
+                  image: selectedImage.url as string,
+                  cursorSize: cursorSize,
+                }}
+              />
             </div>
           </div>
         </>
